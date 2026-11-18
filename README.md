@@ -15,6 +15,7 @@ Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em onda
 - **Melhorias entre as ondas:** ao limpar uma onda, o jogo pausa e você escolhe 1 de 3 melhorias (teclas **1**, **2**, **3** ou clique): Motor, Blindagem, Canhão, Recarga rápida, Flares, Manobra, Mira ou Reparo. Elas valem até você ser abatido.
 - Setas vermelhas na borda da tela apontam para inimigos fora de vista. Eles também aparecem como pontos no radar da cabine.
 - O **casco** (barra no rodapé) se recupera devagar quando você fica alguns segundos sem levar tiros. Se ele zerar, você é abatido e pode voar de novo.
+- **Chefão a cada 5 ondas (5, 10, 15...):** a **Fortaleza**, um bombardeiro de asa voadora com uns 90 m de envergadura, que circula em volta de você com alguns caças de escolta. Uma barra no topo da tela mostra a vida dele. Os **4 motores** são os pontos fracos (losangos laranja): cada míssil tira um bom pedaço, e a rajada também ajuda. As **4 torretas** (quadrados vermelhos) atiram rajadas e podem ser derrubadas com a rajada ou com um míssil. A Fortaleza também lança mísseis, então guarde flares. Com os 4 motores destruídos, ela cai e vale muitos pontos. A cada novo chefão, ela fica mais resistente.
 - Cada onda traz mais caças, e eles ficam mais resistentes. Os pontos de cada abate aumentam com a onda.
 
 ## Tutorial
