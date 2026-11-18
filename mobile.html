@@ -64,6 +64,24 @@ body.ck #tip{top:52px}
 #tip .skip{font:inherit;font-size:10px;color:var(--dim);background:#2a1f3d;border:2px solid var(--line);padding:2px 8px;margin-top:8px;cursor:pointer}
 #tutBtn{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);padding:8px 12px;margin-top:14px;cursor:pointer;display:none}
 #tutBtn.on{border-color:var(--gold);color:var(--gold)}
+#sndTitle{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);padding:8px 12px;margin:14px 0 0 8px;cursor:pointer;display:none}
+#sndTitle.on{border-color:var(--gold);color:var(--gold)}
+#sndbtn.off{opacity:.65;text-decoration:line-through}
+#sndPanel{position:absolute;right:16px;bottom:50px;z-index:20;display:none;width:260px;padding:10px 12px 8px;background:rgba(20,14,34,.95);border:3px solid var(--gold);box-shadow:4px 4px 0 rgba(0,0,0,.45);color:var(--ink);font-size:12px}
+#sndPanel.show{display:block}
+#sndPanel .hd{display:flex;justify-content:space-between;align-items:center;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--gold);margin-bottom:9px}
+#sndPanel .hd button{font:inherit;color:var(--ink);background:#2a1f3d;border:2px solid var(--line);padding:3px 6px;cursor:pointer}
+#sndOn{width:100%;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);padding:8px 6px;cursor:pointer;margin-bottom:6px}
+#sndOn.on{border-color:var(--gold);color:var(--gold)}
+#sndPanel .vol{display:grid;grid-template-columns:64px 1fr 28px;align-items:center;gap:8px;margin:9px 0;font-family:"Press Start 2P",monospace;font-size:8px}
+#sndPanel .vol b{text-align:right;color:var(--gold);font-weight:400}
+#sndPanel input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:12px;margin:0;cursor:pointer;border:2px solid var(--line);background:linear-gradient(90deg,var(--gold) var(--p,50%),#0d0918 var(--p,50%))}
+#sndPanel input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:12px;height:20px;background:#fff1d6;border:2px solid #3a2a12;box-shadow:inset -2px -2px 0 #c9a46a}
+#sndPanel input[type=range]::-moz-range-thumb{width:10px;height:18px;background:#fff1d6;border:2px solid #3a2a12;border-radius:0}
+#sndPanel .ft{font-size:10px;opacity:.7;margin-top:4px;text-align:center}
+body.mob #sndPanel{top:44px;bottom:auto;right:10px;width:min(320px,60vw)}
+body.mob #sndPanel input[type=range]{height:16px}
+body.mob #sndPanel input[type=range]::-webkit-slider-thumb{width:20px;height:30px}
 #toast{position:absolute;left:50%;top:38%;transform:translateX(-50%);z-index:4;display:none;font-family:"Press Start 2P",monospace;font-size:12px;color:var(--peach);
   text-shadow:2px 2px 0 #2a1f3d;white-space:nowrap;pointer-events:none}
 #over{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:6;background:rgba(23,17,42,.45)}
@@ -160,7 +178,7 @@ body.ck #tip{top:calc(40px + env(safe-area-inset-top))}
     <div class="bar"><i id="barfill"></i></div>
     <div id="status">mapeando a região dos lagos…</div>
     <div id="go">CLIQUE PARA VOAR</div>
-    <button id="tutBtn" title="Liga ou desliga o tutorial guiado (T)">TUTORIAL: LIGADO</button>
+    <button id="tutBtn" title="Liga ou desliga o tutorial guiado (T)">TUTORIAL: LIGADO</button><button id="sndTitle" title="Som, música e volume">SOM E MUSICA: LIGADOS</button>
     <div class="how" id="how">
       <div class="t">COMO JOGAR</div>
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0">Objetivo:</b> caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Quando aparecer o alerta <b style="min-width:0;color:#ff7a5a">GIRE!</b>, faça um tonneau: durante o giro os tiros não te acertam. Derrube os inimigos com a rajada e os mísseis. A partir da onda 2 eles também lançam mísseis: quando aparecer <b style="min-width:0;color:#ff7a5a">MISSIL!</b>, solte flares. Entre as ondas você escolhe uma melhoria para o caça. A cada 5 ondas vem um <b style="min-width:0;color:#ffaa3c">chefão</b>, a Fortaleza: um bombardeiro enorme com torretas. Destrua os 4 motores dele (losangos laranja) com mísseis. O casco se recupera devagar quando você não leva tiros.</div>
@@ -171,7 +189,7 @@ body.ck #tip{top:calc(40px + env(safe-area-inset-top))}
       <div><b>VOLTA</b>meia-volta: vira o jato 180°, para o lado do inimigo mais próximo.</div>
       <div><b>FLARE</b>despista mísseis inimigos. O botão pisca em vermelho quando um míssil vem atrás de você.</div>
       <div><b>TURBO</b>liga e desliga o pós-combustor.</div>
-      <div><b>VISÃO / SOM / ?</b>na barra do topo: troca a câmera, liga o som e abre esta ajuda.</div>
+      <div><b>VISÃO / SOM / ?</b>na barra do topo: troca a câmera, abre o som (liga, desliga e volume) e esta ajuda.</div>
       <div class="p">Não dá para bater no chão: o jato arremete sozinho antes do terreno. Jogue com o celular deitado; o jogo tenta entrar em tela cheia e travar na horizontal.</div>
     </div>
     <a id="deskLink" href="index.html?desktop=1">versão para computador (mouse e teclado)</a>
@@ -180,6 +198,13 @@ body.ck #tip{top:calc(40px + env(safe-area-inset-top))}
 
 <div id="tip"></div>
 <div id="toast"></div>
+<div id="sndPanel">
+  <div class="hd">SOM E MUSICA<button id="sndX" title="Fechar">X</button></div>
+  <button id="sndOn" class="on">SOM: LIGADO</button>
+  <label class="vol"><span>EFEITOS</span><input type="range" id="volSfx" min="0" max="100" step="5" value="80"><b id="volSfxV">80</b></label>
+  <label class="vol"><span>MUSICA</span><input type="range" id="volMus" min="0" max="100" step="5" value="60"><b id="volMusV">60</b></label>
+  <div class="ft" id="sndHint">M liga e desliga o som</div>
+</div>
 <div id="over"><div class="card"><h2>ABATIDO</h2><div class="sub" id="ovScore"></div><div class="go2" id="ovGo">CLIQUE PARA VOAR DE NOVO</div></div></div>
 <div id="upg"><div class="card" style="max-width:min(560px,94vw)"><h2 id="upgTitle">ONDA LIMPA!</h2><div class="sub" style="margin:0">Escolha uma melhoria para o seu caça</div><div id="upgOpts"></div><div id="upgHint">aperte 1, 2 ou 3, ou clique numa opção</div></div></div>
 <div id="strip">
@@ -189,7 +214,7 @@ body.ck #tip{top:calc(40px + env(safe-area-inset-top))}
   <span id="score">CASCO <span id="hullbar"><i id="hull"></i></span> ABATES <b id="kills">0</b> ONDA <b id="wave">0</b></span>
   <button id="viewbtn">VISÃO</button>
   <button id="helpbtn" title="Como jogar">?</button>
-  <button id="sndbtn" title="Som">SOM DESLIGADO</button>
+  <button id="sndbtn" title="Som, música e volume">SOM</button>
 </div>
 <div id="ctl">
   <div id="stickZone"></div>
@@ -1163,7 +1188,7 @@ function fireMissile() {
   for (const e of cands) { const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)) + (e.kind === 'eng' ? 0.004 : 0); if (L < 5000 && c > bc) { bc = c; lock = e; } }
   missiles.push({ pos: p, vel: madd(jet.vel, jet.U, -6), dir: jet.F.slice(), speed: jet.speed, age: 0, target: lock ? lock.pos.slice() : missileTarget(), enemy: lock, air: !!lock, alive: true });
   if (lock) toast('Míssil travado no alvo', 1200);
-  Snd.launch();
+  Snd.launch(p, false);
   tutorial.did('fire');
   updatePips();
 }
@@ -1186,7 +1211,7 @@ function explode(p, water) {
     for (let i = 0; i < 40; i++) { const v = [rnd(30), 20 + Math.random() * 45, rnd(30)];
       emit(p[0], p[1] + 2, p[2], v[0], v[1], v[2], 1.6 + Math.random() * 1.8, 1.2, 0.8, 3, 0.15, 30); }
   }
-  Snd.boom(d);
+  Snd.boom(p, true);
 }
 function stepMissiles(dt) {
   for (const m of missiles) {
@@ -1280,6 +1305,7 @@ function pickUpgrade(i) {
   if (u.k === 'repair') game.hp = maxHp();
   else { up[u.k]++; if (u.k === 'armor') game.hp = Math.min(maxHp(), game.hp + 25); }
   document.getElementById('upg').style.display = 'none';
+  Snd.ui('confirm');
   state = 'play';
   game.nextWave = T + 3.5;
   lastScoreKey = ''; updateScore();
@@ -1310,7 +1336,7 @@ function spawnWave() {
     eBasis(e); enemies.push(e);
   }
   toast(bossWave ? `ONDA ${game.wave}: CHEFÃO! A FORTALEZA` : `ONDA ${game.wave}: ${n} caça${n > 1 ? 's' : ''} inimigo${n > 1 ? 's' : ''}`, 2600);
-  Snd.alarm();
+  if (bossWave) Snd.jingle('boss'); else Snd.alarm();
   updateScore();
 }
 function stepEnemies(dt) {
@@ -1358,13 +1384,13 @@ function stepEnemies(dt) {
   }
   for (let i = enemies.length - 1; i >= 0; i--) if (!enemies[i].alive) enemies.splice(i, 1);
   // wave cleared: a short breather, then pick an upgrade
-  if (state === 'play' && !game.down && !enemies.length && !boss && game.wave > 0 && game.cleared !== game.wave) { game.cleared = game.wave; game.clearT = T + 2.4; game.nextWave = 1e9; toast(`Onda ${game.wave} limpa!`, 1800); }
+  if (state === 'play' && !game.down && !enemies.length && !boss && game.wave > 0 && game.cleared !== game.wave) { game.cleared = game.wave; game.clearT = T + 2.4; game.nextWave = 1e9; toast(`Onda ${game.wave} limpa!`, 1800); Snd.jingle(game.wave % 5 === 0 ? 'win' : 'clear'); }
   if (game.clearT && state === 'play' && !game.down && T >= game.clearT && !enemies.length && !boss && !missiles.some(m => m.hostile && m.alive)) { game.clearT = 0; openUpgrades(); }
 }
 function fireEnemyMissile(e) {
   const p = madd(e.pos, e.U, -2);
   missiles.push({ pos: p, vel: madd(scl(e.F, e.speed), e.U, -6), dir: e.F.slice(), speed: e.speed, age: 0, target: jet.pos.slice(), enemy: null, air: true, hostile: true, decoy: null, alive: true });
-  Snd.launch(Math.hypot(...sub(p, cam.eye)));
+  Snd.launch(p, true);
   if (!game.flareTip) {
     game.flareTip = true;
     if (!tutorial.active) { tipEl.innerHTML = isTouch ? 'Míssil inimigo! Toque em <b>FLARE</b> para despistar' : 'Míssil inimigo! Aperte <b>C</b> para soltar flares e despistar'; tipEl.style.display = 'block'; setTimeout(() => { if (!tutorial.active) tipEl.style.display = 'none'; }, 4500); }
@@ -1465,7 +1491,7 @@ function turretShot(muzzle) {
   const dir = norm(add(norm(sub(tgt, muzzle)), [rnd(sp), rnd(sp), rnd(sp)]));
   bullets.push({ pos: muzzle.slice(), vel: scl(dir, 700), life: 2.6, enemy: true, dmg: 3 });
   emit(muzzle[0], muzzle[1], muzzle[2], 0, 0, 0, 0.06, 4, 1, 6, 0);
-  Snd.shot(Math.hypot(...sub(muzzle, cam.eye)), true);
+  Snd.shot(muzzle, 2);
 }
 function dropFlare() {
   if (state !== 'play' || game.down || jet.flares <= 0 || T - jet.flareT < 0.35) return;
@@ -1503,7 +1529,7 @@ function fireEnemyBullet(e) {
   const dir = norm(add(norm(sub(tgt, muzzle)), [rnd(sp), rnd(sp), rnd(sp)]));
   bullets.push({ pos: muzzle, vel: scl(dir, 760), life: 2.2, enemy: true });
   emit(muzzle[0], muzzle[1], muzzle[2], 0, 0, 0, 0.05, 2.2, 1, 6, 0);
-  Snd.shot(Math.hypot(...sub(muzzle, cam.eye)), true);
+  Snd.shot(muzzle, 1);
 }
 function fireGun() {
   if (state !== 'play' || game.down || gun.cd > 0 || gun.burst > 0) return;
@@ -1519,7 +1545,7 @@ function gunRound() {
   const sp = 0.004; dir = norm(add(dir, [rnd(sp), rnd(sp), rnd(sp)]));
   bullets.push({ pos: muzzle, vel: scl(dir, 950), life: 1.7, enemy: false, tgt: tg && tg.inCone ? tg.e : null });
   emit(muzzle[0], muzzle[1], muzzle[2], jet.vel[0], jet.vel[1], jet.vel[2], 0.04, 1.6, 0.8, 6, 0);
-  Snd.shot(Math.hypot(...sub(muzzle, cam.eye)), false);
+  Snd.shot(muzzle, 0);
 }
 // the enemy closest to the nose, with the point the rounds must be aimed at to hit it
 function gunTarget() {
@@ -1556,16 +1582,16 @@ function stepBullets(dt) {
       }
       if (boss && !boss.dying && b.life > 0) {
         for (const pt of boss.parts) if (pt.hp > 0 && segDist(prev, b.pos, pt.pos) < pt.r) {
-          b.life = 0; damagePart(pt, 1 + 0.5 * up.gun);
+          b.life = 0; damagePart(pt, 1 + 0.5 * up.gun); Snd.tink(b.pos);
           for (let i = 0; i < 5; i++) emit(b.pos[0], b.pos[1], b.pos[2], boss.F[0] * boss.speed + rnd(30), boss.F[1] * boss.speed + rnd(30), boss.F[2] * boss.speed + rnd(30), 0.35, 1.6, 0.6, 3, 1.5, 9);
           break;
         }
-        if (b.life > 0 && segDist(prev, b.pos, boss.pos) < 12) { b.life = 0; emit(b.pos[0], b.pos[1], b.pos[2], rnd(20), rnd(20), rnd(20), 0.2, 1.2, 0.5, 3, 1.5, 9); }
+        if (b.life > 0 && segDist(prev, b.pos, boss.pos) < 12) { b.life = 0; Snd.tink(b.pos); emit(b.pos[0], b.pos[1], b.pos[2], rnd(20), rnd(20), rnd(20), 0.2, 1.2, 0.5, 3, 1.5, 9); }
       }
       if (b.life <= 0) continue;
       for (const e of enemies) {
         if (e.alive && segDist(prev, b.pos, e.pos) < 13) {
-          b.life = 0; e.hp -= 1 + 0.5 * up.gun; e.hit = 0.15;
+          b.life = 0; e.hp -= 1 + 0.5 * up.gun; e.hit = 0.15; Snd.tink(b.pos);
           for (let i = 0; i < 6; i++) emit(b.pos[0], b.pos[1], b.pos[2], e.F[0] * e.speed * 0.7 + rnd(30), e.F[1] * e.speed * 0.7 + rnd(30), e.F[2] * e.speed * 0.7 + rnd(30), 0.35, 1.4, 0.6, 3, 1.5, 9);
           if (e.hp <= 0) killEnemy(e);
           break;
@@ -1590,7 +1616,7 @@ function airBurst(p, big) {
   for (let i = 0; i < (big ? 40 : 24); i++) { const v = norm([rnd(), rnd(), rnd()]), s = 10 + Math.random() * 25;
     emit(p[0], p[1], p[2], v[0] * s, v[1] * s, v[2] * s, 0.7 + Math.random() * 0.8, 8 + Math.random() * 6, 24 + Math.random() * 18, 2, 2.2, -2); }
   for (let i = 0; i < 14; i++) emit(p[0] + rnd(6), p[1] + rnd(6), p[2] + rnd(6), rnd(3), rnd(3) + 2, rnd(3), 6 + Math.random() * 6, 14, 45 + Math.random() * 25, 0, 0.4, -0.3);
-  Snd.boom(d);
+  Snd.boom(p, big);
 }
 function killEnemy(e) {
   if (!e.alive) return;
@@ -1616,6 +1642,7 @@ function playerDown() {
   airBurst(jet.pos, true);
   for (let i = 0; i < 30; i++) emit(jet.pos[0], jet.pos[1], jet.pos[2], jet.vel[0] * 0.5 + rnd(40), jet.vel[1] * 0.5 + rnd(30), jet.vel[2] * 0.5 + rnd(40), 2 + Math.random() * 2, 2, 1, 3, 0.4, 30);
   jet.boost = false; input.ldown = false;
+  Snd.jingle('over');
   setTimeout(() => {
     document.getElementById('ovScore').textContent = `${game.kills} abate${game.kills === 1 ? '' : 's'} · ${game.score} pontos · chegou à onda ${game.wave}`;
     document.getElementById('over').style.display = 'flex';
@@ -2335,15 +2362,57 @@ function drawOverlay(dt) {
 }
 
 /* ---------------------------------------------------------------------
-   Sound — synthesised with Web Audio, off by default
+   Sound and music: CC0 samples in audio/ (credits in the README), mixed
+   with Web Audio. When a file can't be loaded (e.g. opened from disk),
+   the old synthesised sounds stand in for it.
    --------------------------------------------------------------------- */
+const SND_KEY = 'patrol.audio';
+const SFX_FILES = ['eng_low', 'eng_roar', 'burner', 'wind', 'gun', 'missile', 'flare', 'boom_s', 'boom_l', 'hit', 'tink', 'lock', 'mslwarn', 'alert', 'click', 'confirm', 'jg_boss', 'jg_clear', 'jg_win', 'jg_over'];
+const MUSIC = { title: 0.5, fly: 0.4, combat1: 0.42, combat2: 0.4, boss: 0.45, over: 0.8 }; // evens out the tracks' loudness
 const Snd = {
-  ctx: null, on: false,
+  ctx: null, on: true, vSfx: 0.8, vMus: 0.6, buf: {}, raw: {}, voices: 0, played: {},
+  musName: null, musRetry: 0, duckT: 0, di: 0, deck: [], L: {}, warnBeep: 0, mslBeep: 0,
+  // settings and file prefetch; the AudioContext waits for the first tap or key
+  load() {
+    try { const s = JSON.parse(localStorage.getItem(SND_KEY) || '{}'); if (typeof s.on === 'boolean') this.on = s.on; if (s.sfx >= 0 && s.sfx <= 1) this.vSfx = +s.sfx; if (s.mus >= 0 && s.mus <= 1) this.vMus = +s.mus; } catch (e) {}
+    if (location.protocol !== 'file:') for (const n of SFX_FILES) fetch(`audio/${n}.mp3`).then(r => r.ok ? r.arrayBuffer() : null).then(a => { if (a) { this.raw[n] = a; if (this.ctx) this.decode(n); } }).catch(() => {});
+    const unlock = () => this.unlock();
+    for (const ev of ['pointerdown', 'touchend', 'keydown', 'mousedown']) document.addEventListener(ev, unlock, true);
+    document.addEventListener('visibilitychange', () => this.visible(!document.hidden));
+    this.sync();
+  },
+  save() { try { localStorage.setItem(SND_KEY, JSON.stringify({ on: this.on, sfx: this.vSfx, mus: this.vMus })); } catch (e) {} },
+  decode(n) {
+    const a = this.raw[n]; if (!a) return; delete this.raw[n];
+    const ok = b => { this.buf[n] = b; if (this.L[n]) this.startLoop(n); };
+    try { const p = this.ctx.decodeAudioData(a, ok, () => {}); if (p && p.catch) p.catch(() => {}); } catch (e) {}
+  },
   init() {
     if (this.ctx) return;
     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
     const ctx = this.ctx = new AC();
-    this.master = ctx.createGain(); this.master.gain.value = 0; this.master.connect(ctx.destination);
+    // a gentle compressor glues the mix and keeps stacked explosions from clipping
+    const comp = ctx.createDynamicsCompressor(); comp.threshold.value = -12; comp.knee.value = 8; comp.ratio.value = 4; comp.attack.value = 0.004; comp.release.value = 0.25; comp.connect(ctx.destination);
+    this.master = ctx.createGain(); this.master.gain.value = 0; this.master.connect(comp);
+    this.sfx = ctx.createGain(); this.sfx.gain.value = this.vSfx; this.sfx.connect(this.master);
+    this.mus = ctx.createGain(); this.mus.gain.value = this.vMus; this.mus.connect(this.master);
+    this.musF = ctx.createBiquadFilter(); this.musF.type = 'lowpass'; this.musF.frequency.value = 20000; this.musF.connect(this.mus);
+    this.duck = ctx.createGain(); this.duck.connect(this.musF);
+    // looping layers: engine rumble, turbine roar, afterburner, wind
+    for (const [n, type, f] of [['eng_low'], ['eng_roar', 'lowpass', 1500], ['burner', 'lowpass', 8000], ['wind', 'bandpass', 900]]) {
+      const g = ctx.createGain(); g.gain.value = 0; g.connect(this.sfx);
+      let flt = null; if (type) { flt = ctx.createBiquadFilter(); flt.type = type; flt.frequency.value = f; flt.Q.value = 0.6; flt.connect(g); }
+      this.L[n] = { g, f: flt, src: null };
+    }
+    // music: two media elements that crossfade (streamed, so the long tracks don't sit in memory)
+    const tap = location.protocol !== 'file:';
+    this.deck = [0, 1].map(() => {
+      const el = new Audio(); el.loop = true; el.preload = 'auto'; if (!tap) el.volume = 0;
+      const g = ctx.createGain(); g.gain.value = 0; g.connect(this.duck);
+      let node = null; if (tap) try { node = ctx.createMediaElementSource(el); node.connect(g); } catch (e) { node = null; }
+      return { el, g, node, name: '', tv: 0 };
+    });
+    // synthesised fallback (the original sounds)
     const len = ctx.sampleRate * 2;
     const brown = ctx.createBuffer(1, len, ctx.sampleRate), d = brown.getChannelData(0); let last = 0;
     for (let i = 0; i < len; i++) { const w = Math.random() * 2 - 1; last = (last + 0.02 * w) / 1.02; d[i] = last * 3.5; }
@@ -2351,51 +2420,188 @@ const Snd = {
     this.white = white;
     const loop = b => { const s = ctx.createBufferSource(); s.buffer = b; s.loop = true; s.start(); return s; };
     this.engF = ctx.createBiquadFilter(); this.engF.type = 'lowpass'; this.engF.frequency.value = 500;
-    this.engG = ctx.createGain(); this.engG.gain.value = 0.5; loop(brown).connect(this.engF); this.engF.connect(this.engG); this.engG.connect(this.master);
+    this.engG = ctx.createGain(); this.engG.gain.value = 0; loop(brown).connect(this.engF); this.engF.connect(this.engG); this.engG.connect(this.sfx);
     this.abF = ctx.createBiquadFilter(); this.abF.type = 'bandpass'; this.abF.frequency.value = 700; this.abF.Q.value = 0.7;
-    this.abG = ctx.createGain(); this.abG.gain.value = 0; loop(white).connect(this.abF); this.abF.connect(this.abG); this.abG.connect(this.master);
-    this.osc = ctx.createOscillator(); this.osc.type = 'sawtooth'; this.osc.frequency.value = 160;
-    const of = ctx.createBiquadFilter(); of.type = 'lowpass'; of.frequency.value = 900; this.oscG = ctx.createGain(); this.oscG.gain.value = 0.025;
-    this.osc.connect(of); of.connect(this.oscG); this.oscG.connect(this.master); this.osc.start();
+    this.abG = ctx.createGain(); this.abG.gain.value = 0; loop(white).connect(this.abF); this.abF.connect(this.abG); this.abG.connect(this.sfx);
+    for (const n of Object.keys(this.raw)) this.decode(n);
+  },
+  startLoop(n) {
+    const L = this.L[n], b = this.buf[n]; if (!L || !b || L.src) return;
+    const s = this.ctx.createBufferSource(); s.buffer = b; s.loop = true; s.connect(L.f || L.g); s.start(0, Math.random() * b.duration); L.src = s;
+  },
+  // runs inside every tap/key so mobile browsers let the audio start
+  unlock() {
+    if (!this.on) return;
+    this.init(); if (!this.ctx) return;
+    if (this.ctx.state !== 'running') { const p = this.ctx.resume(); if (p && p.catch) p.catch(() => {}); }
+    this.master.gain.setTargetAtTime(1, this.ctx.currentTime, 0.1);
+    if (!this.primed) {
+      this.primed = true;
+      for (const dk of this.deck) if (!dk.name) { dk.el.src = 'audio/mus_title.mp3'; const p = dk.el.play(); if (p && p.then) p.then(() => { if (!dk.name) dk.el.pause(); }, () => { this.primed = false; }); }
+    }
+    if (this.musName === null || this.musRetry < 0) this.musRetry = 0;
+  },
+  visible(v) {
+    if (!this.ctx) return;
+    if (!v) { this.ctx.suspend(); for (const dk of this.deck) dk.el.pause(); }
+    else if (this.on) { this.ctx.resume(); const dk = this.deck[this.di]; if (dk.name) { const p = dk.el.play(); if (p && p.catch) p.catch(() => {}); } }
   },
   toggle() {
-    this.init(); if (!this.ctx) return;
-    this.on = !this.on; this.ctx.resume();
-    this.master.gain.setTargetAtTime(this.on ? 0.55 : 0, this.ctx.currentTime, 0.08);
-    document.getElementById('sndbtn').textContent = this.on ? 'SOM LIGADO' : 'SOM DESLIGADO';
+    this.on = !this.on; this.save();
+    if (this.on) { this.unlock(); this.musName = null; }
+    else if (this.ctx) { this.master.gain.setTargetAtTime(0, this.ctx.currentTime, 0.05); for (const dk of this.deck) { dk.el.pause(); dk.name = ''; dk.tv = 0; } this.musName = null; }
+    this.sync(); this.ui('click');
+  },
+  setVol(kind, v) {
+    v = clamp(v, 0, 1);
+    if (kind === 'sfx') { this.vSfx = v; if (this.sfx) this.sfx.gain.setTargetAtTime(v, this.ctx.currentTime, 0.03); }
+    else { this.vMus = v; if (this.mus) this.mus.gain.setTargetAtTime(v, this.ctx.currentTime, 0.03); }
+    if (!this.on && v > 0) this.toggle();
+    this.save(); this.sync();
+  },
+  sync() {
+    const b = document.getElementById('sndbtn'); if (b) { b.textContent = this.on ? 'SOM' : 'MUDO'; b.classList.toggle('off', !this.on); }
+    const o = document.getElementById('sndOn'); if (o) { o.textContent = this.on ? 'SOM: LIGADO' : 'SOM: DESLIGADO'; o.classList.toggle('on', this.on); }
+    for (const [id, v] of [['volSfx', this.vSfx], ['volMus', this.vMus]]) { const r = document.getElementById(id); if (r) { if (document.activeElement !== r) r.value = Math.round(v * 100); r.style.setProperty('--p', Math.round(v * 100) + '%'); const l = document.getElementById(id + 'V'); if (l) l.textContent = Math.round(v * 100); } }
+    const tb = document.getElementById('sndTitle'); if (tb) { tb.textContent = this.on ? 'SOM E MUSICA: LIGADOS' : 'SOM E MUSICA: DESLIGADOS'; tb.classList.toggle('on', this.on); }
+  },
+  music(name) {
+    this.musName = name;
+    const t = this.ctx.currentTime, cur = this.deck[this.di];
+    cur.tv = 0;
+    const old = cur; setTimeout(() => { if (old !== this.deck[this.di] || !old.name) { old.el.pause(); } }, 2200);
+    if (!name) return;
+    this.di ^= 1; const nx = this.deck[this.di];
+    nx.name = name; nx.tv = MUSIC[name];
+    if (nx.node) { nx.g.gain.cancelScheduledValues(t); nx.g.gain.setValueAtTime(0, t); }
+    else nx.el.volume = 0;
+    const src = `audio/mus_${name}.mp3`;
+    if (!nx.el.src.endsWith(src)) nx.el.src = src;
+    try { nx.el.currentTime = 0; } catch (e) {}
+    const p = nx.el.play(); if (p && p.catch) p.catch(() => { if (this.deck[this.di] === nx) { this.musName = null; this.musRetry = this.ctx.currentTime + 1.5; } });
+  },
+  wantMusic() {
+    if (state === 'over') return 'over';
+    if (state === 'play' || state === 'help' || state === 'upgrade') {
+      if (game.down) return '';
+      if (boss && !boss.dying) return 'boss';
+      return enemies.some(e => !e.train) ? (game.wave % 2 ? 'combat2' : 'combat1') : 'fly';
+    }
+    return 'title';
   },
   update() {
     if (!this.ctx || !this.on) return;
-    const t = this.ctx.currentTime, th = jet.throttle;
-    this.engF.frequency.setTargetAtTime(380 + th * 700 + jet.speed, t, 0.1);
-    this.engG.gain.setTargetAtTime(0.35 + th * 0.3, t, 0.1);
-    this.abG.gain.setTargetAtTime(jet.boost ? 0.22 : 0.0, t, 0.25);
-    this.osc.frequency.setTargetAtTime(120 + th * 110, t, 0.2);
-    if (game.mslWarn && T - this.mslBeep > 0.2) { this.mslBeep = T; const o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = 'square'; o.frequency.value = 1900; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.06, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.08); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 0.1); }
-    else if (game.warn && T - this.warnBeep > 0.5) { this.warnBeep = T; const o = this.ctx.createOscillator(), g = this.ctx.createGain(); o.type = 'square'; o.frequency.value = 1240; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.06, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.12); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 0.15); }
+    const ctx = this.ctx, t = ctx.currentTime;
+    const paused = state === 'help' || state === 'upgrade' || (typeof portrait === 'function' && portrait());
+    // music: pick the track for the moment, crossfade, muffle it while paused, duck it under fanfares
+    const want = this.wantMusic();
+    if (want !== this.musName && t >= this.musRetry) this.music(want);
+    for (const dk of this.deck) {
+      if (dk.node) dk.g.gain.setTargetAtTime(dk.tv, t, 0.5);
+      else dk.el.volume = clamp(lerp(dk.el.volume, dk.tv * this.vMus * 1.6, 0.05), 0, 1);
+    }
+    this.musF.frequency.setTargetAtTime(paused ? 650 : 20000, t, 0.15);
+    this.duck.gain.setTargetAtTime(t < this.duckT ? 0.2 : 1, t, 0.25);
+    // engine, afterburner and wind follow the throttle and speed
+    const flying = state === 'play' || paused;
+    const eng = flying ? (game.down ? 0 : paused ? 0.25 : 1) : state === 'title' ? 0.35 : 0;
+    const th = jet.throttle, cock = view === 2, boost = jet.boost && flying && !paused;
+    const w = clamp((jet.speed - 110) / 260, 0, 1), turn = clamp(Math.abs(jet.gLoad - 1) / 4, 0, 1);
+    if (this.buf.eng_low && this.buf.eng_roar) {
+      const L = this.L;
+      L.eng_low.g.gain.setTargetAtTime(eng * (0.24 + th * 0.14), t, 0.15);
+      if (L.eng_low.src) L.eng_low.src.playbackRate.setTargetAtTime(0.8 + th * 0.45, t, 0.25);
+      L.eng_roar.g.gain.setTargetAtTime(eng * (0.07 + th * 0.14 + (boost ? 0.1 : 0)), t, 0.15);
+      L.eng_roar.f.frequency.setTargetAtTime((cock ? 600 : 1000) + th * 2600 + (boost ? 1500 : 0), t, 0.2);
+      if (L.eng_roar.src) L.eng_roar.src.playbackRate.setTargetAtTime(0.85 + th * 0.3, t, 0.25);
+      L.burner.g.gain.setTargetAtTime(eng * (boost ? 0.42 : 0), t, boost ? 0.12 : 0.35);
+      L.burner.f.frequency.setTargetAtTime(cock ? 2200 : 8000, t, 0.2);
+      L.wind.g.gain.setTargetAtTime((flying && !game.down ? (paused ? 0.25 : 1) : state === 'title' ? 0.6 : 0.4) * (0.08 + w * 0.2 + turn * 0.18) * (cock ? 0.55 : 1), t, 0.3);
+      L.wind.f.frequency.setTargetAtTime(450 + w * 900 + turn * 600, t, 0.3);
+      this.engG.gain.setTargetAtTime(0, t, 0.1); this.abG.gain.setTargetAtTime(0, t, 0.1);
+    } else {
+      this.engF.frequency.setTargetAtTime(380 + th * 700 + jet.speed, t, 0.1);
+      this.engG.gain.setTargetAtTime(eng * (0.35 + th * 0.3), t, 0.1);
+      this.abG.gain.setTargetAtTime(boost ? 0.22 : 0.0, t, 0.25);
+    }
+    // radar warnings: fast beeps for an incoming missile, a slow two-tone when an enemy has us in its sights
+    if (paused || state !== 'play' || game.down) return;
+    if (game.mslWarn && T - this.mslBeep > 0.2) { this.mslBeep = T; if (!this.play('mslwarn', { vol: 0.45, vary: 0, prio: true })) this.beep(1900, 0.08); }
+    else if (!game.mslWarn && game.warn && T - this.warnBeep > 0.95) { this.warnBeep = T; if (!this.play('lock', { vol: 0.35, vary: 0, prio: true })) this.beep(1240, 0.12); }
+  },
+  // one sample, placed in space: farther is quieter, duller and (for booms) later; o = {pos, vol, ref, rate, vary, delay, sonic, prio, bus}
+  play(n, o = {}) {
+    if (!this.ctx || !this.on) return false;
+    const b = this.buf[n]; if (!b) return false;
+    const ctx = this.ctx;
+    let vol = o.vol === undefined ? 1 : o.vol, pan = 0, delay = o.delay || 0, L = 0;
+    if (o.pos) {
+      const d = sub(o.pos, cam.eye); L = Math.hypot(...d) || 1;
+      vol *= Math.min(1, (o.ref || 120) / L);
+      pan = clamp(dot(d, cam.rt) / L, -1, 1) * 0.7;
+      if (o.sonic) delay += Math.min(2, L / 340);
+    }
+    if (vol < 0.012) return true;
+    if (this.voices > 36 && !o.prio) return true;
+    const t = ctx.currentTime + delay;
+    const s = ctx.createBufferSource(); s.buffer = b;
+    s.playbackRate.value = (o.rate || 1) * (1 + (Math.random() - 0.5) * (o.vary === undefined ? 0.08 : o.vary));
+    const g = ctx.createGain(); g.gain.value = vol; s.connect(g);
+    let tail = g;
+    if (L > 500) { const f = ctx.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = Math.max(500, 14000 * 500 / L); tail.connect(f); tail = f; }
+    if (pan && ctx.createStereoPanner) { const p = ctx.createStereoPanner(); p.pan.value = pan; tail.connect(p); tail = p; }
+    tail.connect(o.bus || this.sfx);
+    s.start(t); this.voices++; this.played[n] = (this.played[n] || 0) + 1;
+    s.onended = () => { this.voices--; try { s.disconnect(); g.disconnect(); } catch (e) {} };
+    return true;
+  },
+  live() { return this.ctx && this.on; },
+  beep(f, dur) {
+    const ctx = this.ctx, t = ctx.currentTime, o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = 'square'; o.frequency.value = f; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.06, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(g); g.connect(this.sfx); o.start(t); o.stop(t + dur + 0.03);
   },
   burst(dur, f0, f1, g0, type = 'bandpass', delay = 0) {
     const ctx = this.ctx, t = ctx.currentTime + delay;
     const s = ctx.createBufferSource(); s.buffer = this.white;
     const f = ctx.createBiquadFilter(); f.type = type; f.frequency.setValueAtTime(f0, t); f.frequency.exponentialRampToValueAtTime(f1, t + dur);
     const g = ctx.createGain(); g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(g0, t + 0.03); g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
-    s.connect(f); f.connect(g); g.connect(this.master); s.start(t); s.stop(t + dur + 0.1);
+    s.connect(f); f.connect(g); g.connect(this.sfx); s.start(t); s.stop(t + dur + 0.1);
   },
-  launch(dist = 0) { if (!this.ctx || !this.on) return; const v = 0.5 * clamp(1.2 - dist / 3000, 0.15, 1); this.burst(1.4, 2600, 300, v); },
-  flare() { if (!this.ctx || !this.on) return; this.burst(0.35, 3200, 900, 0.3, 'highpass'); this.burst(0.35, 3200, 900, 0.22, 'highpass', 0.12); },
-  shot(dist, enemy) { if (!this.ctx || !this.on) return; const v = clamp(1 - dist / 1500, 0, 1) * (enemy ? 0.25 : 0.32); if (v < 0.02) return; this.burst(0.07, enemy ? 1600 : 2400, enemy ? 500 : 700, v, 'bandpass'); },
-  hit() { if (!this.ctx || !this.on) return; this.burst(0.25, 900, 120, 0.6, 'lowpass'); },
-  alarm() { if (!this.ctx || !this.on) return; const ctx = this.ctx; for (let i = 0; i < 3; i++) { const t = ctx.currentTime + i * 0.22, o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'square'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15); o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 0.2); } },
-  warnBeep: 0, mslBeep: 0,
-  boom(dist) {
-    if (!this.ctx || !this.on) return;
-    const delay = Math.min(2.5, dist / 340), vol = clamp(1.4 - dist / 4000, 0.15, 1);
+  dist(p) { return p ? Math.hypot(...sub(p, cam.eye)) : 0; },
+  launch(pos, enemy) {
+    if (!this.live() || this.play('missile', { pos, ref: enemy ? 220 : 70, vol: enemy ? 0.75 : 0.7, vary: 0.1 })) return;
+    this.burst(1.4, 2600, 300, 0.5 * clamp(1.2 - this.dist(pos) / 3000, 0.15, 1));
+  },
+  // kind 0: our cannon, 1: enemy fighter, 2: boss turret
+  shot(pos, kind) {
+    if (!this.live() || this.play('gun', kind ? { pos, ref: 140, vol: 0.5, rate: kind === 2 ? 0.62 : 0.78, vary: 0.12 } : { pos, ref: 80, vol: 0.42, vary: 0.16 })) return;
+    const v = clamp(1 - this.dist(pos) / 1500, 0, 1) * (kind ? 0.25 : 0.32); if (v < 0.02) return; this.burst(0.07, kind ? 1600 : 2400, kind ? 500 : 700, v, 'bandpass');
+  },
+  tink(pos) { if (this.live()) this.play('tink', { pos, ref: 160, vol: 0.45, vary: 0.3 }); },
+  flare() { if (!this.live() || this.play('flare', { vol: 0.7, prio: true })) return; this.burst(0.35, 3200, 900, 0.3, 'highpass'); this.burst(0.35, 3200, 900, 0.22, 'highpass', 0.12); },
+  hit() { if (!this.live() || this.play('hit', { vol: 0.85, prio: true, vary: 0.15 })) return; this.burst(0.25, 900, 120, 0.6, 'lowpass'); },
+  alarm() {
+    if (!this.live() || this.play('alert', { vol: 0.55, vary: 0, prio: true })) return;
+    for (let i = 0; i < 3; i++) { const ctx = this.ctx, t = ctx.currentTime + i * 0.22, o = ctx.createOscillator(), g = ctx.createGain(); o.type = 'square'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.08, t + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t + 0.15); o.connect(g); g.connect(this.sfx); o.start(t); o.stop(t + 0.2); }
+  },
+  boom(pos, big) {
+    if (!this.live() || this.play(big ? 'boom_l' : 'boom_s', { pos, ref: 260, vol: big ? 1 : 0.85, sonic: true, prio: true, vary: 0.14 })) return;
+    const dist = this.dist(pos), delay = Math.min(2.5, dist / 340), vol = clamp(1.4 - dist / 4000, 0.15, 1);
     this.burst(2.8, 900, 60, vol, 'lowpass', delay);
     const ctx = this.ctx, t = ctx.currentTime + delay, o = ctx.createOscillator(), g = ctx.createGain();
     o.frequency.setValueAtTime(70, t); o.frequency.exponentialRampToValueAtTime(28, t + 1.2);
     g.gain.setValueAtTime(vol * 0.8, t); g.gain.exponentialRampToValueAtTime(0.0001, t + 1.4);
-    o.connect(g); g.connect(this.master); o.start(t); o.stop(t + 1.5);
+    o.connect(g); g.connect(this.sfx); o.start(t); o.stop(t + 1.5);
   },
+  // short fanfares ride on the music volume and duck the track under them
+  jingle(n) {
+    if (!this.live()) return;
+    const b = this.buf['jg_' + n]; if (!b) { if (n !== 'over') this.alarm(); return; }
+    this.play('jg_' + n, { vol: 0.95, vary: 0, prio: true, bus: this.musF });
+    this.duckT = this.ctx.currentTime + b.duration - 0.3;
+  },
+  ui(n) { if (this.live()) this.play(n, { vol: 0.5, vary: 0.05, prio: true }); },
 };
 
 /* ---------------------------------------------------------------------
@@ -2496,7 +2702,7 @@ function startPlay() {
   document.getElementById('ctl').style.display = 'block';
   goLandscape();
   input.mx = W / 2; input.my = H / 2;
-  document.getElementById('tutBtn').style.display = 'none';
+  document.getElementById('tutBtn').style.display = 'none'; document.getElementById('sndTitle').style.display = 'none';
   game.nextWave = tutorial.start() ? 1e9 : T + 8;
 }
 function toggleHelp() {
@@ -2544,13 +2750,25 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { if (state === 'play') { jet.boost = true; } }
   else if (e.code === 'Escape') { if (tutorial.active) tutorial.finish(); if (state === 'help') toggleHelp(); }
   else if (e.code === 'Enter' && state === 'title') startPlay();
-  else if (e.code === 'KeyT' && state === 'title') tutorial.setEnabled(!tutorial.enabled());
+  else if (e.code === 'KeyT' && state === 'title') { tutorial.setEnabled(!tutorial.enabled()); Snd.ui('click'); }
   else if (e.code === 'Enter' && state === 'over') restartGame();
 });
 window.addEventListener('keyup', e => { held.delete(e.code); if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { if (jet.boost) tutorial.did('boost'); jet.boost = false; } });
-document.getElementById('sndbtn').addEventListener('click', e => { e.stopPropagation(); Snd.toggle(); });
+// sound panel: on/off and volume for effects and music
+const sndPanel = document.getElementById('sndPanel');
+function sndPanelShow(v) {
+  const on = v === undefined ? !sndPanel.classList.contains('show') : v;
+  sndPanel.classList.toggle('show', on); if (on) Snd.sync(); else if (document.activeElement && sndPanel.contains(document.activeElement)) document.activeElement.blur();
+}
+for (const id of ['sndbtn', 'sndTitle']) { const b = document.getElementById(id), f = e => { e.preventDefault(); e.stopPropagation(); Snd.unlock(); sndPanelShow(); Snd.ui('click'); }; b.addEventListener('click', f); b.addEventListener('touchstart', f, { passive: false }); b.addEventListener('mousedown', e => e.stopPropagation()); }
+document.getElementById('sndOn').addEventListener('click', e => { e.stopPropagation(); Snd.toggle(); });
+document.getElementById('sndX').addEventListener('click', e => { e.stopPropagation(); sndPanelShow(false); });
+for (const [id, k] of [['volSfx', 'sfx'], ['volMus', 'mus']]) { const r = document.getElementById(id); r.addEventListener('input', () => Snd.setVol(k, r.value / 100)); r.addEventListener('change', () => { if (k === 'sfx') Snd.ui('click'); r.blur(); }); }
+for (const ev of ['mousedown', 'touchstart']) sndPanel.addEventListener(ev, e => e.stopPropagation(), { passive: true });
+document.addEventListener('pointerdown', e => { if (sndPanel.classList.contains('show') && !(e.target.closest && e.target.closest('#sndPanel, #sndbtn, #sndTitle'))) sndPanelShow(false); }, true);
+if (isTouch) document.getElementById('sndHint').textContent = 'toque fora para fechar';
 document.getElementById('helpbtn').addEventListener('click', e => { e.stopPropagation(); toggleHelp(); });
-{ const b = document.getElementById('tutBtn'), f = e => { e.preventDefault(); e.stopPropagation(); tutorial.setEnabled(!tutorial.enabled()); };
+{ const b = document.getElementById('tutBtn'), f = e => { e.preventDefault(); e.stopPropagation(); tutorial.setEnabled(!tutorial.enabled()); Snd.ui('click'); };
   b.addEventListener('click', f); b.addEventListener('touchstart', f, { passive: false }); }
 // touch: a floating joystick on the left, action buttons on the right
 const portrait = () => innerHeight > innerWidth * 1.05;
@@ -2717,7 +2935,9 @@ let stripTop = false;
 Object.assign(DBG, {
   setView, fireMissile, startPlay, fireGun, spawnWave, restartGame, game, enemies, bullets, missiles, flares, up, damage: n => damagePlayer(n, jet.pos),
   flip: () => startFlip(), flare: () => dropFlare(), pickUpgrade: i => pickUpgrade(i), openUpgrades: () => openUpgrades(), gunTarget: () => gunTarget(),
-  spawnBoss: () => spawnBoss(), getBoss: () => boss, damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
+  spawnBoss: () => spawnBoss(), getBoss: () => boss,
+  sndObj: () => Snd,
+  getSnd: () => ({ ctx: Snd.ctx ? Snd.ctx.state : null, on: Snd.on, sfx: Snd.vSfx, mus: Snd.vMus, bufs: Object.keys(Snd.buf).sort(), music: Snd.musName, deck: Snd.deck.map(d => ({ name: d.name, paused: d.el.paused, t: +d.el.currentTime.toFixed(2), tv: d.tv, err: d.el.error ? d.el.error.code : 0 })), played: { ...Snd.played }, voices: Snd.voices, loops: Object.keys(Snd.L).filter(k => Snd.L[k].src), duck: Snd.duck ? +Snd.duck.gain.value.toFixed(2) : null, musF: Snd.musF ? Math.round(Snd.musF.frequency.value) : null, panel: document.getElementById('sndPanel').classList.contains('show') }), damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
   enemyMissile(i = 0) { if (enemies[i]) fireEnemyMissile(enemies[i]); },
   spawnAt(ahead, side, up, facing) { const p = add(add(madd(jet.pos, jet.F, ahead), scl(jet.R, side)), [0, up, 0]); const e = { pos: p, F: facing === 'away' ? jet.F.slice() : scl(jet.F, -1), speed: 200, bank: 0, hp: 6, fireCd: 0.5, mslCd: 99, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] }; eBasis(e); enemies.push(e); if (!game.wave) game.wave = 1; return enemies.length; },
   getState() { return { state, view, viewW, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp(), boss: boss ? { hp: bossHp(), max: boss.maxHp, dying: !!boss.dying, parts: boss.parts.map(p => p.kind + ':' + Math.round(p.hp)).join(' ') } : null }; },
@@ -2758,6 +2978,7 @@ async function boot() {
     document.getElementById('go').style.display = 'block';
     document.getElementById('go').textContent = isTouch ? 'TOQUE PARA VOAR' : 'CLIQUE PARA VOAR';
     document.getElementById('tutBtn').style.display = 'inline-block'; tutorial.syncBtn();
+    document.getElementById('sndTitle').style.display = 'inline-block'; Snd.sync();
     state = 'title';
     setView(1, true);
     DBG.ready = true;
@@ -2766,6 +2987,7 @@ async function boot() {
     DBG.errors.push(String(err.stack || err)); console.error(err);
   }
 }
+Snd.load();
 requestAnimationFrame(frame);
 boot();
 </script>

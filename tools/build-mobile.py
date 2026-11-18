@@ -96,7 +96,7 @@ how_new='''      <div><b>Polegar esquerdo</b>joystick: arraste em qualquer lugar
       <div><b>VOLTA</b>meia-volta: vira o jato 180°, para o lado do inimigo mais próximo.</div>
       <div><b>FLARE</b>despista mísseis inimigos. O botão pisca em vermelho quando um míssil vem atrás de você.</div>
       <div><b>TURBO</b>liga e desliga o pós-combustor.</div>
-      <div><b>VISÃO / SOM / ?</b>na barra do topo: troca a câmera, liga o som e abre esta ajuda.</div>
+      <div><b>VISÃO / SOM / ?</b>na barra do topo: troca a câmera, abre o som (liga, desliga e volume) e esta ajuda.</div>
 '''
 s=s.replace(how_old,how_new)
 rep('''      <div class="p">Não dá para bater no chão: o jato arremete sozinho antes do terreno. Voe baixo sobre um lago para levantar água. O míssil vai para onde o nariz aponta, ou para o chão à frente quando você voa nivelado.</div>
@@ -111,7 +111,7 @@ strip_new='''<div id="strip">
   <span id="score">CASCO <span id="hullbar"><i id="hull"></i></span> ABATES <b id="kills">0</b> ONDA <b id="wave">0</b></span>
   <button id="viewbtn">VISÃO</button>
   <button id="helpbtn" title="Como jogar">?</button>
-  <button id="sndbtn" title="Som">SOM DESLIGADO</button>
+  <button id="sndbtn" title="Som, música e volume">SOM</button>
 </div>
 '''
 s=s.replace(strip_old,strip_new)
