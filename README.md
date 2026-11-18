@@ -17,6 +17,12 @@ Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em onda
 - O **casco** (barra no rodapé) se recupera devagar quando você fica alguns segundos sem levar tiros. Se ele zerar, você é abatido e pode voar de novo.
 - Cada onda traz mais caças, e eles ficam mais resistentes. Os pontos de cada abate aumentam com a onda.
 
+## Tutorial
+
+Na primeira vez, o jogo começa com um **tutorial guiado** de 8 passos: pilotar, turbo, tonneau, meia-volta, rajada com o círculo de mira (contra um alvo de treino), míssil, flares (contra um míssil de treino, que não causa dano) e troca de visão. As ondas de inimigos só começam quando o tutorial termina. Dá para pular a qualquer momento com **Esc** ou o botão **PULAR TUTORIAL**.
+
+Para fazer o tutorial de novo, use o botão **TUTORIAL: LIGADO / DESLIGADO** na tela inicial (ou a tecla **T** nela).
+
 ## Como jogar no navegador
 
 ### Jeito mais fácil: GitHub Pages
