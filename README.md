@@ -4,14 +4,18 @@ Um brinquedo de voo em pixel art: você pilota um caça bimotor sobre uma regiã
 
 ## Objetivo
 
-Caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Sobreviva e derrube todos:
+Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em ondas, te perseguem e atiram. Sobreviva e derrube todos:
 
 - Quando um inimigo te coloca na mira, aparece **ALERTA: NA MIRA** e a luz **ALERTA** pisca.
 - Quando os tiros estão chegando, aparece **TIROS! GIRE!**. Faça um **tonneau** (clique ou **R**): durante o giro os tiros não te acertam.
 - Derrube os inimigos com a **rajada** de 15 tiros (tecla **E**) e com os **mísseis** (clique direito ou **F**). Com um inimigo à frente do nariz, o míssil trava nele.
+- **Mira da rajada:** um círculo aparece à frente do inimigo mais próximo do nariz, onde os tiros precisam chegar. Quando ele fica verde (com **ATIRE**), a rajada sai direto para ele e os tiros se curvam até o alvo.
+- **Meia-volta** (tecla **Q**): vira o jato 180° em pouco mais de um segundo, para o lado do inimigo mais próximo. Ótima para encarar quem está na sua cauda.
+- A partir da onda 2, os inimigos também lançam **mísseis**. Aparece **MISSIL! FLARE** e um losango vermelho marca o míssil. Solte **flares** (tecla **C**) para despistá-lo. Os flares recarregam a cada onda.
+- **Melhorias entre as ondas:** ao limpar uma onda, o jogo pausa e você escolhe 1 de 3 melhorias (teclas **1**, **2**, **3** ou clique): Motor, Blindagem, Canhão, Recarga rápida, Flares, Manobra, Mira ou Reparo. Elas valem até você ser abatido.
 - Setas vermelhas na borda da tela apontam para inimigos fora de vista. Eles também aparecem como pontos no radar da cabine.
 - O **casco** (barra no rodapé) se recupera devagar quando você fica alguns segundos sem levar tiros. Se ele zerar, você é abatido e pode voar de novo.
-- Cada onda traz mais caças. Os pontos de cada abate aumentam com a onda.
+- Cada onda traz mais caças, e eles ficam mais resistentes. Os pontos de cada abate aumentam com a onda.
 
 ## Como jogar no navegador
 
@@ -43,7 +47,10 @@ Precisa de um navegador com WebGL2 (qualquer Chrome, Edge, Firefox ou Safari rec
 | Tonneau (giro completo) | clique ou **R** | botão **GIRO** |
 | Pós-combustor (turbo) | segurar o botão esquerdo (ou Shift) | segurar **TURBO** |
 | Rajada de tiros (15) | **E** ou botão do meio do mouse | botão **TIRO** |
-| Disparar míssil | clique direito ou **F** | botão **MÍSSIL** |
+| Meia-volta (180°) | **Q** | botão **VOLTA** |
+| Soltar flares | **C** | botão **FLARE** |
+| Escolher melhoria | **1**, **2**, **3** ou clique | tocar na opção |
+| Disparar míssil | clique direito ou **F** | botão **MISSIL** |
 | Trocar a visão | **Espaço** | botão **VISÃO** |
 | Som liga / desliga | **M** ou o botão no rodapé | botão no rodapé |
 | Ajuda "Como jogar" | **H** ou o botão **?** | botão **?** |
@@ -77,9 +84,9 @@ Todos os instrumentos mostram valores reais do voo:
 - **MAPA SOLO**: radar âmbar que mapeia o terreno à frente (6 km), com varredura
 - **RPM / TEMP**: motores esquerdo (E) e direito (D) · **HORA**: relógio com a hora local
 - **MAN**: manete, que acompanha o pós-combustor (**PC**)
-- Luzes: PUXAR, ALT BX (altitude baixa), PC, MISSIL (recarregando), G ALTO, AGUA (voo rasante na água), ALERTA (inimigo mirando ou tiros chegando), GIRO
+- Luzes: PUXAR, ALT BX (altitude baixa), PC, MISSIL (recarregando), G ALTO, AGUA (voo rasante na água), ALERTA (inimigo mirando, tiros ou míssil chegando), GIRO
 
-No HUD: escada de arfagem alinhada com o horizonte real, fita de proa, velocidade, altitude, G, altura sobre o solo (R), Mach, mísseis prontos (MIS), casco e marcadores em volta dos inimigos com a distância em km.
+No HUD: escada de arfagem alinhada com o horizonte real, fita de proa, velocidade, altitude, G, altura sobre o solo (R), Mach, mísseis prontos (MIS), flares (FLR), casco, círculo de mira da rajada e marcadores em volta dos inimigos com a distância em km.
 
 ## Desempenho
 
