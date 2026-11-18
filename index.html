@@ -104,7 +104,7 @@ body.ck #tip{top:52px}
     <button id="tutBtn" title="Liga ou desliga o tutorial guiado (T)">TUTORIAL: LIGADO</button>
     <div class="how" id="how">
       <div class="t">COMO JOGAR</div>
-      <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0">Objetivo:</b> caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Quando aparecer o alerta <b style="min-width:0;color:#ff7a5a">GIRE!</b>, faça um tonneau: durante o giro os tiros não te acertam. Derrube os inimigos com a rajada e os mísseis. A partir da onda 2 eles também lançam mísseis: quando aparecer <b style="min-width:0;color:#ff7a5a">MISSIL!</b>, solte flares. Entre as ondas você escolhe uma melhoria para o caça. O casco se recupera devagar quando você não leva tiros.</div>
+      <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0">Objetivo:</b> caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Quando aparecer o alerta <b style="min-width:0;color:#ff7a5a">GIRE!</b>, faça um tonneau: durante o giro os tiros não te acertam. Derrube os inimigos com a rajada e os mísseis. A partir da onda 2 eles também lançam mísseis: quando aparecer <b style="min-width:0;color:#ff7a5a">MISSIL!</b>, solte flares. Entre as ondas você escolhe uma melhoria para o caça. A cada 5 ondas vem um <b style="min-width:0;color:#ffaa3c">chefão</b>, a Fortaleza: um bombardeiro enorme com torretas. Destrua os 4 motores dele (losangos laranja) com mísseis. O casco se recupera devagar quando você não leva tiros.</div>
       <div><b>Mover o mouse</b>pilota. Na visão de cima o jato segue o cursor. Na perseguição e na cabine, a distância do cursor até o centro define a curva e a subida ou descida.</div>
       <div><b>W A S D / setas</b>pilota pelo teclado: W sobe, S desce, A e D fazem a curva. Mexer o mouse volta para o controle pelo mouse.</div>
       <div><b>Clique / R</b>tonneau (giro completo): desvia dos tiros</div>
@@ -692,7 +692,7 @@ void main(){
 
 let P_WORLD, P_MESH, P_PLUME, P_PTS, P_LINE, P_POST;
 let texHF, texCloud, fbo, fboTex, fboDepth, maxPoint = 64;
-let vaoJet, vaoMsl, vaoPlume, vaoPts, vaoLine, bufPts, bufLine, nJet, nMsl, nPlume, vaoEmpty;
+let vaoJet, vaoMsl, vaoPlume, vaoPts, vaoLine, bufPts, bufLine, nJet, nMsl, nPlume, vaoEmpty, vaoBoss, nBoss;
 
 /* ---------------------------------------------------------------------
    Low-poly aircraft
@@ -754,6 +754,52 @@ function buildJet() {
   }
   return new Float32Array(v);
 }
+/* boss: a big flying wing (built small and drawn scaled up, so the camo blocks are big too) */
+const BOSS_S = 5;
+const BOSS_ENG = [[-5.6, 0.62, -2.6], [-3.1, 0.7, -2.0], [3.1, 0.7, -2.0], [5.6, 0.62, -2.6]];
+const BOSS_TUR = [[0, 1.45, 2.6], [0, -1.05, 0.8], [-9.2, 0.32, -3.3], [9.2, 0.32, -3.3]];
+function buildBoss() {
+  const { v, tri, quad } = meshBuilder();
+  // centre body: a wide lofted hull
+  const st = [[7.6, 0.5, 0.35, 0.1], [6.2, 1.5, 0.75, 0.15], [3.5, 2.6, 1.15, 0.15], [0, 3.0, 1.2, 0.1], [-3.5, 2.8, 1.0, 0], [-6.0, 2.2, 0.7, 0], [-7.0, 1.6, 0.5, 0]];
+  const ring = ([z, hw, hh, yc]) => { const k = 0.45; return [[hw * k, yc + hh, z], [hw, yc + hh * k, z], [hw, yc - hh * k, z], [hw * k, yc - hh, z], [-hw * k, yc - hh, z], [-hw, yc - hh * k, z], [-hw, yc + hh * k, z], [-hw * k, yc + hh, z]]; };
+  const RR = st.map(ring);
+  for (let i = 0; i < RR.length - 1; i++) for (let j = 0; j < 8; j++) { const j2 = (j + 1) % 8; quad(RR[i][j], RR[i][j2], RR[i + 1][j2], RR[i + 1][j], 0); }
+  for (let j = 0; j < 8; j++) tri([0, 0.1, 8.3], RR[0][(j + 1) % 8], RR[0][j], 1);
+  const last = RR[RR.length - 1];
+  for (let j = 0; j < 8; j++) tri([0, 0, -7.0], last[j], last[(j + 1) % 8], 5);
+  // cockpit glazing strip
+  quad([-0.9, 1.0, 6.4], [0.9, 1.0, 6.4], [1.3, 1.25, 5.0], [-1.3, 1.25, 5.0], 2);
+  for (const sd of [1, -1]) {
+    // swept wing with a sawtooth trailing edge
+    const u = (p, h) => [p[0] * sd, p[1] + h, p[2]];
+    const P = [[2.4, 0, 4.2], [12.6, 0, -3.6], [12.6, 0, -5.0], [7.6, 0, -3.0], [4.6, 0, -5.8], [2.4, 0, -4.6]];
+    const th = p => 0.55 * (1 - (p[0] - 2.4) / 12) + 0.08;
+    const tp = P.map(p => u(p, th(p))), bt = P.map(p => u(p, -th(p) * 0.7));
+    for (let k = 1; k < P.length - 1; k++) {
+      if (sd > 0) { tri(tp[0], tp[k + 1], tp[k], 0); tri(bt[0], bt[k], bt[k + 1], 0); }
+      else { tri(tp[0], tp[k], tp[k + 1], 0); tri(bt[0], bt[k + 1], bt[k], 0); }
+    }
+    for (let k = 0; k < P.length; k++) { const k2 = (k + 1) % P.length; quad(tp[k], bt[k], bt[k2], tp[k2], 0); }
+    // wingtip fins with orange caps
+    const f0 = [12.4 * sd, 0.1, -3.2], f1 = [12.4 * sd, 0.1, -5.0], f2 = [12.4 * sd, 2.2, -4.6], f3 = [12.4 * sd, 2.2, -5.4];
+    quad(f0, f1, f3, f2, 3); quad(f0, f2, f3, f1, 3);
+  }
+  // engine pods on top of the wing, glowing nozzles at the back
+  const cyl = (cx, cy, z0, z1, r, m) => { const n = 8; for (let k = 0; k < n; k++) { const a = k / n * TAU, b = (k + 1) / n * TAU, q = (ang, z) => [cx + Math.cos(ang) * r, cy + Math.sin(ang) * r, z]; quad(q(a, z0), q(b, z0), q(b, z1), q(a, z1), m); } };
+  for (const [x, y, z] of BOSS_ENG) {
+    cyl(x, y, z + 2.4, z - 1.6, 0.62, 5);
+    for (let k = 0; k < 8; k++) { const a = k / 8 * TAU, b = (k + 1) / 8 * TAU; tri([x, y, z + 2.9], [x + Math.cos(b) * 0.62, y + Math.sin(b) * 0.62, z + 2.4], [x + Math.cos(a) * 0.62, y + Math.sin(a) * 0.62, z + 2.4], 7); tri([x, y, z - 1.62], [x + Math.cos(a) * 0.5, y + Math.sin(a) * 0.5, z - 1.62], [x + Math.cos(b) * 0.5, y + Math.sin(b) * 0.5, z - 1.62], 4); }
+  }
+  // turrets: squat domes with twin barrels
+  for (const [x, y, z] of BOSS_TUR) {
+    const up = y >= 0 ? 1 : -1, n = 6;
+    for (let k = 0; k < n; k++) { const a = k / n * TAU, b = (k + 1) / n * TAU; const q = (ang, r, h) => [x + Math.cos(ang) * r, y + h * up, z + Math.sin(ang) * r];
+      quad(q(a, 0.75, 0), q(b, 0.75, 0), q(b, 0.5, 0.45), q(a, 0.5, 0.45), 5); tri([x, y + 0.5 * up, z], q(a, 0.5, 0.45), q(b, 0.5, 0.45), 3); }
+    for (const o of [-0.2, 0.2]) cyl(x + o, y + 0.3 * up, z + 0.3, z + 1.8, 0.08, 5);
+  }
+  return new Float32Array(v);
+}
 function buildMissile() {
   const { v, tri, quad } = meshBuilder();
   const seg = 6, r = 0.2;
@@ -810,6 +856,7 @@ function initGL() {
   const jet = buildJet(), msl = buildMissile(), plume = buildPlume();
   nJet = jet.length / 7; nMsl = msl.length / 7; nPlume = plume.length / 4;
   vaoJet = makeVao(jet, [3, 3, 1], 7).vao; vaoMsl = makeVao(msl, [3, 3, 1], 7).vao; vaoPlume = makeVao(plume, [3, 1], 4).vao;
+  const bm = buildBoss(); nBoss = bm.length / 7; vaoBoss = makeVao(bm, [3, 3, 1], 7).vao;
   const pp = makeVao(null, [4, 4], 8); vaoPts = pp.vao; bufPts = pp.b;
   const ll = makeVao(null, [4], 4); vaoLine = ll.vao; bufLine = ll.b;
   vaoEmpty = gl.createVertexArray();
@@ -1048,7 +1095,8 @@ function fireMissile() {
   jet.slots[i].armed = false; jet.slots[i].t = 4.5 * reloadK();
   const p = localToWorld(jet.rails[i]);
   let lock = null, bc = Math.cos(28 * Math.PI / 180);
-  for (const e of enemies) { const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)); if (L < 5000 && c > bc) { bc = c; lock = e; } }
+  const cands = boss && !boss.dying ? enemies.concat(boss.parts.filter(p => p.alive)) : enemies;
+  for (const e of cands) { const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)) + (e.kind === 'eng' ? 0.004 : 0); if (L < 5000 && c > bc) { bc = c; lock = e; } }
   missiles.push({ pos: p, vel: madd(jet.vel, jet.U, -6), dir: jet.F.slice(), speed: jet.speed, age: 0, target: lock ? lock.pos.slice() : missileTarget(), enemy: lock, air: !!lock, alive: true });
   if (lock) toast('Míssil travado no alvo', 1200);
   Snd.launch();
@@ -1108,7 +1156,8 @@ function stepMissiles(dt) {
       if (!m.decoy && !game.down && segDist(prev, m.pos, jet.pos) < 16) { m.alive = false; airBurst(m.pos, false); if (!m.train) damagePlayer(22, m.pos); continue; }
       if (m.pos[1] > s && ((m.decoy && Math.hypot(...sub(m.pos, m.target)) < 18) || m.age > 9)) { m.alive = false; airBurst(m.pos, false); continue; }
     }
-    if (m.enemy && m.enemy.alive && Math.hypot(...sub(m.pos, m.enemy.pos)) < 22) { m.alive = false; killEnemy(m.enemy); continue; }
+    if (m.enemy && m.enemy.alive && Math.hypot(...sub(m.pos, m.enemy.pos)) < 22) { m.alive = false; if (m.enemy.part) { airBurst(m.pos, false); damagePart(m.enemy, m.enemy.kind === 'eng' ? 30 : 99); } else killEnemy(m.enemy); continue; }
+    if (!m.hostile && boss && !boss.dying && m.age > 0.32) { const pt = boss.parts.find(q => q.hp > 0 && Math.hypot(...sub(m.pos, q.pos)) < 16); if (pt) { m.alive = false; airBurst(m.pos, false); damagePart(pt, pt.kind === 'eng' ? 30 : 99); continue; } }
     if (m.air && m.pos[1] > s && (Math.hypot(...sub(m.pos, m.target)) < 14 || m.age > 9)) { m.alive = false; airBurst(m.pos, false); continue; }
     if (m.pos[1] <= s || Math.hypot(...sub(m.pos, m.target)) < 12 || m.age > 12) {
       m.alive = false;
@@ -1183,9 +1232,11 @@ function toast(msg, ms = 1800) {
   clearTimeout(toast.t); toast.t = setTimeout(() => { el.style.display = 'none'; }, ms);
 }
 function spawnWave() {
-  game.wave++; game.clearT = 0;
+  game.wave++; game.clearT = 0; game.nextWave = 1e9;
   jet.flares = maxFlares(); updateFlares();
-  const n = Math.min(1 + game.wave, 6);
+  const bossWave = game.wave % 5 === 0;
+  const n = bossWave ? Math.min(1 + Math.floor(game.wave / 5), 4) : Math.min(1 + game.wave, 6);
+  if (bossWave) spawnBoss();
   for (let i = 0; i < n; i++) {
     // come in from behind and to the sides, a little above
     const a = jet.yaw + Math.PI + (i - (n - 1) / 2) * 0.45 + rnd(0.15), d = 1700 + Math.random() * 700;
@@ -1194,12 +1245,12 @@ function spawnWave() {
     const e = { pos: [x, y, z], F: norm(sub(jet.pos, [x, y, z])), speed: 230, bank: 0, hp: 6 + Math.floor(game.wave / 3) * 2, fireCd: 2 + Math.random() * 3, mslCd: 5 + Math.random() * 6, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] };
     eBasis(e); enemies.push(e);
   }
-  toast(`ONDA ${game.wave}: ${n} caça${n > 1 ? 's' : ''} inimigo${n > 1 ? 's' : ''}`, 2600);
+  toast(bossWave ? `ONDA ${game.wave}: CHEFÃO! A FORTALEZA` : `ONDA ${game.wave}: ${n} caça${n > 1 ? 's' : ''} inimigo${n > 1 ? 's' : ''}`, 2600);
   Snd.alarm();
   updateScore();
 }
 function stepEnemies(dt) {
-  if (state === 'play' && !game.down && !enemies.length && T >= game.nextWave) spawnWave();
+  if (state === 'play' && !game.down && !enemies.length && !boss && T >= game.nextWave) spawnWave();
   game.warn = false;
   for (const e of enemies) {
     const toP = sub(jet.pos, e.pos), dist = Math.hypot(...toP);
@@ -1243,8 +1294,8 @@ function stepEnemies(dt) {
   }
   for (let i = enemies.length - 1; i >= 0; i--) if (!enemies[i].alive) enemies.splice(i, 1);
   // wave cleared: a short breather, then pick an upgrade
-  if (state === 'play' && !game.down && !enemies.length && game.wave > 0 && game.cleared !== game.wave) { game.cleared = game.wave; game.clearT = T + 2.4; game.nextWave = 1e9; toast(`Onda ${game.wave} limpa!`, 1800); }
-  if (game.clearT && state === 'play' && !game.down && T >= game.clearT && !enemies.length && !missiles.some(m => m.hostile && m.alive)) { game.clearT = 0; openUpgrades(); }
+  if (state === 'play' && !game.down && !enemies.length && !boss && game.wave > 0 && game.cleared !== game.wave) { game.cleared = game.wave; game.clearT = T + 2.4; game.nextWave = 1e9; toast(`Onda ${game.wave} limpa!`, 1800); }
+  if (game.clearT && state === 'play' && !game.down && T >= game.clearT && !enemies.length && !boss && !missiles.some(m => m.hostile && m.alive)) { game.clearT = 0; openUpgrades(); }
 }
 function fireEnemyMissile(e) {
   const p = madd(e.pos, e.U, -2);
@@ -1254,6 +1305,103 @@ function fireEnemyMissile(e) {
     game.flareTip = true;
     if (!tutorial.active) { tipEl.innerHTML = isTouch ? 'Míssil inimigo! Toque em <b>FLARE</b> para despistar' : 'Míssil inimigo! Aperte <b>C</b> para soltar flares e despistar'; tipEl.style.display = 'block'; setTimeout(() => { if (!tutorial.active) tipEl.style.display = 'none'; }, 4500); }
   }
+}
+/* ---------------------------------------------------------------------
+   Boss every 5 waves: the "Fortaleza", a big flying wing with four engines
+   (weak points, best hit with missiles) and four gun turrets
+   --------------------------------------------------------------------- */
+let boss = null;
+const BOSS_ENG_HP = 60, BOSS_TUR_HP = 12;
+function bossHp() { return boss ? boss.parts.reduce((a, p) => a + (p.kind === 'eng' ? Math.max(0, p.hp) : 0), 0) : 0; }
+function spawnBoss() {
+  const a = jet.yaw + rnd(0.6), d = 2600;
+  const x = jet.pos[0] + Math.sin(a) * d, z = jet.pos[2] - Math.cos(a) * d;
+  const y = Math.max(jet.pos[1] + 200, surfH(x, z) + 450);
+  const F = norm([Math.cos(a), 0, Math.sin(a)]); // crossing in front of us
+  boss = { pos: [x, y, z], F, R: [1, 0, 0], U: [0, 1, 0], bank: 0, speed: 120, alive: true, dying: 0, hit: 0, mslCd: 8, dir: Math.random() < 0.5 ? 1 : -1, parts: [] };
+  const lv = 1 + Math.floor(game.wave / 5) - 1;
+  for (const l of BOSS_ENG) boss.parts.push({ kind: 'eng', l: scl(l, BOSS_S), hp: BOSS_ENG_HP + 15 * lv, max: BOSS_ENG_HP + 15 * lv, r: 14, alive: true, part: true, pos: [0, 0, 0], F, speed: 120 });
+  BOSS_TUR.forEach((l, i) => boss.parts.push({ kind: 'tur', l: scl(l, BOSS_S), hp: BOSS_TUR_HP + 4 * lv, max: BOSS_TUR_HP + 4 * lv, r: 10, alive: true, part: true, pos: [0, 0, 0], F, speed: 120, cd: 2 + i * 0.8, burst: 0, burstT: 0, up: l[1] >= 0 }));
+  boss.maxHp = bossHp();
+  bossParts();
+  if (!game.bossTip) {
+    game.bossTip = true;
+    tipEl.className = ''; tipEl.innerHTML = `<div class="tx"><b>CHEFÃO: a Fortaleza!</b> Destrua os <b>4 motores</b> (losangos laranja) com <b>mísseis</b>. As <b>torretas</b> (quadrados vermelhos) atiram: derrube-as com a rajada ou faça um tonneau.</div>`;
+    tipEl.style.display = 'block'; setTimeout(() => { if (!tutorial.active) tipEl.style.display = 'none'; }, 7000);
+  }
+}
+function bossParts() {
+  const b = boss, R0 = norm(cross(b.F, [0, 1, 0])), U0 = cross(R0, b.F), c = Math.cos(b.bank), sn = Math.sin(b.bank);
+  b.R = [R0[0] * c - U0[0] * sn, R0[1] * c - U0[1] * sn, R0[2] * c - U0[2] * sn];
+  b.U = [U0[0] * c + R0[0] * sn, U0[1] * c + R0[1] * sn, U0[2] * c + R0[2] * sn];
+  for (const p of b.parts) { p.pos = add(add(add(b.pos, scl(b.R, p.l[0])), scl(b.U, p.l[1])), scl(b.F, p.l[2])); p.F = b.F; p.speed = b.speed; p.alive = b.alive && !b.dying && p.hp > 0; }
+}
+function damagePart(p, n) {
+  if (!boss || !boss.alive || boss.dying || p.hp <= 0) return;
+  p.hp -= n; boss.hit = 0.12;
+  if (p.hp <= 0) {
+    p.hp = 0; p.alive = false; airBurst(p.pos, p.kind === 'eng');
+    if (p.kind === 'eng') {
+      const left = boss.parts.filter(q => q.kind === 'eng' && q.hp > 0).length;
+      game.score += 150 * game.wave;
+      if (left) toast(`Motor destruído! Faltam ${left}`, 1600); else { boss.dying = T; toast('A Fortaleza está caindo!', 2000); }
+    } else toast('Torreta destruída!', 1200);
+    updateScore();
+  }
+}
+function stepBoss(dt) {
+  if (!boss) return;
+  const b = boss;
+  b.hit = Math.max(0, b.hit - dt);
+  if (b.dying) {
+    // goes down burning, with a chain of explosions, then the big one
+    b.F = norm(add(b.F, [0, -dt * 0.35, 0])); b.pos = madd(b.pos, b.F, b.speed * dt); b.bank += dt * 0.5 * b.dir; bossParts();
+    if (Math.random() < dt * 6) { const q = b.parts[Math.floor(Math.random() * b.parts.length)].pos; airBurst(add(q, [rnd(12), rnd(6), rnd(12)]), false); }
+    if (T - b.dying > 2.2 || b.pos[1] < surfH(b.pos[0], b.pos[2]) + 10) {
+      airBurst(b.pos, true); airBurst(add(b.pos, scl(b.R, 25)), true); airBurst(add(b.pos, scl(b.R, -25)), true);
+      flash = Math.max(flash, 0.7); shake = Math.max(shake, 0.9);
+      const pts = 1000 * Math.max(1, game.wave / 5);
+      game.kills++; game.score += pts; toast(`FORTALEZA DERRUBADA! +${pts}`, 2600);
+      boss = null; updateScore();
+    }
+    return;
+  }
+  // orbit the player at about 1.2 km, a bit above
+  const toP = sub(jet.pos, b.pos), hz = [toP[0], 0, toP[2]], dh = Math.hypot(hz[0], hz[2]) || 1, n = scl(hz, 1 / dh);
+  const tan = scl([-n[2], 0, n[0]], b.dir);
+  let want = norm(add(tan, scl(n, clamp((dh - 1200) / 500, -1, 1.6))));
+  const ahead = madd(b.pos, b.F, 600), ty = clamp(Math.max(jet.pos[1] + 150, surfH(ahead[0], ahead[2]) + 380, surfH(b.pos[0], b.pos[2]) + 380), 300, 2300);
+  want = norm([want[0], clamp((ty - b.pos[1]) / 700, -0.3, 0.3), want[2]]);
+  const ang = Math.acos(clamp(dot(b.F, want), -1, 1)), k = ang > 1e-4 ? Math.min(1, 0.2 * dt / ang) : 1;
+  const nF = norm(mixv(b.F, want, k)), lat = dot(sub(nF, b.F), b.R) / Math.max(dt, 1e-3);
+  b.bank = lerp(b.bank, clamp(lat * 3, -0.45, 0.45), Math.min(1, dt * 1.5));
+  b.F = nF;
+  const eng = b.parts.filter(p => p.kind === 'eng' && p.hp > 0).length;
+  b.speed = lerp(b.speed, 85 + 9 * eng, Math.min(1, dt));
+  b.pos = madd(b.pos, b.F, b.speed * dt);
+  bossParts();
+  // burning engines and turrets
+  for (const p of b.parts) if (p.hp <= 0 && Math.random() < dt * 25) { emit(p.pos[0], p.pos[1], p.pos[2], rnd(3), rnd(3) + 2, rnd(3), 3, 6, 22, 0, 0.5, -0.5); if (p.kind === 'eng') emit(p.pos[0], p.pos[1], p.pos[2], rnd(5), rnd(5), rnd(5), 0.4, 5, 2, 2, 1, 0); }
+  // turrets fire bursts at us when they can see us
+  const dist = Math.hypot(...toP);
+  for (const p of b.parts) {
+    if (p.kind !== 'tur' || p.hp <= 0) continue;
+    const side = dot(sub(jet.pos, p.pos), b.U), sees = p.up ? side > -60 : side < 60;
+    p.cd -= dt;
+    if (p.burst > 0) { p.burstT -= dt; while (p.burstT <= 0 && p.burst > 0) { turretShot(p.pos); p.burst--; p.burstT += 0.09; } }
+    else if (!game.down && state === 'play' && dist < 1400 && sees && p.cd <= 0) { p.burst = 6; p.burstT = 0; p.cd = 4.5 + Math.random() * 2.5; }
+    if (!game.down && dist < 1400 && sees && p.cd < 0.7) game.warn = true;
+  }
+  // and the odd missile from the belly
+  b.mslCd -= dt;
+  if (b.mslCd <= 0 && !game.down && state === 'play' && dist > 600 && dist < 3500) { fireEnemyMissile({ pos: madd(b.pos, b.U, -4), U: b.U, F: norm(toP), speed: b.speed }); b.mslCd = 11 + Math.random() * 5; }
+}
+function turretShot(muzzle) {
+  const dist = Math.hypot(...sub(jet.pos, muzzle)), tgt = madd(jet.pos, jet.vel, dist / 700), sp = 0.045;
+  const dir = norm(add(norm(sub(tgt, muzzle)), [rnd(sp), rnd(sp), rnd(sp)]));
+  bullets.push({ pos: muzzle.slice(), vel: scl(dir, 700), life: 2.6, enemy: true, dmg: 3 });
+  emit(muzzle[0], muzzle[1], muzzle[2], 0, 0, 0, 0.06, 4, 1, 6, 0);
+  Snd.shot(Math.hypot(...sub(muzzle, cam.eye)), true);
 }
 function dropFlare() {
   if (state !== 'play' || game.down || jet.flares <= 0 || T - jet.flareT < 0.35) return;
@@ -1312,7 +1460,8 @@ function gunRound() {
 // the enemy closest to the nose, with the point the rounds must be aimed at to hit it
 function gunTarget() {
   let best = null, bc = Math.cos(28 * Math.PI / 180);
-  for (const e of enemies) { if (!e.alive) continue; const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)); if (L < aimRange() + 800 && c > bc) { bc = c; best = e; } }
+  const cands = boss && !boss.dying ? enemies.concat(boss.parts.filter(p => p.alive)) : enemies;
+  for (const e of cands) { if (!e.alive) continue; const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)); if (L < aimRange() + 800 && c > bc) { bc = c; best = e; } }
   if (!best) return null;
   const L = Math.hypot(...sub(best.pos, jet.pos)), lead = madd(best.pos, best.F, best.speed * L / 950);
   const ang = Math.acos(clamp(dot(jet.F, norm(sub(lead, jet.pos))), -1, 1));
@@ -1331,7 +1480,7 @@ function stepBullets(dt) {
     if (b.enemy) {
       if (!game.down && state === 'play' && segDist(prev, b.pos, jet.pos) < 6) {
         if (jet.rollT >= 0) { b.dodged = true; continue; } // the barrel roll throws the shots off
-        b.life = 0; damagePlayer(5, b.pos);
+        b.life = 0; damagePlayer(b.dmg || 5, b.pos);
       }
     } else {
       // magnetism: rounds aimed at a target keep bending toward where it will be
@@ -1341,6 +1490,15 @@ function stepBullets(dt) {
         const want = scl(norm(sub(aim, b.pos)), 950);
         if (dot(want, b.vel) > 0) b.vel = scl(norm(mixv(b.vel, want, Math.min(1, dt * 4))), 950);
       }
+      if (boss && !boss.dying && b.life > 0) {
+        for (const pt of boss.parts) if (pt.hp > 0 && segDist(prev, b.pos, pt.pos) < pt.r) {
+          b.life = 0; damagePart(pt, 1 + 0.5 * up.gun);
+          for (let i = 0; i < 5; i++) emit(b.pos[0], b.pos[1], b.pos[2], boss.F[0] * boss.speed + rnd(30), boss.F[1] * boss.speed + rnd(30), boss.F[2] * boss.speed + rnd(30), 0.35, 1.6, 0.6, 3, 1.5, 9);
+          break;
+        }
+        if (b.life > 0 && segDist(prev, b.pos, boss.pos) < 12) { b.life = 0; emit(b.pos[0], b.pos[1], b.pos[2], rnd(20), rnd(20), rnd(20), 0.2, 1.2, 0.5, 3, 1.5, 9); }
+      }
+      if (b.life <= 0) continue;
       for (const e of enemies) {
         if (e.alive && segDist(prev, b.pos, e.pos) < 13) {
           b.life = 0; e.hp -= 1 + 0.5 * up.gun; e.hit = 0.15;
@@ -1402,7 +1560,7 @@ function playerDown() {
 }
 function restartGame() {
   document.getElementById('over').style.display = 'none';
-  enemies.length = 0; bullets.length = 0; flares.length = 0;
+  enemies.length = 0; bullets.length = 0; flares.length = 0; boss = null;
   for (const m of missiles) if (m.hostile) m.alive = false;
   for (const k in up) up[k] = 0;
   jet.flares = maxFlares(); updateFlares(); jet.flipT = -1;
@@ -1569,6 +1727,7 @@ function render() {
   const showJet = Math.hypot(...sub(cam.eye, jet.pos)) > 7.5 && !game.down;
   gl.uniform1f(M.uLiv, 1); gl.uniform1f(M.uMask, 0.7); gl.bindVertexArray(vaoJet);
   for (const e of enemies) { gl.uniform1f(M.uFlashHit, e.hit > 0 ? 0.7 : 0); gl.uniformMatrix4fv(M.uModel, false, modelMat(e.R, e.U, e.F, e.pos, eScale(e))); gl.drawArrays(gl.TRIANGLES, 0, nJet); }
+  if (boss) { gl.bindVertexArray(vaoBoss); gl.uniform1f(M.uFlashHit, boss.hit > 0.06 ? 0.25 : 0); gl.uniformMatrix4fv(M.uModel, false, modelMat(boss.R, boss.U, boss.F, boss.pos, BOSS_S)); gl.drawArrays(gl.TRIANGLES, 0, nBoss); }
   gl.uniform1f(M.uLiv, 0); gl.uniform1f(M.uMask, 1); gl.uniform1f(M.uFlashHit, game.hurt > 0.6 ? 0.5 : 0);
   if (showJet) {
     gl.bindVertexArray(vaoJet);
@@ -1603,7 +1762,7 @@ function render() {
       }
     }
   }
-  if (enemies.length) {
+  if (enemies.length || boss) {
     gl.useProgram(P_PLUME.p); gl.bindVertexArray(vaoPlume);
     const Pu = P_PLUME.u;
     gl.uniformMatrix4fv(Pu.uVP, false, cam.VP); gl.uniform1f(Pu.uTime, T); gl.uniform1f(Pu.uHot, 0.8);
@@ -1613,6 +1772,15 @@ function render() {
         const p = add(add(e.pos, scl(e.R, 0.95 * s * ES)), scl(e.F, -9.7 * ES));
         const r = (core ? 0.28 : 0.5) * ES, L = (core ? 0.55 : 1) * (4 + Math.random()) * ES;
         gl.uniformMatrix4fv(Pu.uModel, false, new Float32Array([e.R[0] * r, e.R[1] * r, e.R[2] * r, 0, e.U[0] * r, e.U[1] * r, e.U[2] * r, 0, e.F[0] * L, e.F[1] * L, e.F[2] * L, 0, p[0], p[1], p[2], 1]));
+        gl.drawArrays(gl.TRIANGLES, 0, nPlume);
+      }
+    }
+    if (boss && !boss.dying) for (const q of boss.parts) {
+      if (q.kind !== 'eng' || q.hp <= 0) continue;
+      for (const core of [0, 1]) {
+        gl.uniform1f(Pu.uCore, core);
+        const b = boss, p = madd(q.pos, b.F, -1.62 * BOSS_S), r = (core ? 0.3 : 0.5) * BOSS_S, L = (core ? 0.5 : 1) * (3 + Math.random()) * BOSS_S;
+        gl.uniformMatrix4fv(Pu.uModel, false, new Float32Array([b.R[0] * r, b.R[1] * r, b.R[2] * r, 0, b.U[0] * r, b.U[1] * r, b.U[2] * r, 0, b.F[0] * L, b.F[1] * L, b.F[2] * L, 0, p[0], p[1], p[2], 1]));
         gl.drawArrays(gl.TRIANGLES, 0, nPlume);
       }
     }
@@ -2014,7 +2182,33 @@ function drawCombat(ck) {
     const x = cx + ax * k, y = cy + ay * k, nx = -ay, ny = ax, n = big ? 7 : 5;
     for (let i = 0; i < n; i++) line(x - ax * i + nx * (n - i) * 0.6, y - ay * i + ny * (n - i) * 0.6, x - ax * i - nx * (n - i) * 0.6, y - ay * i - ny * (n - i) * 0.6, i === 0 ? cD : col);
   };
-  const tg = enemies.length && !game.down ? gunTarget() : null;
+  const tg = (enemies.length || boss) && !game.down ? gunTarget() : null;
+  if (boss) {
+    const cO = RGB(255, 170, 60);
+    if (!boss.dying) {
+      let anyOn = false;
+      const bd = Math.hypot(...sub(boss.pos, cam.eye));
+      for (const q of boss.parts) {
+        if (q.hp <= 0 || bd > 1300) continue;
+        const pp = project(q.pos); if (!onScreen(pp)) continue; anyOn = true;
+        const x = Math.round(pp[0]), y = Math.round(pp[1]), hot = tg && tg.e === q && tg.inCone;
+        if (q.kind === 'eng') { const c = hot ? cG : cO, r = 3; for (let i = 0; i <= r; i++) { px(x - r + i, y - i, c); px(x + r - i, y - i, c); px(x - r + i, y + i, c); px(x + r - i, y + i, c); } }
+        else { const c = hot ? cG : cR; line(x - 2, y - 2, x + 2, y - 2, c); line(x - 2, y + 2, x + 2, y + 2, c); line(x - 2, y - 2, x - 2, y + 2, c); line(x + 2, y - 2, x + 2, y + 2, c); }
+      }
+      const bp = project(boss.pos);
+      if (!anyOn && !onScreen(bp)) edgeArrow(boss.pos, cO, true);
+      else if (bp) {
+        const x = Math.round(bp[0]), y = Math.round(bp[1]), sz = Math.round(clamp(60000 / bd, 10, 70));
+        if (bd > 1300) for (const [sx, sy] of [[-1, -1], [1, -1], [-1, 1], [1, 1]]) { line(x + sx * sz, y + sy * sz * 0.5, x + sx * (sz - 4), y + sy * sz * 0.5, cO); line(x + sx * sz, y + sy * sz * 0.5, x + sx * sz, y + sy * (sz * 0.5 - 3), cO); }
+        text('FORTALEZA ' + (bd / 1000).toFixed(1), x + 1, y - Math.round(sz * 0.5) - 8, cD, true); text('FORTALEZA ' + (bd / 1000).toFixed(1), x, y - Math.round(sz * 0.5) - 9, cO, true);
+      }
+    }
+    // health bar of the engines
+    const by = ck > 0.5 ? 38 : top + 4, bw = 120, bx = Math.round(W / 2 - bw / 2), f = bossHp() / boss.maxHp;
+    text('FORTALEZA', Math.round(W / 2), by, cO, true);
+    rect(bx - 1, by + 7, bw + 2, 6, cD); rect(bx, by + 8, Math.round(bw * f), 4, cO);
+    for (let i = 1; i < 4; i++) px(bx + Math.round(bw * i / 4), by + 8, cD);
+  }
   for (const e of enemies) {
     const d = Math.hypot(...sub(e.pos, cam.eye));
     const p = project(e.pos);
@@ -2188,7 +2382,7 @@ const tutorial = {
     if (this.got && !this.okT && T - this.shownT > 1.5) { this.okT = T; this.show(true); }
     if (this.okT && T - this.okT > 0.9) {
       this.i++;
-      if (this.i >= this.steps.length) this.finish(isTouch ? 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (toque numa opção). Caças inimigos a caminho: boa caçada!' : 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (teclas <b>1</b>, <b>2</b> ou <b>3</b>). Caças inimigos a caminho: boa caçada!');
+      if (this.i >= this.steps.length) this.finish(isTouch ? 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (toque numa opção). A cada 5 ondas vem um <b>chefão</b>: mire nos motores. Caças inimigos a caminho: boa caçada!' : 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (teclas <b>1</b>, <b>2</b> ou <b>3</b>). A cada 5 ondas vem um <b>chefão</b>: acerte os motores com mísseis. Caças inimigos a caminho: boa caçada!');
       else this.enterStep();
     }
   },
@@ -2332,6 +2526,7 @@ function shiftWorld() {
     for (const e of enemies) e.pos[ax] += d;
     for (const b of bullets) b.pos[ax] += d;
     for (const f of flares) f.pos[ax] += d;
+    if (boss) { boss.pos[ax] += d; for (const q of boss.parts) q.pos[ax] += d; }
   }
 }
 function frame(now) {
@@ -2356,6 +2551,7 @@ function tick(dt) {
   stepFlight(dt);
   stepMissiles(dt);
   stepEnemies(dt);
+  stepBoss(dt);
   stepBullets(dt);
   stepFlares(dt);
   if (state === 'play') tutorial.update();
@@ -2379,9 +2575,10 @@ let stripTop = false;
 Object.assign(DBG, {
   setView, fireMissile, startPlay, fireGun, spawnWave, restartGame, game, enemies, bullets, missiles, flares, up, damage: n => damagePlayer(n, jet.pos),
   flip: () => startFlip(), flare: () => dropFlare(), pickUpgrade: i => pickUpgrade(i), openUpgrades: () => openUpgrades(), gunTarget: () => gunTarget(),
+  spawnBoss: () => spawnBoss(), getBoss: () => boss, damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
   enemyMissile(i = 0) { if (enemies[i]) fireEnemyMissile(enemies[i]); },
   spawnAt(ahead, side, up, facing) { const p = add(add(madd(jet.pos, jet.F, ahead), scl(jet.R, side)), [0, up, 0]); const e = { pos: p, F: facing === 'away' ? jet.F.slice() : scl(jet.F, -1), speed: 200, bank: 0, hp: 6, fireCd: 0.5, mslCd: 99, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] }; eBasis(e); enemies.push(e); if (!game.wave) game.wave = 1; return enemies.length; },
-  getState() { return { state, view, viewW, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp() }; },
+  getState() { return { state, view, viewW, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp(), boss: boss ? { hp: bossHp(), max: boss.maxHp, dying: !!boss.dying, parts: boss.parts.map(p => p.kind + ':' + Math.round(p.hp)).join(' ') } : null }; },
   steer(x, y) { noteMove(x * W, y * H); },
   boost(b) { jet.boost = b; }, roll: () => startRoll(),
   place(x, y, z, yaw, pitch) { jet.pos = [x, y, z]; jet.yaw = yaw; jet.pitch = pitch || 0; chaseCam = null; trails[0].length = trails[1].length = 0; },
