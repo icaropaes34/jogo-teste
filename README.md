@@ -59,7 +59,8 @@ Precisa de um navegador com WebGL2 (qualquer Chrome, Edge, Firefox ou Safari rec
 | Escolher melhoria | **1**, **2**, **3** ou clique | tocar na opção |
 | Disparar míssil | clique direito ou **F** | botão **MISSIL** |
 | Trocar a visão | **Espaço** | botão **VISÃO** na barra do topo |
-| Som liga / desliga | **M** ou o botão no rodapé | botão **SOM** na barra do topo |
+| Som liga / desliga | **M** | botão **SOM** na barra do topo |
+| Volume dos efeitos e da música | botão **SOM** no rodapé (ou **SOM E MUSICA** no cartão inicial) | botão **SOM** na barra do topo |
 | Ajuda "Como jogar" | **H** ou o botão **?** | botão **?** |
 
 Os botões do mouse funcionam juntos: dá para segurar o turbo e disparar ao mesmo tempo.
@@ -106,6 +107,34 @@ Celulares e tablets abrem sozinhos o **`mobile.html`**, uma versão separada fei
 - Para usar a versão de computador num aparelho de toque, abra `index.html?desktop=1` (há um link no cartão inicial do celular).
 
 O `mobile.html` é gerado a partir do `index.html` pelo script `tools/build-mobile.py`. Depois de mudar o `index.html`, rode `python3 tools/build-mobile.py` para atualizar a versão de celular.
+
+## Sons e música
+
+O jogo começa com o som ligado (ele toca a partir do primeiro clique ou toque, como os navegadores exigem). O botão **SOM** abre um painel com liga/desliga e o volume separado dos **efeitos** e da **música**; a escolha fica salva no navegador. **M** liga e desliga.
+
+- **Ambiente:** o ronco do motor sobe com o acelerador, o pós-combustor ruge no turbo, e o vento aumenta com a velocidade e nas curvas fechadas. Na cabine tudo soa mais abafado.
+- **Combate:** canhão, mísseis, flares, impactos e explosões. Os sons ficam à esquerda ou à direita conforme a posição, mais baixos e abafados de longe, e a explosão distante chega um pouco depois do clarão (velocidade do som).
+- **Alarmes:** bipe rápido de míssil chegando e bipe duplo quando um inimigo está na sua mira.
+- **Música:** uma faixa no título, outra no voo calmo, duas que se alternam nas ondas, uma para o chefão e outra no fim de jogo, com troca suave. Fanfarras marcam onda limpa, chegada do chefão, vitória sobre ele e derrota. Nas pausas (melhoria, ajuda, celular em pé) a música fica abafada.
+
+Se o jogo for aberto direto do disco (`file://`), os arquivos de som não carregam e entram os sons sintetizados antigos.
+
+### Créditos dos sons e da música
+
+Todos os arquivos estão em `audio/`, sob licença **CC0 1.0** (domínio público: uso livre, crédito não obrigatório, mas registrado aqui com gratidão).
+
+| Arquivos | Origem | Autor | Licença |
+|---|---|---|---|
+| `eng_low`, `eng_roar`, `burner`, `missile`, `flare`, `gun`, `boom_s`, `boom_l`, `hit` | [Sci-Fi Sounds](https://kenney.nl/assets/sci-fi-sounds) | Kenney | CC0 |
+| `tink`, partes de `gun`, `hit`, `flare`, `missile` | [Impact Sounds](https://kenney.nl/assets/impact-sounds) | Kenney | CC0 |
+| `lock`, `mslwarn`, `alert` | [Digital Audio](https://kenney.nl/assets/digital-audio) | Kenney | CC0 |
+| `click`, `confirm` | [Interface Sounds](https://kenney.nl/assets/interface-sounds) | Kenney | CC0 |
+| `wind` | [wind1](https://opengameart.org/content/wind1) | Luke.RUSTLTD | CC0 |
+| `mus_title`, `mus_fly`, `mus_combat1`, `mus_combat2`, `mus_over` | [5 Chiptunes (Action)](https://opengameart.org/content/5-chiptunes-action) | Juhani Junkala (SubspaceAudio) | CC0 |
+| `mus_boss` | [Epic Boss Battle](https://opengameart.org/content/boss-battle-music) | Juhani Junkala (SubspaceAudio) | CC0 |
+| `jg_boss`, `jg_clear`, `jg_win`, `jg_over` | [Homebrew Free Jingle and Fanfare Music](https://github.com/Beatscribe/homebrew_vgm) | Beatscribe | CC0 |
+
+Os efeitos foram cortados, misturados, transformados em loops sem emenda e convertidos para MP3 pelo script `tools/build-audio.py` (precisa de ffmpeg e numpy); a lista de quais arquivos originais entram em cada som está nele. As músicas foram só convertidas para MP3.
 
 ## Desempenho
 
