@@ -48,9 +48,18 @@ h1{font-family:"Press Start 2P",monospace;font-weight:400;font-size:clamp(30px,7
 #strip button:hover{border-color:var(--gold)}
 #strip.top{top:10px;bottom:auto}
 body.ck #tip{top:52px}
-#tip{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:4;display:none;font-size:12px;color:var(--ink);background:rgba(20,14,34,.78);border:2px solid var(--gold);padding:6px 12px;white-space:nowrap}
-#tip .n{color:var(--gold);margin-right:8px}
-#tip .s{color:var(--dim);margin-left:10px;font-size:10px}
+#tip{position:absolute;left:50%;top:14px;transform:translateX(-50%);z-index:5;display:none;font-size:13px;line-height:1.5;color:var(--ink);background:rgba(20,14,34,.86);border:3px solid var(--gold);
+  box-shadow:4px 4px 0 rgba(13,9,24,.7);padding:10px 14px;width:max-content;max-width:min(560px,92vw);text-align:center}
+#tip .hd{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--gold)}
+#tip .pg{display:flex;gap:3px}
+#tip .pg i{width:10px;height:5px;background:#3a2f4d}
+#tip .pg i.on{background:var(--gold)}
+#tip .tx b{color:var(--gold);font-weight:600}
+#tip.ok{border-color:#7be38a}
+#tip.ok .tx{color:#a8ffb0}
+#tip .skip{font:inherit;font-size:10px;color:var(--dim);background:#2a1f3d;border:2px solid var(--line);padding:2px 8px;margin-top:8px;cursor:pointer}
+#tutBtn{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);padding:8px 12px;margin-top:14px;cursor:pointer;display:none}
+#tutBtn.on{border-color:var(--gold);color:var(--gold)}
 #toast{position:absolute;left:50%;top:38%;transform:translateX(-50%);z-index:4;display:none;font-family:"Press Start 2P",monospace;font-size:12px;color:var(--peach);
   text-shadow:2px 2px 0 #2a1f3d;white-space:nowrap;pointer-events:none}
 #over{position:absolute;inset:0;display:none;align-items:center;justify-content:center;z-index:6;background:rgba(23,17,42,.45)}
@@ -92,6 +101,7 @@ body.ck #tip{top:52px}
     <div class="bar"><i id="barfill"></i></div>
     <div id="status">mapeando a região dos lagos…</div>
     <div id="go">CLIQUE PARA VOAR</div>
+    <button id="tutBtn" title="Liga ou desliga o tutorial guiado (T)">TUTORIAL: LIGADO</button>
     <div class="how" id="how">
       <div class="t">COMO JOGAR</div>
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0">Objetivo:</b> caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Quando aparecer o alerta <b style="min-width:0;color:#ff7a5a">GIRE!</b>, faça um tonneau: durante o giro os tiros não te acertam. Derrube os inimigos com a rajada e os mísseis. A partir da onda 2 eles também lançam mísseis: quando aparecer <b style="min-width:0;color:#ff7a5a">MISSIL!</b>, solte flares. Entre as ondas você escolhe uma melhoria para o caça. O casco se recupera devagar quando você não leva tiros.</div>
@@ -1095,7 +1105,7 @@ function stepMissiles(dt) {
     }
     const s = surfH(m.pos[0], m.pos[2]);
     if (m.hostile && m.age > 0.32) {
-      if (!m.decoy && !game.down && segDist(prev, m.pos, jet.pos) < 16) { m.alive = false; airBurst(m.pos, false); damagePlayer(22, m.pos); continue; }
+      if (!m.decoy && !game.down && segDist(prev, m.pos, jet.pos) < 16) { m.alive = false; airBurst(m.pos, false); if (!m.train) damagePlayer(22, m.pos); continue; }
       if (m.pos[1] > s && ((m.decoy && Math.hypot(...sub(m.pos, m.target)) < 18) || m.age > 9)) { m.alive = false; airBurst(m.pos, false); continue; }
     }
     if (m.enemy && m.enemy.alive && Math.hypot(...sub(m.pos, m.enemy.pos)) < 22) { m.alive = false; killEnemy(m.enemy); continue; }
@@ -1195,7 +1205,7 @@ function stepEnemies(dt) {
     const toP = sub(jet.pos, e.pos), dist = Math.hypot(...toP);
     const lead = clamp(dist / 750, 0, 2) * 0.8;
     let aim = madd(jet.pos, jet.vel, lead);
-    if (game.down) aim = madd(e.pos, e.F, 500);
+    if (game.down || e.train) aim = madd(e.pos, [e.F[0], 0, e.F[2]], 500); // training targets just fly level
     if (dist < 180) aim = add(madd(e.pos, e.R, 400), [0, 120, 0]); // break off, don't ram
     let want = norm(sub(aim, e.pos));
     // stay clear of the ground and below the ceiling
@@ -1208,7 +1218,7 @@ function stepEnemies(dt) {
     const lat = dot(sub(nF, e.F), e.R) / Math.max(dt, 1e-3);
     e.bank = lerp(e.bank, clamp(lat * 2.4, -1.35, 1.35), Math.min(1, dt * 3));
     e.F = nF; eBasis(e);
-    const tSpd = dist > 1200 ? 300 : clamp(jet.speed * 0.97 + 10, 170, 250);
+    const tSpd = e.train ? 135 : dist > 1200 ? 300 : clamp(jet.speed * 0.97 + 10, 170, 250);
     e.speed += (tSpd - e.speed) * Math.min(1, dt * 0.8);
     e.pos = madd(e.pos, e.F, e.speed * dt);
     const fl = surfH(e.pos[0], e.pos[2]) + 30; if (e.pos[1] < fl) e.pos[1] = fl;
@@ -1247,7 +1257,8 @@ function fireEnemyMissile(e) {
 }
 function dropFlare() {
   if (state !== 'play' || game.down || jet.flares <= 0 || T - jet.flareT < 0.35) return;
-  jet.flares--; jet.flareT = T; updateFlares();
+  jet.flares--; jet.flareT = T; updateFlares(); tutorial.did('flare');
+  if (tutorial.active && jet.flares < 2) { jet.flares = maxFlares(); updateFlares(); }
   for (const sd of [-1, 1]) {
     const p = localToWorld([sd * 1.5, -0.6, -8]);
     flares.push({ pos: p, vel: add(add(scl(jet.vel, 0.55), scl(jet.R, sd * 28)), scl(jet.U, -12)), life: 3.2 });
@@ -1365,6 +1376,7 @@ function killEnemy(e) {
   airBurst(e.pos, true);
   // burning debris falls away
   for (let i = 0; i < 26; i++) emit(e.pos[0], e.pos[1], e.pos[2], e.F[0] * e.speed * 0.5 + rnd(45), e.F[1] * e.speed * 0.5 + rnd(30) + 10, e.F[2] * e.speed * 0.5 + rnd(45), 2 + Math.random() * 2, 1.8, 1, 3, 0.4, 30);
+  if (e.train) { toast('Alvo de treino destruído!', 1600); tutorial.did('kill'); return; }
   game.kills++; game.score += 100 * game.wave;
   toast(`Inimigo abatido! +${100 * game.wave}`, 1600);
   updateScore();
@@ -1994,7 +2006,8 @@ function drawCombat(ck) {
   const edgeArrow = (pos, col, big) => {
     const rel = sub(pos, cam.eye);
     let ax = dot(rel, cam.rt), ay = -dot(rel, cam.up);
-    if (dot(rel, cam.fw) < 0 && Math.hypot(ax, ay) < 1) ay = 1;
+    // behind the camera: point down and to the side ("behind you")
+    if (dot(rel, cam.fw) < 0) ay = Math.max(ay, 0) + Math.hypot(...rel) * 0.4;
     const L = Math.hypot(ax, ay) || 1; ax /= L; ay /= L;
     const cx = W / 2, cy = (top + bottom) / 2, hw = W / 2 - 10, hh = (bottom - top) / 2 - 10;
     const k = Math.min(hw / Math.max(Math.abs(ax), 1e-3), hh / Math.max(Math.abs(ay), 1e-3));
@@ -2036,7 +2049,8 @@ function drawCombat(ck) {
       if (tg.inCone && (T * 4 | 0) % 2 === 0) { text('ATIRE', x + 1, y + 10, cD, true); text('ATIRE', x, y + 9, cG, true); }
     }
   }
-  const y = ck > 0.5 ? Math.round(H / 2) - 56 : top + 30;
+  let y = ck > 0.5 ? Math.round(H / 2) - 56 : top + 30;
+  if (tutorial.active && ck <= 0.5) y = Math.max(y, Math.round(tipEl.getBoundingClientRect().bottom / SCALE) + 8);
   if (game.mslWarn) {
     const on = (T * 5 | 0) % 2 === 0;
     rect(Math.round(W / 2) - 39, y - 4, 79, 13, on ? cM : cD);
@@ -2127,43 +2141,82 @@ const Snd = {
 };
 
 /* ---------------------------------------------------------------------
-   Tutorial: a few quiet first-flight prompts
+   Tutorial: a guided first flight. Waves wait until it ends.
    --------------------------------------------------------------------- */
 const tipEl = document.getElementById('tip');
+const TUT_KEY = 'patrol.tutorial2';
 const tutorial = {
   steps: [
-    { k: 'move', t: 'Mova o mouse ou use W A S D para pilotar', tt: 'Arraste o dedo na tela para pilotar' },
-    { k: 'roll', t: 'Clique (ou R) para um tonneau: ele desvia dos tiros inimigos', tt: 'Toque em GIRO para um tonneau: ele desvia dos tiros' },
-    { k: 'flip', t: 'Aperte Q para dar meia-volta (vira 180°, para o lado do inimigo)', tt: 'Toque em VOLTA para dar meia-volta (180°)' },
-    { k: 'gun', t: 'Aperte E para a rajada: ponha o círculo de mira perto do inimigo', tt: 'Toque em TIRO para a rajada: mire no círculo à frente do inimigo' },
-    { k: 'boost', t: 'Segure o botão esquerdo para o pós-combustor', tt: 'Segure TURBO para o pós-combustor' },
-    { k: 'fire', t: 'Clique direito ou F dispara um míssil (trava em inimigos à frente)', tt: 'Toque em MISSIL para lançar um míssil' },
-    { k: 'view', t: 'Aperte Espaço para trocar a visão', tt: 'Toque em VISÃO para trocar a visão' },
+    { k: 'move', h: 'PILOTAR', t: 'Mova o <b>mouse</b> para pilotar, ou use <b>W A S D</b>: W sobe, S desce, A e D fazem a curva.', tt: '<b>Arraste o dedo</b> na tela para pilotar.' },
+    { k: 'boost', h: 'TURBO', t: '<b>Segure o botão esquerdo</b> do mouse (ou <b>Shift</b>) para o turbo. Solte para voltar ao normal.', tt: 'Segure <b>TURBO</b> para o pós-combustor.' },
+    { k: 'roll', h: 'TONNEAU', t: '<b>Clique rápido</b> (ou <b>R</b>) para um tonneau. Durante o giro os tiros inimigos não te acertam: use quando aparecer <b>GIRE!</b>', tt: 'Toque em <b>GIRO</b> para um tonneau. Durante o giro os tiros não te acertam.' },
+    { k: 'flip', h: 'MEIA-VOLTA', t: 'Aperte <b>Q</b> para dar meia-volta: o jato vira 180° de uma vez, para o lado do inimigo mais próximo.', tt: 'Toque em <b>VOLTA</b> para dar meia-volta (180°).' },
+    { k: 'kill', h: 'RAJADA E MIRA', t: 'Um <b>alvo de treino</b> apareceu (contorno vermelho; a seta na borda mostra onde ele está). Leve o <b>círculo de mira</b> até ele e, quando ficar <b>verde</b>, aperte <b>E</b> para a rajada.', tt: 'Um <b>alvo de treino</b> apareceu. Leve o <b>círculo de mira</b> até ele e, quando ficar verde, toque em <b>TIRO</b>.', enter: () => tutorial.spawnTarget() },
+    { k: 'fire', h: 'MÍSSIL', t: 'Aperte <b>F</b> (ou clique direito) para um míssil. Com um inimigo à frente do nariz, ele trava no alvo. São 4, e recarregam sozinhos.', tt: 'Toque em <b>MISSIL</b> para lançar um míssil. Com um inimigo à frente, ele trava no alvo.' },
+    { k: 'flare', h: 'FLARES', t: 'Míssil inimigo chegando (o <b>losango vermelho</b>)! Aperte <b>C</b> para soltar flares: eles despistam o míssil. Os flares recarregam a cada onda.', tt: 'Míssil inimigo chegando! Toque em <b>FLARE</b> para despistá-lo.', enter: () => tutorial.trainMissile() },
+    { k: 'view', h: 'VISÃO', t: 'Aperte <b>Espaço</b> para trocar a visão: de cima, perseguição e cabine (com painel e HUD).', tt: 'Toque em <b>VISÃO</b> para trocar a visão.' },
   ],
-  i: 0, active: false, doneAll: false, hold: 0,
+  i: 0, active: false, doneAll: false, got: null, shownT: 0, okT: 0, nextMsl: 0,
+  enabled() { try { return localStorage.getItem(TUT_KEY) !== 'done' && localStorage.getItem(TUT_KEY) !== 'off'; } catch (e) { return true; } },
+  setEnabled(on) { try { localStorage.setItem(TUT_KEY, on ? 'on' : 'off'); } catch (e) {} this.syncBtn(); },
+  syncBtn() { const b = document.getElementById('tutBtn'); const on = this.enabled(); b.textContent = on ? 'TUTORIAL: LIGADO' : 'TUTORIAL: DESLIGADO'; b.classList.toggle('on', on); },
   start() {
-    try { if (localStorage.getItem('patrol.tutorial') === 'done') { this.doneAll = true; return; } } catch (e) {}
-    this.active = true; this.show();
+    if (!this.enabled()) { this.doneAll = true; return false; }
+    this.i = 0; this.active = true; this.doneAll = false; this.enterStep(); return true;
   },
-  show() {
+  enterStep() { this.got = null; this.shownT = T; this.okT = 0; const s = this.steps[this.i]; if (s.enter) s.enter(); this.show(); },
+  show(ok) {
+    if (!this.active) return;
+    const s = this.steps[this.i], n = this.steps.length;
+    const pg = this.steps.map((_, j) => `<i class="${j < this.i || (j === this.i && ok) ? 'on' : ''}"></i>`).join('');
+    tipEl.className = ok ? 'ok' : '';
+    tipEl.innerHTML = `<div class="hd">TUTORIAL ${this.i + 1}/${n} · ${s.h}<span class="pg">${pg}</span></div><div class="tx">${ok ? 'Isso! ' : ''}${isTouch ? s.tt : s.t}</div><button class="skip">${isTouch ? 'PULAR TUTORIAL' : 'PULAR TUTORIAL (Esc)'}</button>`;
+    tipEl.style.display = 'block';
+    const sk = tipEl.querySelector('.skip'), f = e => { e.preventDefault(); e.stopPropagation(); this.finish(); };
+    sk.addEventListener('click', f); sk.addEventListener('touchstart', f, { passive: false }); sk.addEventListener('mousedown', e => e.stopPropagation());
+  },
+  did(k) { if (this.active && !this.got && this.steps[this.i].k === k) this.got = k; },
+  // advance a beat after the action, and never before the player had time to read the step
+  update() {
     if (!this.active) return;
     const s = this.steps[this.i];
-    tipEl.innerHTML = `<span class="n">${this.i + 1}/${this.steps.length}</span>${isTouch ? s.tt : s.t}<span class="s">Esc para pular</span>`;
-    tipEl.style.display = 'block';
+    if (s.k === 'kill') {
+      const tg = enemies.find(e => e.train);
+      if (!this.got && (!tg || Math.hypot(...sub(tg.pos, jet.pos)) > 3800)) { if (tg) tg.alive = false; this.spawnTarget(); }
+    }
+    if (s.k === 'flare' && !this.got && !missiles.some(m => m.train && m.alive) && T > this.nextMsl) this.trainMissile();
+    if (this.got && !this.okT && T - this.shownT > 1.5) { this.okT = T; this.show(true); }
+    if (this.okT && T - this.okT > 0.9) {
+      this.i++;
+      if (this.i >= this.steps.length) this.finish(isTouch ? 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (toque numa opção). Caças inimigos a caminho: boa caçada!' : 'Pronto! Entre as ondas você escolhe uma <b>melhoria</b> para o caça (teclas <b>1</b>, <b>2</b> ou <b>3</b>). Caças inimigos a caminho: boa caçada!');
+      else this.enterStep();
+    }
   },
-  did(k) {
-    if (!this.active) return;
-    if (this.steps[this.i].k !== k) return;
-    this.i++;
-    if (this.i >= this.steps.length) this.finish('Caças inimigos a caminho. Boa caçada!'); else this.show();
+  spawnTarget() {
+    const d = 650, side = (Math.random() < 0.5 ? -1 : 1) * 90;
+    const pos = add(add(madd(jet.pos, [jet.F[0], 0, jet.F[2]], d), scl(jet.R, side)), [0, 25, 0]);
+    pos[1] = Math.max(pos[1], surfH(pos[0], pos[2]) + 250);
+    const F = norm([jet.F[0], 0, jet.F[2]]);
+    const e = { pos, F, speed: 135, bank: 0, hp: 4, fireCd: 1e9, mslCd: 1e9, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, train: true, R: [1, 0, 0], U: [0, 1, 0] };
+    eBasis(e); enemies.push(e);
+  },
+  trainMissile() {
+    const hd = norm([jet.F[0], 0, jet.F[2]]), p = add(madd(jet.pos, hd, -1500), [0, 80, 0]);
+    missiles.push({ pos: p, vel: scl(hd, 250), dir: hd, speed: 250, age: 0.4, target: jet.pos.slice(), enemy: null, air: true, hostile: true, train: true, decoy: null, alive: true });
+    this.nextMsl = T + 2.5; game.flareTip = true;
   },
   finish(msg) {
-    this.active = false; this.doneAll = true;
-    try { localStorage.setItem('patrol.tutorial', 'done'); } catch (e) {}
-    if (msg) { tipEl.innerHTML = msg; tipEl.style.display = 'block'; setTimeout(() => { if (!this.active) tipEl.style.display = 'none'; }, 2500); }
+    this.active = false; this.doneAll = true; this.got = null;
+    try { localStorage.setItem(TUT_KEY, 'done'); } catch (e) {}
+    this.syncBtn();
+    for (const e of enemies) if (e.train) e.alive = false;
+    for (const m of missiles) if (m.train) m.alive = false;
+    jet.flares = maxFlares(); updateFlares();
+    if (state === 'play' && game.wave === 0) game.nextWave = T + (msg ? 6 : 4);
+    tipEl.className = '';
+    if (msg) { tipEl.innerHTML = `<div class="tx">${msg}</div>`; tipEl.style.display = 'block'; setTimeout(() => { if (!this.active) tipEl.style.display = 'none'; }, 5500); }
     else tipEl.style.display = 'none';
   },
-  restart() { try { localStorage.removeItem('patrol.tutorial'); } catch (e) {} this.i = 0; this.active = true; this.doneAll = false; this.show(); },
 };
 
 /* ---------------------------------------------------------------------
@@ -2184,8 +2237,8 @@ function startPlay() {
   cv.classList.add('play');
   if (isTouch) document.getElementById('touch').style.display = 'block';
   input.mx = W / 2; input.my = H / 2;
-  game.nextWave = T + 12;
-  tutorial.start();
+  document.getElementById('tutBtn').style.display = 'none';
+  game.nextWave = tutorial.start() ? 1e9 : T + 8;
 }
 function toggleHelp() {
   if (state === 'play') { const showing = !titleEl.classList.contains('gone'); if (showing) { titleEl.classList.add('gone'); } else { howEl.style.display = 'block'; titleEl.classList.remove('gone'); state = 'help'; } }
@@ -2232,11 +2285,14 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { if (state === 'play') { jet.boost = true; } }
   else if (e.code === 'Escape') { if (tutorial.active) tutorial.finish(); if (state === 'help') toggleHelp(); }
   else if (e.code === 'Enter' && state === 'title') startPlay();
+  else if (e.code === 'KeyT' && state === 'title') tutorial.setEnabled(!tutorial.enabled());
   else if (e.code === 'Enter' && state === 'over') restartGame();
 });
 window.addEventListener('keyup', e => { held.delete(e.code); if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { if (jet.boost) tutorial.did('boost'); jet.boost = false; } });
 document.getElementById('sndbtn').addEventListener('click', e => { e.stopPropagation(); Snd.toggle(); });
 document.getElementById('helpbtn').addEventListener('click', e => { e.stopPropagation(); toggleHelp(); });
+{ const b = document.getElementById('tutBtn'), f = e => { e.preventDefault(); e.stopPropagation(); tutorial.setEnabled(!tutorial.enabled()); };
+  b.addEventListener('click', f); b.addEventListener('touchstart', f, { passive: false }); }
 // touch: drag to steer, buttons for the rest
 cv.addEventListener('touchstart', e => { e.preventDefault(); if (state === 'title') { startPlay(); return; } if (state === 'help') { toggleHelp(); return; } const t = e.changedTouches[0]; const [x, y] = toLocal(t); input.touchSteer = true; noteMove(x, y); }, { passive: false });
 cv.addEventListener('touchmove', e => { e.preventDefault(); const t = e.changedTouches[0]; const [x, y] = toLocal(t); noteMove(x, y); }, { passive: false });
@@ -2302,6 +2358,7 @@ function tick(dt) {
   stepEnemies(dt);
   stepBullets(dt);
   stepFlares(dt);
+  if (state === 'play') tutorial.update();
   stepHull(dt);
   stepParticles(dt);
   stepTrails(dt);
@@ -2361,6 +2418,7 @@ async function boot() {
     howEl.style.display = 'block';
     document.getElementById('go').style.display = 'block';
     document.getElementById('go').textContent = isTouch ? 'TOQUE PARA VOAR' : 'CLIQUE PARA VOAR';
+    document.getElementById('tutBtn').style.display = 'inline-block'; tutorial.syncBtn();
     state = 'title';
     setView(1, true);
     DBG.ready = true;
