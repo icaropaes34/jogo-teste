@@ -48,18 +48,18 @@ Precisa de um navegador com WebGL2 (qualquer Chrome, Edge, Firefox ou Safari rec
 
 ## Controles
 
-| Ação | Mouse / teclado | Toque (celular, deitado) |
+| Ação | Mouse / teclado | Celular (`mobile.html`, deitado) |
 |---|---|---|
-| Pilotar | mover o mouse, ou **W A S D** / setas (W sobe, S desce, A e D fazem a curva) | arrastar o dedo na tela |
+| Pilotar | mover o mouse, ou **W A S D** / setas (W sobe, S desce, A e D fazem a curva) | joystick: arrastar o polegar esquerdo na metade esquerda da tela |
 | Tonneau (giro completo) | clique ou **R** | botão **GIRO** |
-| Pós-combustor (turbo) | segurar o botão esquerdo (ou Shift) | segurar **TURBO** |
-| Rajada de tiros (15) | **E** ou botão do meio do mouse | botão **TIRO** |
+| Pós-combustor (turbo) | segurar o botão esquerdo (ou Shift) | botão **TURBO** (liga e desliga) |
+| Rajada de tiros (15) | **E** ou botão do meio do mouse | botão **TIRO** (segure para continuar atirando) |
 | Meia-volta (180°) | **Q** | botão **VOLTA** |
 | Soltar flares | **C** | botão **FLARE** |
 | Escolher melhoria | **1**, **2**, **3** ou clique | tocar na opção |
 | Disparar míssil | clique direito ou **F** | botão **MISSIL** |
-| Trocar a visão | **Espaço** | botão **VISÃO** |
-| Som liga / desliga | **M** ou o botão no rodapé | botão no rodapé |
+| Trocar a visão | **Espaço** | botão **VISÃO** na barra do topo |
+| Som liga / desliga | **M** ou o botão no rodapé | botão **SOM** na barra do topo |
 | Ajuda "Como jogar" | **H** ou o botão **?** | botão **?** |
 
 Os botões do mouse funcionam juntos: dá para segurar o turbo e disparar ao mesmo tempo.
@@ -95,10 +95,22 @@ Todos os instrumentos mostram valores reais do voo:
 
 No HUD: escada de arfagem alinhada com o horizonte real, fita de proa, velocidade, altitude, G, altura sobre o solo (R), Mach, mísseis prontos (MIS), flares (FLR), casco, círculo de mira da rajada e marcadores em volta dos inimigos com a distância em km.
 
+## Versão para celular
+
+Celulares e tablets abrem sozinhos o **`mobile.html`**, uma versão separada feita para toque:
+
+- **Joystick virtual:** encoste o polegar esquerdo em qualquer lugar da metade esquerda da tela. Ali aparece o joystick. Para cima sobe, para baixo desce, para os lados faz a curva. Solte e o jato volta a voar nivelado.
+- **Botões de ação no polegar direito,** em pixel art com ícones: TIRO (o maior), MISSIL, GIRO, VOLTA, FLARE e TURBO. Eles afundam ao toque e vibram de leve. Uma sombra mostra a recarga, e os números mostram mísseis e flares prontos. TIRO acende verde quando o alvo está no círculo de mira. GIRO pisca quando tiros estão chegando, e FLARE pisca em vermelho quando um míssil vem atrás de você.
+- **Na horizontal:** ao tocar para voar, o jogo entra em tela cheia e tenta travar na horizontal. Onde o navegador não deixa travar (como no iPhone), aparece o aviso **GIRE O CELULAR**, e o jogo fica pausado enquanto a tela estiver em pé.
+- No celular, a visão de cabine mostra só o HUD, sem o painel de instrumentos, para sobrar tela. A resolução interna é mais baixa, para manter a fluidez.
+- Para usar a versão de computador num aparelho de toque, abra `index.html?desktop=1` (há um link no cartão inicial do celular).
+
+O `mobile.html` é gerado a partir do `index.html` pelo script `tools/build-mobile.py`. Depois de mudar o `index.html`, rode `python3 tools/build-mobile.py` para atualizar a versão de celular.
+
 ## Desempenho
 
 O jogo renderiza numa resolução interna baixa (por volta de 340 pixels de altura) e amplia sem suavização. Se os quadros ficarem lentos, ele reduz a resolução sozinho. Na primeira carga, o terreno é gerado em paralelo (web workers), com barra de progresso.
 
 ## Para testar
 
-Parâmetros de URL úteis: `?seed=123` (outro mundo), `?fixedres=1` (desliga a resolução automática), `?touch=1` (mostra os botões de toque).
+Parâmetros de URL úteis: `?seed=123` (outro mundo), `?fixedres=1` (desliga a resolução automática), `?desktop=1` (fica na versão de computador num aparelho de toque).
