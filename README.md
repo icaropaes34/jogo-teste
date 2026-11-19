@@ -20,7 +20,7 @@ Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em onda
 
 ## Missões
 
-Cada onda tem uma **missão** com objetivo. Um quadro no canto superior esquerdo mostra o nome, o objetivo e o andamento (no celular ele fica embaixo da barra do topo). Na primeira vez de cada tipo, uma dica explica o que fazer.
+Cada onda tem uma **missão** com objetivo, e cada modo tem as suas (as do modo Força Aérea Brasileira estão na seção dele). Um quadro no canto superior esquerdo mostra o nome, o objetivo e o andamento (no celular ele fica embaixo da barra do topo). Na primeira vez de cada tipo, uma dica explica o que fazer.
 
 - **Caça** (ondas 1, 6, 11...): abata todos os caças inimigos (no modo FAB, os intrusos).
 - **Escolta** (ondas 2, 7, 12...): um **cargueiro aliado** quadrimotor, com contorno **verde** e barra de vida, cruza a região em linha reta. Parte dos caças inimigos vai atrás dele em vez de você, e um segundo grupo chega por trás no meio do caminho. Mantenha o cargueiro vivo por 55 segundos até ele chegar ao destino. Se ele cair, a missão fracassa e você ainda precisa limpar a onda.
@@ -30,7 +30,7 @@ Cada onda tem uma **missão** com objetivo. Um quadro no canto superior esquerdo
 
 Missão cumprida vale **300 pontos × a onda**. O resultado aparece também no cartão de melhoria.
 
-Para testar uma missão: `index.html?missao=escort` (ou `hunt`, `strike`, `defend`) força esse tipo em todas as ondas que não são de chefão.
+Para testar uma missão: `index.html?missao=escort` (ou `hunt`, `strike`, `defend`; no modo FAB, `chase`, `show`, `intercept`, `recon`) força esse tipo em todas as ondas que não são de chefão.
 
 ## Caixas de suprimentos (power-ups)
 
@@ -62,7 +62,25 @@ Na tela inicial dá para escolher entre dois modos (clique no cartão do modo, o
   - **Objetivo: perseguir e abater.** Aviões **intrusos** voam à sua frente tentando fugir. Eles costuram, dão uma curva brusca quando você cola na cauda deles e soltam **flares** contra os seus mísseis (às vezes despistam). Eles são mais lentos que você na potência máxima, então segure o turbo para alcançar e use a rajada (as metralhadoras ficam nas asas). A partir da onda 2 chegam **caças de escolta** que atiram e lançam mísseis em você. A cada 5 ondas, a Fortaleza aparece como no outro modo.
   - **Fumaça colorida:** o Tucano solta fumaça pela cauda, como nas apresentações da Esquadrilha. A tecla **X** (no celular, o botão **FUMAÇA** na barra do topo) troca entre **bandeira** (verde, amarela e azul se alternando), verde, amarela, azul, branca e desligada.
 
+- **Missões próprias da FAB** (diferentes das do caça a jato):
+  - **Perseguição** (ondas 1, 6, 11...): abata os intrusos que fogem à sua frente.
+  - **Apresentação da Esquadrilha** (ondas 2, 7, 12...): um circuito de **argolas** no céu, como num show aéreo. Passe por dentro delas na ordem (a próxima é a dourada, com uma seta na borda quando está fora de vista) antes que o tempo acabe. Com a **fumaça ligada**, cada argola vale o dobro. Sem inimigos: é pura pilotagem.
+  - **Interceptação** (ondas 3, 8, 13...): **contrabandistas** voam para uma **pista clandestina** (losango vermelho). O objetivo não é abater: **cole na cauda** de cada um, a menos de 400 m atrás dele, por 6 segundos (uma barrinha verde enche embaixo dele) para forçar o pouso. Ele tenta escapar com curvas bruscas. Forçar o pouso vale 250 × a onda; abater vale menos. Se um chegar à pista, a missão fracassa.
+  - **Reconhecimento** (ondas 4, 9, 14...): **fotografe** as pistas clandestinas (quadrados roxos com **FOTO**) voando baixo, a menos de 450 m de altura, por cima de cada uma. Caças de escolta defendem a área.
+  - A cada 5 ondas, a Fortaleza aparece como no outro modo.
+  - O caça aliado das caixas de suprimentos não atira nos contrabandistas (eles devem ser forçados a pousar).
+
 Para abrir direto num modo: `index.html?modo=fab` ou `index.html?modo=jato`.
+
+## Pausa
+
+Aperte **P** ou **Esc** (no celular, o botão **II** na barra do topo; no computador ele também fica no rodapé). O jogo para, e o relógio das missões, do escudo e do combo também. O cartão de pausa tem:
+
+- **Continuar** (ou P / Esc de novo).
+- **Trocar para o outro modo**: começa um voo novo no modo caça a jato ou Força Aérea Brasileira.
+- **Tela inicial**: encerra o voo e volta ao cartão inicial, onde dá para trocar o modo, ligar o tutorial e ver os recordes.
+
+O placar do voo encerrado vai para os recordes. Trocar de aba ou sair do app também pausa.
 
 ## Tutorial
 
@@ -109,6 +127,7 @@ Precisa de um navegador com WebGL2 (qualquer Chrome, Edge, Firefox ou Safari rec
 | Volume dos efeitos e da música | botão **SOM** no rodapé (ou **SOM E MUSICA** no cartão inicial) | botão **SOM** na barra do topo |
 | Trocar a fumaça (modo FAB) | **X** | botão **FUMAÇA** na barra do topo |
 | Trocar o modo (tela inicial) | **B** ou clique no modo | toque no modo |
+| Pausa (continuar, trocar de modo, tela inicial) | **P** ou **Esc** | botão **II** na barra do topo |
 | Ajuda "Como jogar" | **H** ou o botão **?** | botão **?** |
 
 Os botões do mouse funcionam juntos: dá para segurar o turbo e disparar ao mesmo tempo.
