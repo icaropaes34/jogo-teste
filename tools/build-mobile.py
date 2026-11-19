@@ -111,6 +111,7 @@ how_new='''      <div><b>FUMAÇA</b>no modo Força Aérea Brasileira, o botão n
       <div><b>FLARE</b>despista mísseis inimigos. O botão pisca em vermelho quando um míssil vem atrás de você.</div>
       <div><b>TURBO</b>liga e desliga o pós-combustor.</div>
       <div><b>VISÃO / SOM / ?</b>na barra do topo: troca a câmera, abre o som (liga, desliga e volume) e esta ajuda.</div>
+      <div><b>II</b>pausa, na barra do topo: continuar, trocar de modo ou voltar à tela inicial. Sair do app também pausa.</div>
 '''
 s=s.replace(how_old,how_new)
 rep('''      <div class="p">Não dá para bater no chão: o jato arremete sozinho antes do terreno. Voe baixo sobre um lago para levantar água. O míssil vai para onde o nariz aponta, ou para o chão à frente quando você voa nivelado.</div>
@@ -125,6 +126,7 @@ strip_new='''<div id="strip">
   <span id="score">CASCO <span id="hullbar"><i id="hull"></i></span> ABATES <b id="kills">0</b> ONDA <b id="wave">0</b></span>
   <button id="smokeBtn" class="fabOnly">FUMAÇA: BANDEIRA</button>
   <button id="viewbtn">VISÃO</button>
+  <button id="pausebtn" title="Pausa">II</button>
   <button id="helpbtn" title="Como jogar">?</button>
   <button id="sndbtn" title="Som, música e volume">SOM</button>
 </div>
@@ -184,8 +186,8 @@ rep("""tt: 'Um <b>alvo de treino</b> apareceu. Leve o <b>círculo de mira</b> at
 rep("""  if (isTouch) document.getElementById('touch').style.display = 'block';""","""  document.getElementById('ctl').style.display = 'block';
   goLandscape();""")
 # portrait pauses the game
-rep("""  if (state !== 'help' && state !== 'upgrade') {
-  stepFlight(dt);""","""  if (state !== 'help' && state !== 'upgrade' && !portrait()) {
+rep("""  if (state !== 'help' && state !== 'upgrade' && state !== 'pause') {
+  stepFlight(dt);""","""  if (state !== 'help' && state !== 'upgrade' && state !== 'pause' && !portrait()) {
   stepFlight(dt);""")
 rep("""  drawOverlay(dt);
   Snd.update();""","""  drawOverlay(dt);
@@ -209,6 +211,7 @@ titleEl.addEventListener('touchstart', e => { if (e.target.closest('a')) return;
 document.getElementById('over').addEventListener('touchstart', e => { if (state === 'over') { e.preventDefault(); restartGame(); } }, { passive: false });
 document.getElementById('upgHint').textContent = 'toque numa opção';
 document.getElementById('ovGo').textContent = 'TOQUE PARA VOAR DE NOVO';
+document.getElementById('pauseFt').innerHTML = 'Trocar de modo começa um voo novo. Voltar à tela inicial encerra este voo; o placar fica nos recordes.';
 { const vb = document.getElementById('viewbtn'), f = e => { e.preventDefault(); e.stopPropagation(); if (state === 'play') setView((view + 1) % 3); };
   vb.addEventListener('touchstart', f, { passive: false }); vb.addEventListener('click', f); }
 for (const id of ['helpbtn', 'sndbtn']) document.getElementById(id).addEventListener('touchstart', e => { e.stopPropagation(); }, { passive: true });
