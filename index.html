@@ -72,6 +72,15 @@ body.ck #tip{top:52px}
 #sndTitle{font-family:"Press Start 2P",monospace;font-size:10px;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);padding:8px 12px;margin:14px 0 0 8px;cursor:pointer;display:none}
 #sndTitle.on{border-color:var(--gold);color:var(--gold)}
 #sndbtn.off{opacity:.65;text-decoration:line-through}
+#modes{display:none;gap:10px;justify-content:center;margin-top:14px;flex-wrap:nowrap}
+#modes .md{font:inherit;display:flex;flex-direction:column;align-items:center;gap:4px;flex:1 1 0;min-width:0;max-width:260px;padding:8px 12px;cursor:pointer;color:var(--ink);background:#2a1f3d;border:3px solid var(--line);box-shadow:3px 3px 0 rgba(0,0,0,.35)}
+#modes .md b{font-weight:600;font-size:13px;letter-spacing:1px}
+#modes .md span{font-size:11px;color:var(--dim)}
+#modes .md.on{border-color:var(--gold);background:#3a2d55}
+#modes .md.on b{color:var(--gold)}
+#modes .md[data-m=fab] b i{font-style:normal;color:#7be38a}
+#modes .md[data-m=fab] b u{text-decoration:none;color:#ffd84a}
+body:not(.fab) .fabOnly{display:none!important}
 #sndPanel{position:absolute;right:16px;bottom:50px;z-index:20;display:none;width:260px;padding:10px 12px 8px;background:rgba(20,14,34,.95);border:3px solid var(--gold);box-shadow:4px 4px 0 rgba(0,0,0,.45);color:var(--ink);font-size:12px}
 #sndPanel.show{display:block}
 #sndPanel .hd{display:flex;justify-content:space-between;align-items:center;font-family:"Press Start 2P",monospace;font-size:9px;color:var(--gold);margin-bottom:9px}
@@ -127,17 +136,20 @@ body.mob #sndPanel input[type=range]::-webkit-slider-thumb{width:20px;height:30p
     <div class="sub">patrulha ao entardecer sobre os lagos de outono</div>
     <div class="bar"><i id="barfill"></i></div>
     <div id="status">mapeando a região dos lagos…</div>
+    <div id="modes"><button class="md" data-m="jet" title="Modo caça a jato (B troca o modo)"><b>CAÇA A JATO</b><span>defenda os lagos dos caças inimigos</span></button><button class="md" data-m="fab" title="Modo Força Aérea Brasileira (B troca o modo)"><b><i>FORÇA</i> <u>AÉREA</u> BRASILEIRA</b><span>Tucano da Fumaça: persiga e abata os intrusos</span></button></div>
     <div id="go">CLIQUE PARA VOAR</div>
     <button id="tutBtn" title="Liga ou desliga o tutorial guiado (T)">TUTORIAL: LIGADO</button><button id="sndTitle" title="Som, música e volume">SOM E MUSICA: LIGADOS</button>
     <div class="how" id="how">
       <div class="t">COMO JOGAR</div>
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0">Objetivo:</b> caças inimigos (escuros, com pontas laranja) chegam em ondas, te perseguem e atiram. Quando aparecer o alerta <b style="min-width:0;color:#ff7a5a">GIRE!</b>, faça um tonneau: durante o giro os tiros não te acertam. Derrube os inimigos com a rajada e os mísseis. A partir da onda 2 eles também lançam mísseis: quando aparecer <b style="min-width:0;color:#ff7a5a">MISSIL!</b>, solte flares. Entre as ondas você escolhe uma melhoria para o caça. A cada 5 ondas vem um <b style="min-width:0;color:#ffaa3c">chefão</b>, a Fortaleza: um bombardeiro enorme com torretas. Destrua os 4 motores dele (losangos laranja) com mísseis. O casco se recupera devagar quando você não leva tiros.</div>
+      <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0;color:#7be38a">Modo Força Aérea Brasileira:</b> você pilota um Tucano azul e amarelo da Esquadrilha da Fumaça, a hélice, mais lento e mais ágil que o jato. Aviões intrusos fogem à sua frente: persiga e abata todos. Eles desviam e soltam flares contra os mísseis, e a partir da onda 2 vêm caças de escolta atirar em você. Escolha o modo no cartão inicial (ou aperte <b style="min-width:0">B</b>).</div>
       <div><b>Mover o mouse</b>pilota. Na visão de cima o jato segue o cursor. Na perseguição e na cabine, a distância do cursor até o centro define a curva e a subida ou descida.</div>
       <div><b>W A S D / setas</b>pilota pelo teclado: W sobe, S desce, A e D fazem a curva. Mexer o mouse volta para o controle pelo mouse.</div>
       <div><b>Clique / R</b>tonneau (giro completo): desvia dos tiros</div>
       <div><b>E / botão do meio</b>rajada de 15 tiros. Ponha o círculo de mira (à frente do inimigo) perto do nariz: os tiros se curvam até ele.</div>
       <div><b>Q</b>meia-volta: vira o jato 180°, para o lado do inimigo mais próximo</div>
       <div><b>C</b>solta flares, que despistam os mísseis inimigos (recarregam a cada onda)</div>
+      <div><b>X</b>no modo Força Aérea Brasileira: troca a fumaça (bandeira, verde, amarela, azul, branca, desligada)</div>
       <div><b>Segurar o botão</b>pós-combustor (turbo), ou segure Shift</div>
       <div><b>Clique direito / F</b>dispara um míssil (4 nas asas, recarregam). Com um inimigo à frente do nariz, o míssil trava nele.</div>
       <div><b>Espaço</b>troca a visão: cima → perseguição → cabine</div>
@@ -166,6 +178,7 @@ body.mob #sndPanel input[type=range]::-webkit-slider-thumb{width:20px;height:30p
   <span class="long"><span class="k">ESPAÇO</span> visão: <span id="vname">PERSEGUIÇÃO</span></span>
   <span class="long"><span class="k">E</span> rajada</span>
   <span class="long"><span class="k">Q</span> volta</span>
+  <span class="long fabOnly"><span class="k">X</span> fumaça <b id="smokeName">BANDEIRA</b></span>
   <span><span class="k" id="flareKey">C</span> FLARES <b id="flares">6</b></span>
   <span id="pips"><span></span><span></span><span></span><span></span></span>
   <span id="score">CASCO <span id="hullbar"><i id="hull"></i></span> ABATES <b id="kills">0</b> ONDA <b id="wave">0</b></span>
@@ -658,6 +671,32 @@ void main(){
   else if (vM == 4){ float f = 0.85 + 0.15*h21(vec2(floor(uTime*20.), 1.)); o = vec4(mix(vec3(1.0, 0.45, 0.16), vec3(1.0, 0.88, 0.62), uHot)*f, uMask); return; }
   else if (vM == 5) base = vec3(0.27, 0.26, 0.30);
   else if (vM == 6) base = vec3(0.90, 0.89, 0.86);
+  else if (vM == 8){ base = vec3(0.10, 0.24, 0.66); if (l > 0.55) base = vec3(0.22, 0.42, 0.88); }
+  else if (vM == 9){
+    // Esquadrilha da Fumaça sunburst: yellow rays edged in white over the gloss blue
+    vec2 c = vL.z < -5.0 ? vec2(0.36, -7.9) : vec2(0.8, -1.25);
+    vec2 q = vec2(abs(vL.x) - c.x, vL.z - c.y);
+    float f = fract(atan(q.y, q.x) * 3.6 + 0.25);
+    base = f < 0.5 ? vec3(1.0, 0.80, 0.10) : vec3(0.10, 0.24, 0.66);
+    if (abs(f - 0.5) < 0.07 || f < 0.07 || f > 0.93) base = vec3(0.95, 0.95, 0.92);
+    if (length(q) < 0.7) base = vec3(0.10, 0.24, 0.66);
+    if (l > 0.55) base *= 1.15;
+  }
+  else if (vM == 10 || vM == 11){
+    // FAB roundel: a star with green and yellow arms, a white disc and a blue centre
+    vec2 q = vM == 10 ? vec2(abs(vL.x) - 5.65, vL.z - 0.07) / 0.62 : vec2(vL.z + 2.9, vL.y - 0.18) / 0.44;
+    float r = length(q), a = atan(q.x, q.y), sg = 1.2566;
+    float aa = mod(a + sg * 0.5, sg) - sg * 0.5;
+    if (r > mix(1.0, 0.42, abs(aa) / (sg * 0.5))) discard;
+    base = aa > 0. ? vec3(0.10, 0.62, 0.26) : vec3(1.0, 0.84, 0.12);
+    if (r < 0.36) base = vec3(0.96, 0.96, 0.94);
+    if (r < 0.25) base = vec3(0.10, 0.24, 0.66);
+  }
+  else if (vM == 12) base = vec3(0.10, 0.62, 0.26);
+  else if (vM == 13) base = vec3(1.0, 0.82, 0.12);
+  else if (vM == 14){ base = vec3(0.26, 0.46, 0.60); if (l > 0.45) base = vec3(0.72, 0.90, 1.0); }
+  else if (vM == 15) base = vec3(0.95, 0.93, 0.88);
+  else if (vM == 16){ if (bayer(gl_FragCoord.xy) > 0.42) discard; o = vec4(vec3(0.80, 0.78, 0.80) * tone, 0.3); return; }
   else base = vec3(0.07, 0.07, 0.10);
   o = vec4(mix(base * tone, vec3(1.0, 0.95, 0.8), uFlashHit), uMask);
 }`;
@@ -726,7 +765,7 @@ void main(){
 
 let P_WORLD, P_MESH, P_PLUME, P_PTS, P_LINE, P_POST;
 let texHF, texCloud, fbo, fboTex, fboDepth, maxPoint = 64;
-let vaoJet, vaoMsl, vaoPlume, vaoPts, vaoLine, bufPts, bufLine, nJet, nMsl, nPlume, vaoEmpty, vaoBoss, nBoss;
+let vaoJet, vaoMsl, vaoPlume, vaoPts, vaoLine, bufPts, bufLine, nJet, nMsl, nPlume, vaoEmpty, vaoBoss, nBoss, vaoTuc, nTuc, vaoTucE, nTucE, vaoProp, nProp;
 
 /* ---------------------------------------------------------------------
    Low-poly aircraft
@@ -785,6 +824,74 @@ function buildJet() {
     // intakes
     quad([0.95 * s, 0.2, 1.3], [1.75 * s, 0.2, 1.3], [1.75 * s, -0.6, 1.3], [0.95 * s, -0.6, 1.3], 7);
     quad([1.75 * s, 0.2, 1.3], [1.85 * s, 0.25, 0.4], [1.85 * s, -0.62, 0.4], [1.75 * s, -0.6, 1.3], 0);
+  }
+  return new Float32Array(v);
+}
+/* Tucano (FAB): single turboprop, tandem canopy, low straight wing. Built in metres, drawn 1.45x so it reads at the chase distance */
+const TUC_S = 1.45;
+function buildTucano(enemy) {
+  const { v, tri, quad } = meshBuilder();
+  const M = enemy ? { body: 0, wing: 0, glass: 2, fa: 3, fb: 3, spin: 3 } : { body: 8, wing: 9, glass: 14, fa: 12, fb: 13, spin: 15 };
+  const st = [[4.55, 0.36, 0.40, 0.0], [3.7, 0.48, 0.52, 0.0], [2.6, 0.54, 0.60, 0.04], [1.0, 0.56, 0.62, 0.05], [-0.9, 0.50, 0.56, 0.08], [-2.6, 0.36, 0.44, 0.15], [-4.3, 0.22, 0.32, 0.24], [-5.5, 0.10, 0.20, 0.30]];
+  const ring = ([z, hw, hh, yc]) => { const k = 0.45; return [[hw * k, yc + hh, z], [hw, yc + hh * k, z], [hw, yc - hh * k, z], [hw * k, yc - hh, z], [-hw * k, yc - hh, z], [-hw, yc - hh * k, z], [-hw, yc + hh * k, z], [-hw * k, yc + hh, z]]; };
+  const R = st.map(ring);
+  for (let i = 0; i < R.length - 1; i++) for (let j = 0; j < 8; j++) { const j2 = (j + 1) % 8; quad(R[i][j], R[i][j2], R[i + 1][j2], R[i + 1][j], M.body); }
+  for (let j = 0; j < 8; j++) tri([0, 0, 5.2], R[0][(j + 1) % 8], R[0][j], M.spin);
+  const last = R[R.length - 1];
+  for (let j = 0; j < 8; j++) tri([0, 0.3, -5.6], last[j], last[(j + 1) % 8], M.body);
+  // long tandem canopy with a frame between the two seats
+  const cz = [2.5, 2.15, 1.7, 1.15, 0.95, 0.4, -0.2, -0.65, -1.0];
+  const cr = z => 0.40 * Math.sqrt(Math.max(0, 1 - ((z - 0.75) / 1.78) ** 2));
+  const crow = z => { const r = cr(z), out = []; for (let k = 0; k <= 6; k++) { const a = k / 6 * Math.PI; out.push([Math.cos(a) * r, 0.6 + Math.sin(a) * r * 1.25, z]); } return out; };
+  for (let i = 0; i < cz.length - 1; i++) { const A = crow(cz[i]), B = crow(cz[i + 1]); for (let k = 0; k < 6; k++) quad(A[k], A[k + 1], B[k + 1], B[k], i === 3 ? 5 : M.glass); }
+  const u = (p, h) => [p[0], p[1] + h, p[2]];
+  for (const s of [1, -1]) {
+    // straight tapered low wing with a little dihedral
+    const r0 = [0.5 * s, -0.38, 1.35], r1 = [0.5 * s, -0.38, -0.85], t0 = [5.55 * s, -0.02, 0.45], t1 = [5.55 * s, -0.02, -0.55], tr = 0.13, tt = 0.05;
+    quad(u(r0, tr), u(t0, tt), u(t1, tt), u(r1, tr), M.wing);
+    quad(u(r0, -tr), u(r1, -tr), u(t1, -tt), u(t0, -tt), M.body);
+    quad(u(r0, tr), u(r0, -tr), u(t0, -tt), u(t0, tt), M.body);
+    quad(u(t0, tt), u(t0, -tt), u(t1, -tt), u(t1, tt), M.body);
+    quad(u(r1, tr), u(t1, tt), u(t1, -tt), u(r1, -tr), M.body);
+    // tailplanes
+    const a0 = [0.2 * s, 0.28, -4.35], a1 = [0.2 * s, 0.28, -5.45], b0 = [2.25 * s, 0.32, -4.95], b1 = [2.25 * s, 0.32, -5.5];
+    quad(u(a0, .05), u(b0, .03), u(b1, .03), u(a1, .05), M.wing);
+    quad(u(a0, -.05), u(a1, -.05), u(b1, -.03), u(b0, -.03), M.body);
+    quad(u(a0, .05), u(a0, -.05), u(b0, -.03), u(b0, .03), M.body);
+    // exhaust stubs either side of the nose
+    quad([0.47 * s, 0.12, 3.5], [0.72 * s, 0.06, 3.15], [0.72 * s, -0.16, 3.15], [0.47 * s, -0.1, 3.5], 5);
+    if (!enemy) {
+      // roundels on top of and under the wings, and on the fuselage sides
+      const wy = x => -0.38 + 0.36 * (x - 0.5) / 5.05, wt = x => tr + (tt - tr) * (x - 0.5) / 5.05;
+      const cx = 3.9, hs = 0.47, P = (dx, dz, side) => { const x = cx + dx; return [x * s, wy(x) + side * (wt(x) + 0.015), 0.05 + dz]; };
+      for (const side of [1, -1]) quad(P(-hs, -hs, side), P(hs, -hs, side), P(hs, hs, side), P(-hs, hs, side), 10);
+      const fx = 0.43 * s;
+      quad([fx, -0.18, -2.32], [fx, -0.18, -1.68], [fx, 0.43, -1.68], [fx, 0.43, -2.32], 11);
+    }
+  }
+  // fin and rudder, with the green and yellow flash on the rudder
+  const fLE0 = [0, 0.4, -3.7], fTE0 = [0, 0.38, -5.55], fLE1 = [0, 2.0, -5.0], fTE1 = [0, 2.0, -5.75];
+  const fp = (cu, h, o) => { const le = mixv(fLE0, fLE1, h), te = mixv(fTE0, fTE1, h), q = mixv(le, te, cu); return [o, q[1], q[2]]; };
+  for (const o of [0.05, -0.05]) {
+    quad(fp(0, 0, o), fp(0.55, 0, o), fp(0.55, 1, o), fp(0, 1, o), M.body);
+    quad(fp(0.55, 0, o), fp(0.78, 0, o), fp(0.78, 1, o), fp(0.55, 1, o), M.fa);
+    quad(fp(0.78, 0, o), fp(1, 0, o), fp(1, 1, o), fp(0.78, 1, o), M.fb);
+  }
+  quad(fp(0, 1, 0.05), fp(1, 1, 0.05), fp(1, 1, -0.05), fp(0, 1, -0.05), M.body);
+  for (let i = 0; i < v.length; i += 7) { v[i] *= TUC_S; v[i + 1] *= TUC_S; v[i + 2] *= TUC_S; }
+  return new Float32Array(v);
+}
+const PROP_Z = 5.05 * TUC_S;
+function buildProp() {
+  const { v, tri, quad } = meshBuilder();
+  const n = 16, rd = 1.25 * TUC_S;
+  for (let k = 0; k < n; k++) { const a = k / n * TAU, b = (k + 1) / n * TAU; tri([0, 0, 0], [Math.cos(a) * rd, Math.sin(a) * rd, 0], [Math.cos(b) * rd, Math.sin(b) * rd, 0], 16); }
+  for (let k = 0; k < 4; k++) {
+    const a = k / 4 * TAU + 0.4, d = [Math.cos(a), Math.sin(a), 0], w = [-Math.sin(a), Math.cos(a), 0];
+    const P = (r, hw) => [d[0] * r + w[0] * hw, d[1] * r + w[1] * hw, 0.05];
+    const Q = (r, hw) => [d[0] * r - w[0] * hw, d[1] * r - w[1] * hw, 0.05];
+    quad(P(0.2, 0.13), P(1.0 * TUC_S, 0.11), Q(1.0 * TUC_S, 0.11), Q(0.2, 0.13), 5);
+    quad(P(1.0 * TUC_S, 0.11), P(1.2 * TUC_S, 0.09), Q(1.2 * TUC_S, 0.09), Q(1.0 * TUC_S, 0.11), 13);
   }
   return new Float32Array(v);
 }
@@ -891,6 +998,8 @@ function initGL() {
   nJet = jet.length / 7; nMsl = msl.length / 7; nPlume = plume.length / 4;
   vaoJet = makeVao(jet, [3, 3, 1], 7).vao; vaoMsl = makeVao(msl, [3, 3, 1], 7).vao; vaoPlume = makeVao(plume, [3, 1], 4).vao;
   const bm = buildBoss(); nBoss = bm.length / 7; vaoBoss = makeVao(bm, [3, 3, 1], 7).vao;
+  const tc = buildTucano(false), tce = buildTucano(true), pr = buildProp();
+  nTuc = tc.length / 7; vaoTuc = makeVao(tc, [3, 3, 1], 7).vao; nTucE = tce.length / 7; vaoTucE = makeVao(tce, [3, 3, 1], 7).vao; nProp = pr.length / 7; vaoProp = makeVao(pr, [3, 3, 1], 7).vao;
   const pp = makeVao(null, [4, 4], 8); vaoPts = pp.vao; bufPts = pp.b;
   const ll = makeVao(null, [4], 4); vaoLine = ll.vao; bufLine = ll.b;
   vaoEmpty = gl.createVertexArray();
@@ -964,6 +1073,19 @@ const KEY_STEER = { KeyW: 'up', ArrowUp: 'up', KeyS: 'down', ArrowDown: 'down', 
 const keyHeld = d => { for (const k of held) if (KEY_STEER[k] === d) return true; return false; };
 let view = 1, viewFrom = [0, 1, 0], viewW = [0, 1, 0], viewK = 1;
 const VIEW_NAMES = ['CIMA', 'PERSEGUIÇÃO', 'CABINE'];
+/* game modes: 'jet' (the original fighter) and 'fab' (Força Aérea Brasileira: a Tucano of the Esquadrilha da Fumaça chasing intruders) */
+const MODE_KEY = 'patrol.mode';
+const PLANES = {
+  jet: { cruise: 175, boost: 275, vmin: 110, vmax: 330, yaw: 0.58, bankK: 2.6, pitchR: 0.75, chaseD: 36, chaseH: 8.5, cockpit: [4.6, 1.25],
+    rails: [[-4.6, -0.32, -3.7], [4.6, -0.32, -3.7], [-3.1, -0.38, -2.7], [3.1, -0.38, -2.7]], tips: [6.3, 0, -5.4], muzzles: [[0, 0.25, 9.6]], flareZ: -8, dmg: [0.5, -7] },
+  fab: { cruise: 125, boost: 172, vmin: 72, vmax: 215, yaw: 0.84, bankK: 3.4, pitchR: 0.95, chaseD: 33, chaseH: 7.5, cockpit: [2.6, 1.5],
+    rails: [[-4.4, -0.85, 0.3], [4.4, -0.85, 0.3], [-3.0, -0.95, 0.4], [3.0, -0.95, 0.4]], tips: [8.0, 0, -0.1], muzzles: [[-2.9, -0.4, 2.2], [2.9, -0.4, 2.2]], flareZ: -6, dmg: [0.4, 6], tail: [0, 0.45, -8.1] },
+};
+let MODE = 'jet';
+try { if (localStorage.getItem(MODE_KEY) === 'fab') MODE = 'fab'; } catch (e) {}
+if (PARAMS.get('modo') === 'fab' || PARAMS.get('modo') === 'jato') MODE = PARAMS.get('modo') === 'fab' ? 'fab' : 'jet';
+const PL = () => PLANES[MODE];
+const FAB = () => MODE === 'fab';
 let state = 'loading', T = 0, flash = 0, shake = 0;
 const missiles = [];
 const impacts = []; let impIdx = 0;
@@ -986,6 +1108,29 @@ const rnd = (a = 1) => (Math.random() * 2 - 1) * a;
 
 /* vapour trails */
 const trails = [[], []];
+/* coloured smoke from the Tucano's tail: BANDEIRA cycles green, yellow and blue */
+const SMOKES = [['BANDEIRA', -1], ['VERDE', 8], ['AMARELA', 9], ['AZUL', 10], ['BRANCA', 11], ['DESLIGADA', 0]];
+const smoke = { i: 0, last: null, acc: 0 };
+function smokeName() { return SMOKES[smoke.i][0]; }
+function cycleSmoke() {
+  if (!FAB() || state !== 'play') return;
+  smoke.i = (smoke.i + 1) % SMOKES.length; smoke.last = null;
+  const el = document.getElementById('smokeName'); if (el) el.textContent = smokeName();
+  const b = document.getElementById('smokeBtn'); if (b) b.textContent = 'FUMAÇA: ' + smokeName();
+  toast(`Fumaça: ${smokeName().toLowerCase()}`, 1000); Snd.ui('click');
+}
+function stepSmoke(dt) {
+  const k = SMOKES[smoke.i][1];
+  if (!FAB() || !k || game.down || (state !== 'play' && state !== 'title')) { smoke.last = null; return; }
+  const kind = k < 0 ? 8 + Math.floor(T / 1.4) % 3 : k;
+  const p = localToWorld(PL().tail);
+  if (!smoke.last) { smoke.last = p; return; }
+  // fill the gap since last frame so the ribbon stays continuous
+  const seg = sub(p, smoke.last), L = Math.hypot(...seg), n = Math.min(12, Math.floor((L + smoke.acc) / 2.2));
+  smoke.acc = (L + smoke.acc) - n * 2.2;
+  for (let i = 1; i <= n; i++) { const q = madd(smoke.last, seg, i / n); emit(q[0] + rnd(0.3), q[1] + rnd(0.3), q[2] + rnd(0.3), jet.vel[0] * 0.08 + rnd(1.2), jet.vel[1] * 0.08 + rnd(1.2), jet.vel[2] * 0.08 + rnd(1.2), 5 + Math.random() * 2, 1.6, 11, kind, 1.3, -0.35); }
+  smoke.last = p;
+}
 
 /* ---------------------------------------------------------------------
    Flight model (arcade, can't crash)
@@ -1050,18 +1195,18 @@ function stepFlight(dt) {
   if (jet.pos[1] > 2600) pitchT = Math.min(pitchT, -0.1);
   // bank & turn
   const bankT = turn * 1.22;
-  jet.bank += (bankT - jet.bank) * Math.min(1, dt * (flipping ? 6 : 2.6));
+  jet.bank += (bankT - jet.bank) * Math.min(1, dt * (flipping ? 6 : PL().bankK));
   if (flipping) {
     const prev = jet.yaw;
     jet.yaw = wrapA(jet.flipYaw0 + jet.flipDir * Math.PI * smooth(fk));
     jet.yawRate = wrapA(jet.yaw - prev) / Math.max(dt, 1e-3);
     if (fk >= 1) jet.flipT = -1;
   } else {
-    jet.yawRate = Math.sin(jet.bank) * 0.58 * (1 + 0.2 * up.maneuver);
+    jet.yawRate = Math.sin(jet.bank) * PL().yaw * (1 + 0.2 * up.maneuver);
     jet.yaw = wrapA(jet.yaw + jet.yawRate * dt);
   }
   jet.flipCd = Math.max(0, jet.flipCd - dt);
-  const prate = jet.pullUp ? 1.3 : 0.75;
+  const prate = jet.pullUp ? 1.3 : PL().pitchR;
   jet.pitch += clamp(pitchT - jet.pitch, -prate * dt, prate * dt) * Math.min(1, dt * 60);
   jet.pitch = clamp(jet.pitch, -1.05, 1.05);
   // barrel roll
@@ -1072,9 +1217,9 @@ function stepFlight(dt) {
   // speed & throttle
   const tThr = jet.boost ? 1 : 0.62;
   jet.throttle += (tThr - jet.throttle) * Math.min(1, dt * 2.5);
-  const tSpd = (jet.boost ? 275 : 175) * (1 + 0.1 * up.motor);
+  const pl = PL(), tSpd = (jet.boost ? pl.boost : pl.cruise) * (1 + 0.1 * up.motor);
   jet.speed += (tSpd - jet.speed) * dt * 0.55 - Math.sin(jet.pitch) * 9.8 * dt * 0.7;
-  jet.speed = clamp(jet.speed, 110, 330 * (1 + 0.1 * up.motor));
+  jet.speed = clamp(jet.speed, pl.vmin, pl.vmax * (1 + 0.1 * up.motor));
   jetBasis();
   const v = scl(jet.F, jet.speed);
   if (jet.rollT >= 0) { const k = jet.rollT / 1.15; v[1] += Math.sin(k * Math.PI) * 18; }
@@ -1127,7 +1272,7 @@ function fireMissile() {
   const i = order.find(k => jet.slots[k].armed);
   if (i === undefined) return;
   jet.slots[i].armed = false; jet.slots[i].t = 4.5 * reloadK();
-  const p = localToWorld(jet.rails[i]);
+  const p = localToWorld(PL().rails[i]);
   let lock = null, bc = Math.cos(28 * Math.PI / 180);
   const cands = boss && !boss.dying ? enemies.concat(boss.parts.filter(p => p.alive)) : enemies;
   for (const e of cands) { const d = sub(e.pos, jet.pos), L = Math.hypot(...d), c = dot(jet.F, scl(d, 1 / L)) + (e.kind === 'eng' ? 0.004 : 0); if (L < 5000 && c > bc) { bc = c; lock = e; } }
@@ -1256,7 +1401,7 @@ function pickUpgrade(i) {
   lastScoreKey = ''; updateScore();
   toast(u.k === 'repair' ? 'Casco consertado' : `${u.n} nível ${up[u.k]}`, 1600);
 }
-const gun = { burst: 0, t: 0, cd: 0 };
+const gun = { burst: 0, t: 0, cd: 0, side: 0 };
 function eBasis(e) {
   const R0 = norm(cross(e.F, [0, 1, 0])), U0 = cross(R0, e.F), c = Math.cos(e.bank), s = Math.sin(e.bank);
   e.R = [R0[0] * c - U0[0] * s, R0[1] * c - U0[1] * s, R0[2] * c - U0[2] * s];
@@ -1280,14 +1425,80 @@ function spawnWave() {
     const e = { pos: [x, y, z], F: norm(sub(jet.pos, [x, y, z])), speed: 230, bank: 0, hp: 6 + Math.floor(game.wave / 3) * 2, fireCd: 2 + Math.random() * 3, mslCd: 5 + Math.random() * 6, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] };
     eBasis(e); enemies.push(e);
   }
-  toast(bossWave ? `ONDA ${game.wave}: CHEFÃO! A FORTALEZA` : `ONDA ${game.wave}: ${n} caça${n > 1 ? 's' : ''} inimigo${n > 1 ? 's' : ''}`, 2600);
+  let ni = 0;
+  if (FAB() && !bossWave) {
+    // the escorts above are few; the intruders fly ahead of us, trying to get away
+    enemies.splice(enemies.length - n, n);
+    const ne = game.wave < 2 ? 0 : Math.min(1 + Math.floor((game.wave - 2) / 3), 3);
+    ni = Math.min(2 + game.wave, 7);
+    for (let i = 0; i < ne; i++) spawnEscort(i, ne);
+    for (let i = 0; i < ni; i++) {
+      const a = jet.yaw + (i - (ni - 1) / 2) * 0.32 + rnd(0.12), d = 1100 + Math.random() * 900;
+      const x = jet.pos[0] + Math.sin(a) * d, z = jet.pos[2] - Math.cos(a) * d;
+      const y = Math.max(jet.pos[1] + rnd(100), surfH(x, z) + 200);
+      const hd = jet.yaw + rnd(0.7), F = norm([Math.sin(hd), 0, -Math.cos(hd)]);
+      const e = { pos: [x, y, z], F, speed: 115, bank: 0, hp: 4 + Math.floor(game.wave / 3), fireCd: 1e9, mslCd: 1e9, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0], prop: true, seed: Math.random(), route: F.slice(), flareT: -99, breakT: -99, breakDir: 1 };
+      eBasis(e); enemies.push(e);
+    }
+    const ne2 = enemies.length - ni;
+    toast(`ONDA ${game.wave}: ${ni} intrusos${ne2 ? ` e ${ne2} escolta${ne2 > 1 ? 's' : ''}` : ''}`, 2600);
+  } else toast(bossWave ? `ONDA ${game.wave}: CHEFÃO! A FORTALEZA` : `ONDA ${game.wave}: ${n} caça${n > 1 ? 's' : ''} inimigo${n > 1 ? 's' : ''}`, 2600);
   if (bossWave) Snd.jingle('boss'); else Snd.alarm();
   updateScore();
+}
+function spawnEscort(i, n) {
+  const a = jet.yaw + Math.PI + (i - (n - 1) / 2) * 0.45 + rnd(0.15), d = 1900 + Math.random() * 600;
+  const x = jet.pos[0] + Math.sin(a) * d, z = jet.pos[2] - Math.cos(a) * d;
+  const y = Math.max(jet.pos[1] + rnd(120) + 60, surfH(x, z) + 250);
+  const e = { pos: [x, y, z], F: norm(sub(jet.pos, [x, y, z])), speed: 200, bank: 0, hp: 6 + Math.floor(game.wave / 3) * 2, fireCd: 3 + Math.random() * 3, mslCd: 8 + Math.random() * 6, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] };
+  eBasis(e); enemies.push(e);
+}
+// an intruder runs: away from us along its route, weaving, with a hard break when we sit on its tail; it drops flares at our missiles
+function stepIntruder(e, dt) {
+  const toP = sub(jet.pos, e.pos), dist = Math.hypot(...toP), away = scl(toP, -1 / Math.max(dist, 1));
+  let want;
+  if (e.train || game.down) want = [e.F[0], 0, e.F[2]];
+  else {
+    const weave = Math.sin(T * 0.55 + e.seed * 9) * 0.75;
+    want = add(add(scl(e.route, dist > 2600 ? 1 : 0.55), scl([away[0], 0, away[2]], dist > 2600 ? 0.2 : 0.9)), scl(e.R, weave));
+    const behind = dot(jet.F, scl(toP, -1 / Math.max(dist, 1))) > 0.94 && dist < 700;
+    if (behind && T > e.breakT + 5) e.breakT = T, e.breakDir = Math.random() < 0.5 ? 1 : -1;
+    if (T - e.breakT < 1.8) want = add(scl(e.R, 2.2 * e.breakDir), [0, rnd(0.4), 0]);
+    want[1] += clamp((jet.pos[1] - e.pos[1]) * 0.0015, -0.25, 0.25) + Math.sin(T * 0.4 + e.seed * 5) * 0.12;
+  }
+  want = norm(want);
+  const ahead = madd(e.pos, e.F, 300);
+  const need = Math.max(surfH(ahead[0], ahead[2]), surfH(e.pos[0], e.pos[2])) + 80;
+  if (e.pos[1] < need || ahead[1] < need) want = norm(add(want, [0, 1.4, 0]));
+  if (e.pos[1] > 2400) want[1] = Math.min(want[1], -0.15);
+  const rate = T - e.breakT < 1.8 ? 1.1 : 0.7;
+  const ang = Math.acos(clamp(dot(e.F, want), -1, 1)), k = ang > 1e-4 ? Math.min(1, rate * dt / ang) : 1;
+  const nF = norm(mixv(e.F, want, k));
+  const lat = dot(sub(nF, e.F), e.R) / Math.max(dt, 1e-3);
+  e.bank = lerp(e.bank, clamp(lat * 2.4, -1.35, 1.35), Math.min(1, dt * 3));
+  e.F = nF; eBasis(e);
+  // slower than us at full power, and they ease off when far so the chase never gets lost
+  const tSpd = e.train ? 95 : dist > 3200 ? 95 : dist < 600 ? 140 : 125;
+  e.speed += (tSpd - e.speed) * Math.min(1, dt * 0.8);
+  e.pos = madd(e.pos, e.F, e.speed * dt);
+  const fl = surfH(e.pos[0], e.pos[2]) + 30; if (e.pos[1] < fl) e.pos[1] = fl;
+  e.hit = Math.max(0, e.hit - dt);
+  if (!e.train && T - e.flareT > 8) {
+    const m = missiles.find(q => q.alive && !q.hostile && q.enemy === e && Math.hypot(...sub(q.pos, e.pos)) < 450);
+    if (m) {
+      e.flareT = T;
+      for (let i = 0; i < 6; i++) { const b = madd(e.pos, e.F, -6); emit(b[0], b[1], b[2], e.F[0] * e.speed * 0.4 + rnd(25), rnd(10) - 8, e.F[2] * e.speed * 0.4 + rnd(25), 1.4, 3, 1.5, 6, 1.1, 10); }
+      if (Math.random() < 0.55) { m.enemy = null; m.air = true; m.target = madd(e.pos, e.F, -60); toast('O intruso soltou flares!', 1300); }
+      Snd.flare(e.pos);
+    }
+  }
+  if (e.hp <= 2 && Math.random() < dt * 20) { const b = madd(e.pos, e.F, 6); emit(b[0], b[1], b[2], rnd(3), rnd(3) + 2, rnd(3), 2.5, 4, 14, 0, 0.5, -0.5); }
 }
 function stepEnemies(dt) {
   if (state === 'play' && !game.down && !enemies.length && !boss && T >= game.nextWave) spawnWave();
   game.warn = false;
   for (const e of enemies) {
+    if (e.prop) { stepIntruder(e, dt); continue; }
     const toP = sub(jet.pos, e.pos), dist = Math.hypot(...toP);
     const lead = clamp(dist / 750, 0, 2) * 0.8;
     let aim = madd(jet.pos, jet.vel, lead);
@@ -1443,7 +1654,7 @@ function dropFlare() {
   jet.flares--; jet.flareT = T; updateFlares(); tutorial.did('flare');
   if (tutorial.active && jet.flares < 2) { jet.flares = maxFlares(); updateFlares(); }
   for (const sd of [-1, 1]) {
-    const p = localToWorld([sd * 1.5, -0.6, -8]);
+    const p = localToWorld([sd * 1.5, -0.6, PL().flareZ]);
     flares.push({ pos: p, vel: add(add(scl(jet.vel, 0.55), scl(jet.R, sd * 28)), scl(jet.U, -12)), life: 3.2 });
   }
   // each missile chasing us is very likely to go for the hotter flare
@@ -1482,7 +1693,7 @@ function fireGun() {
   tutorial.did('gun');
 }
 function gunRound() {
-  const muzzle = localToWorld([0.0, 0.25, 9.6]);
+  const mz = PL().muzzles; gun.side = (gun.side + 1) % mz.length; const muzzle = localToWorld(mz[gun.side]);
   let dir = jet.F;
   // aim assist: rounds bend to the lead point (the pipper) of an enemy near the nose
   const tg = gunTarget();
@@ -1571,7 +1782,7 @@ function killEnemy(e) {
   for (let i = 0; i < 26; i++) emit(e.pos[0], e.pos[1], e.pos[2], e.F[0] * e.speed * 0.5 + rnd(45), e.F[1] * e.speed * 0.5 + rnd(30) + 10, e.F[2] * e.speed * 0.5 + rnd(45), 2 + Math.random() * 2, 1.8, 1, 3, 0.4, 30);
   if (e.train) { toast('Alvo de treino destruído!', 1600); tutorial.did('kill'); return; }
   game.kills++; game.score += 100 * game.wave;
-  toast(`Inimigo abatido! +${100 * game.wave}`, 1600);
+  toast(`${e.prop ? 'Intruso' : 'Inimigo'} abatido! +${100 * game.wave}`, 1600);
   updateScore();
 }
 function damagePlayer(n, p) {
@@ -1599,7 +1810,7 @@ function restartGame() {
   enemies.length = 0; bullets.length = 0; flares.length = 0; boss = null;
   for (const m of missiles) if (m.hostile) m.alive = false;
   for (const k in up) up[k] = 0;
-  jet.flares = maxFlares(); updateFlares(); jet.flipT = -1;
+  jet.flares = maxFlares(); updateFlares(); jet.flipT = -1; smoke.last = null;
   Object.assign(game, { kills: 0, score: 0, wave: 0, hp: 100, nextWave: T + 6, lastHit: -99, down: false, warn: false, hurt: 0, mslWarn: false, clearT: 0, cleared: 0 });
   jet.slots.forEach(s => { s.armed = true; s.t = 0; }); updatePips();
   jet.pos[1] = Math.max(jet.pos[1], CRUISE); jet.pitch = 0; chaseCam = null;
@@ -1609,7 +1820,7 @@ function restartGame() {
 function stepHull(dt) {
   if (!game.down && game.hp < maxHp() && T - game.lastHit > 6) { game.hp = Math.min(maxHp(), game.hp + dt * 2.5); if (Math.floor(game.hp) % 5 === 0) updateScore(); }
   game.hurt = Math.max(0, game.hurt - dt * 2.5);
-  if (!game.down && game.hp < 45 && Math.random() < dt * 25) { const b = localToWorld([rnd(1.5), 0.5, -7]); emit(b[0], b[1], b[2], rnd(2), rnd(2) + 1.5, rnd(2), 2.2, 3, 12, 0, 0.5, -0.4); }
+  if (!game.down && game.hp < 45 && Math.random() < dt * 25) { const b = localToWorld([rnd(1.5), PL().dmg[0], PL().dmg[1]]); emit(b[0], b[1], b[2], rnd(2), rnd(2) + 1.5, rnd(2), 2.2, 3, 12, 0, 0.5, -0.4); }
 }
 let lastScoreKey = '';
 function updateScore() {
@@ -1649,6 +1860,9 @@ function particleColor(kind, f, seed, out, o) {
     case 5: r = 0.98; g = 0.95; b = 0.9; a = 0.8 * (1 - f); break;
     case 6: r = 1; g = 0.95; b = 0.72; a = 1; break;
     case 7: r = 1; g = 0.98; b = 0.9; a = 1 - f; break;
+    case 8: case 9: case 10: case 11: {
+      const C = kind === 8 ? [0.16, 0.70, 0.32] : kind === 9 ? [1.0, 0.86, 0.22] : kind === 10 ? [0.22, 0.42, 0.95] : [0.97, 0.96, 0.95];
+      const m = f * 0.45; r = lerp(C[0], 0.86, m); g = lerp(C[1], 0.85, m); b = lerp(C[2], 0.88, m); a = 0.9 * Math.pow(1 - f, 1.3); if (seed > 0.6) { r *= 0.9; g *= 0.9; b *= 0.92; } break; }
     default: r = g = b = 1; a = 1;
   }
   out[o] = r; out[o + 1] = g; out[o + 2] = b; out[o + 3] = a;
@@ -1656,7 +1870,7 @@ function particleColor(kind, f, seed, out, o) {
 
 function stepTrails(dt) {
   const strength = clamp(0.22 + (jet.gLoad - 1.6) * 0.25 + (jet.boost ? 0.15 : 0), 0.18, 0.95);
-  const tips = [localToWorld([-6.3, 0.0, -5.4]), localToWorld([6.3, 0.0, -5.4])];
+  const tp = PL().tips, tips = [localToWorld([-tp[0], tp[1], tp[2]]), localToWorld([tp[0], tp[1], tp[2]])];
   for (let s = 0; s < 2; s++) {
     const tr = trails[s];
     const last = tr[tr.length - 1];
@@ -1688,12 +1902,12 @@ function camChase(dt) {
   const k = Math.min(1, dt * 3.2);
   chaseCam.fw = norm(mixv(chaseCam.fw, jet.F, k));
   chaseCam.up = norm(mixv(chaseCam.up, upT, Math.min(1, dt * 2.5)));
-  const eye = add(add(jet.pos, scl(chaseCam.fw, -36)), scl(chaseCam.up, 8.5));
+  const eye = add(add(jet.pos, scl(chaseCam.fw, -PL().chaseD)), scl(chaseCam.up, PL().chaseH));
   const look = madd(jet.pos, chaseCam.fw, 30);
-  return { eye, fw: norm(sub(look, eye)), up: chaseCam.up, fov: 60 + (jet.speed - 175) * 0.06 };
+  return { eye, fw: norm(sub(look, eye)), up: chaseCam.up, fov: 60 + (jet.speed - PL().cruise) * 0.06 };
 }
 function camCockpit() {
-  return { eye: add(add(jet.pos, scl(jet.F, 4.6)), scl(jet.U, 1.25)), fw: jet.F.slice(), up: jet.U.slice(), fov: 74 };
+  const c = PL().cockpit; return { eye: add(add(jet.pos, scl(jet.F, c[0])), scl(jet.U, c[1])), fw: jet.F.slice(), up: jet.U.slice(), fov: 74 };
 }
 function setView(v, instant) {
   viewFrom = viewW.slice(); view = v; viewK = instant ? 1 : 0;
@@ -1731,6 +1945,14 @@ function project(p) {
 // enemy jets are drawn bigger, and grow with distance so they never shrink to a dot
 const ESCALE = 1.4;
 const eScale = e => ESCALE * Math.max(1, Math.hypot(...sub(e.pos, cam.eye)) / 450);
+// the propeller disc and blades, spun about the nose axis
+function drawProp(M, R, U, F, P, s, ang) {
+  const c = Math.cos(ang), sn = Math.sin(ang);
+  const R2 = [R[0] * c + U[0] * sn, R[1] * c + U[1] * sn, R[2] * c + U[2] * sn], U2 = [U[0] * c - R[0] * sn, U[1] * c - R[1] * sn, U[2] * c - R[2] * sn];
+  gl.bindVertexArray(vaoProp);
+  gl.uniformMatrix4fv(M.uModel, false, modelMat(R2, U2, F, madd(P, F, PROP_Z * s), s));
+  gl.drawArrays(gl.TRIANGLES, 0, nProp);
+}
 function modelMat(R, U, F, P, s = 1) { return new Float32Array([R[0] * s, R[1] * s, R[2] * s, 0, U[0] * s, U[1] * s, U[2] * s, 0, F[0] * s, F[1] * s, F[2] * s, 0, P[0], P[1], P[2], 1]); }
 
 /* ---------------------------------------------------------------------
@@ -1761,17 +1983,23 @@ function render() {
   gl.uniformMatrix4fv(M.uVP, false, cam.VP); gl.uniform3fv(M.uSun, SUN); gl.uniform3fv(M.uEye, cam.eye);
   gl.uniform1f(M.uTime, T); gl.uniform1f(M.uHot, jet.boost ? 1 : 0);
   const showJet = Math.hypot(...sub(cam.eye, jet.pos)) > 7.5 && !game.down;
-  gl.uniform1f(M.uLiv, 1); gl.uniform1f(M.uMask, 0.7); gl.bindVertexArray(vaoJet);
-  for (const e of enemies) { gl.uniform1f(M.uFlashHit, e.hit > 0 ? 0.7 : 0); gl.uniformMatrix4fv(M.uModel, false, modelMat(e.R, e.U, e.F, e.pos, eScale(e))); gl.drawArrays(gl.TRIANGLES, 0, nJet); }
+  gl.uniform1f(M.uLiv, 1); gl.uniform1f(M.uMask, 0.7);
+  for (const e of enemies) {
+    gl.bindVertexArray(e.prop ? vaoTucE : vaoJet);
+    gl.uniform1f(M.uFlashHit, e.hit > 0 ? 0.7 : 0); gl.uniformMatrix4fv(M.uModel, false, modelMat(e.R, e.U, e.F, e.pos, eScale(e))); gl.drawArrays(gl.TRIANGLES, 0, e.prop ? nTucE : nJet);
+    if (e.prop) drawProp(M, e.R, e.U, e.F, e.pos, eScale(e), T * 29 + (e.seed || 0) * 6);
+  }
   if (boss) { gl.bindVertexArray(vaoBoss); gl.uniform1f(M.uFlashHit, boss.hit > 0.06 ? 0.25 : 0); gl.uniformMatrix4fv(M.uModel, false, modelMat(boss.R, boss.U, boss.F, boss.pos, BOSS_S)); gl.drawArrays(gl.TRIANGLES, 0, nBoss); }
   gl.uniform1f(M.uLiv, 0); gl.uniform1f(M.uMask, 1); gl.uniform1f(M.uFlashHit, game.hurt > 0.6 ? 0.5 : 0);
   if (showJet) {
-    gl.bindVertexArray(vaoJet);
+    gl.bindVertexArray(FAB() ? vaoTuc : vaoJet);
     gl.uniformMatrix4fv(M.uModel, false, modelMat(jet.R, jet.U, jet.F, jet.pos));
-    gl.drawArrays(gl.TRIANGLES, 0, nJet);
+    gl.drawArrays(gl.TRIANGLES, 0, FAB() ? nTuc : nJet);
     gl.bindVertexArray(vaoMsl);
-    jet.slots.forEach((s, i) => { if (!s.armed) return; gl.uniformMatrix4fv(M.uModel, false, modelMat(jet.R, jet.U, jet.F, localToWorld(jet.rails[i]))); gl.drawArrays(gl.TRIANGLES, 0, nMsl); });
+    jet.slots.forEach((s, i) => { if (!s.armed) return; gl.uniformMatrix4fv(M.uModel, false, modelMat(jet.R, jet.U, jet.F, localToWorld(PL().rails[i]))); gl.drawArrays(gl.TRIANGLES, 0, nMsl); });
   }
+  // the Tucano's propeller (also seen from the cockpit)
+  if (FAB() && !game.down) drawProp(M, jet.R, jet.U, jet.F, jet.pos, 1, T * 31);
   gl.uniform1f(M.uFlashHit, 0);
   gl.bindVertexArray(vaoMsl);
   for (const m of missiles) {
@@ -1781,7 +2009,7 @@ function render() {
   }
   // afterburner plumes
   gl.depthMask(false);
-  if (showJet) {
+  if (showJet && !FAB()) {
     gl.useProgram(P_PLUME.p); gl.bindVertexArray(vaoPlume);
     const Pu = P_PLUME.u;
     gl.uniformMatrix4fv(Pu.uVP, false, cam.VP); gl.uniform1f(Pu.uTime, T); gl.uniform1f(Pu.uHot, jet.throttle);
@@ -1803,6 +2031,7 @@ function render() {
     const Pu = P_PLUME.u;
     gl.uniformMatrix4fv(Pu.uVP, false, cam.VP); gl.uniform1f(Pu.uTime, T); gl.uniform1f(Pu.uHot, 0.8);
     for (const e of enemies) for (const core of [0, 1]) {
+      if (e.prop) continue;
       gl.uniform1f(Pu.uCore, core); const ES = eScale(e);
       for (const s of [-1, 1]) {
         const p = add(add(e.pos, scl(e.R, 0.95 * s * ES)), scl(e.F, -9.7 * ES));
@@ -2312,7 +2541,7 @@ function drawOverlay(dt) {
    the old synthesised sounds stand in for it.
    --------------------------------------------------------------------- */
 const SND_KEY = 'patrol.audio';
-const SFX_FILES = ['eng_low', 'eng_roar', 'burner', 'wind', 'gun', 'missile', 'flare', 'boom_s', 'boom_l', 'hit', 'tink', 'lock', 'mslwarn', 'alert', 'click', 'confirm', 'jg_boss', 'jg_clear', 'jg_win', 'jg_over'];
+const SFX_FILES = ['eng_low', 'eng_roar', 'burner', 'wind', 'prop', 'gun', 'missile', 'flare', 'boom_s', 'boom_l', 'hit', 'tink', 'lock', 'mslwarn', 'alert', 'click', 'confirm', 'jg_boss', 'jg_clear', 'jg_win', 'jg_over'];
 const MUSIC = { title: 0.5, fly: 0.4, combat1: 0.42, combat2: 0.4, boss: 0.45, over: 0.8 }; // evens out the tracks' loudness
 const Snd = {
   ctx: null, on: true, vSfx: 0.8, vMus: 0.6, buf: {}, raw: {}, voices: 0, played: {},
@@ -2344,7 +2573,7 @@ const Snd = {
     this.musF = ctx.createBiquadFilter(); this.musF.type = 'lowpass'; this.musF.frequency.value = 20000; this.musF.connect(this.mus);
     this.duck = ctx.createGain(); this.duck.connect(this.musF);
     // looping layers: engine rumble, turbine roar, afterburner, wind
-    for (const [n, type, f] of [['eng_low'], ['eng_roar', 'lowpass', 1500], ['burner', 'lowpass', 8000], ['wind', 'bandpass', 900]]) {
+    for (const [n, type, f] of [['eng_low'], ['eng_roar', 'lowpass', 1500], ['burner', 'lowpass', 8000], ['wind', 'bandpass', 900], ['prop', 'lowpass', 1800]]) {
       const g = ctx.createGain(); g.gain.value = 0; g.connect(this.sfx);
       let flt = null; if (type) { flt = ctx.createBiquadFilter(); flt.type = type; flt.frequency.value = f; flt.Q.value = 0.6; flt.connect(g); }
       this.L[n] = { g, f: flt, src: null };
@@ -2368,6 +2597,10 @@ const Snd = {
     this.engG = ctx.createGain(); this.engG.gain.value = 0; loop(brown).connect(this.engF); this.engF.connect(this.engG); this.engG.connect(this.sfx);
     this.abF = ctx.createBiquadFilter(); this.abF.type = 'bandpass'; this.abF.frequency.value = 700; this.abF.Q.value = 0.7;
     this.abG = ctx.createGain(); this.abG.gain.value = 0; loop(white).connect(this.abF); this.abF.connect(this.abG); this.abG.connect(this.sfx);
+    // turboprop drone: the blade-pass buzz under the prop sample
+    this.pOsc = ctx.createOscillator(); this.pOsc.type = 'sawtooth'; this.pOsc.frequency.value = 90;
+    const pf = ctx.createBiquadFilter(); pf.type = 'lowpass'; pf.frequency.value = 420; this.pG = ctx.createGain(); this.pG.gain.value = 0;
+    this.pOsc.connect(pf); pf.connect(this.pG); this.pG.connect(this.sfx); this.pOsc.start();
     for (const n of Object.keys(this.raw)) this.decode(n);
   },
   startLoop(n) {
@@ -2456,10 +2689,16 @@ const Snd = {
       const L = this.L;
       L.eng_low.g.gain.setTargetAtTime(eng * (0.24 + th * 0.14), t, 0.15);
       if (L.eng_low.src) L.eng_low.src.playbackRate.setTargetAtTime(0.8 + th * 0.45, t, 0.25);
-      L.eng_roar.g.gain.setTargetAtTime(eng * (0.07 + th * 0.14 + (boost ? 0.1 : 0)), t, 0.15);
+      const fab = FAB(), jt = fab ? 0 : 1;
+      L.prop.g.gain.setTargetAtTime(fab ? eng * (0.2 + th * 0.22) : 0, t, 0.15);
+      if (L.prop.src) L.prop.src.playbackRate.setTargetAtTime(0.85 + th * 0.55, t, 0.25);
+      L.prop.f.frequency.setTargetAtTime((cock ? 900 : 1500) + th * 1800, t, 0.2);
+      this.pG.gain.setTargetAtTime(fab ? eng * (0.035 + th * 0.03) : 0, t, 0.15);
+      this.pOsc.frequency.setTargetAtTime(78 + th * 46, t, 0.25);
+      L.eng_roar.g.gain.setTargetAtTime(jt * eng * (0.07 + th * 0.14 + (boost ? 0.1 : 0)), t, 0.15);
       L.eng_roar.f.frequency.setTargetAtTime((cock ? 600 : 1000) + th * 2600 + (boost ? 1500 : 0), t, 0.2);
       if (L.eng_roar.src) L.eng_roar.src.playbackRate.setTargetAtTime(0.85 + th * 0.3, t, 0.25);
-      L.burner.g.gain.setTargetAtTime(eng * (boost ? 0.42 : 0), t, boost ? 0.12 : 0.35);
+      L.burner.g.gain.setTargetAtTime(jt * eng * (boost ? 0.42 : 0), t, boost ? 0.12 : 0.35);
       L.burner.f.frequency.setTargetAtTime(cock ? 2200 : 8000, t, 0.2);
       L.wind.g.gain.setTargetAtTime((flying && !game.down ? (paused ? 0.25 : 1) : state === 'title' ? 0.6 : 0.4) * (0.08 + w * 0.2 + turn * 0.18) * (cock ? 0.55 : 1), t, 0.3);
       L.wind.f.frequency.setTargetAtTime(450 + w * 900 + turn * 600, t, 0.3);
@@ -2524,7 +2763,7 @@ const Snd = {
     const v = clamp(1 - this.dist(pos) / 1500, 0, 1) * (kind ? 0.25 : 0.32); if (v < 0.02) return; this.burst(0.07, kind ? 1600 : 2400, kind ? 500 : 700, v, 'bandpass');
   },
   tink(pos) { if (this.live()) this.play('tink', { pos, ref: 160, vol: 0.45, vary: 0.3 }); },
-  flare() { if (!this.live() || this.play('flare', { vol: 0.7, prio: true })) return; this.burst(0.35, 3200, 900, 0.3, 'highpass'); this.burst(0.35, 3200, 900, 0.22, 'highpass', 0.12); },
+  flare(pos) { if (!this.live() || this.play('flare', pos ? { pos, ref: 150, vol: 0.6 } : { vol: 0.7, prio: true })) return; this.burst(0.35, 3200, 900, 0.3, 'highpass'); this.burst(0.35, 3200, 900, 0.22, 'highpass', 0.12); },
   hit() { if (!this.live() || this.play('hit', { vol: 0.85, prio: true, vary: 0.15 })) return; this.burst(0.25, 900, 120, 0.6, 'lowpass'); },
   alarm() {
     if (!this.live() || this.play('alert', { vol: 0.55, vary: 0, prio: true })) return;
@@ -2606,7 +2845,7 @@ const tutorial = {
     const pos = add(add(madd(jet.pos, [jet.F[0], 0, jet.F[2]], d), scl(jet.R, side)), [0, 25, 0]);
     pos[1] = Math.max(pos[1], surfH(pos[0], pos[2]) + 250);
     const F = norm([jet.F[0], 0, jet.F[2]]);
-    const e = { pos, F, speed: 135, bank: 0, hp: 4, fireCd: 1e9, mslCd: 1e9, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, train: true, R: [1, 0, 0], U: [0, 1, 0] };
+    const e = { pos, F, speed: FAB() ? 95 : 135, bank: 0, hp: 4, fireCd: 1e9, mslCd: 1e9, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, train: true, R: [1, 0, 0], U: [0, 1, 0], prop: FAB(), seed: Math.random(), route: F.slice(), flareT: 1e9, breakT: -99, breakDir: 1 };
     eBasis(e); enemies.push(e);
   },
   trainMissile() {
@@ -2638,6 +2877,23 @@ function noteMove(x, y) {
   if (state === 'play' && (Math.abs(x - input.mx) + Math.abs(y - input.my) > 0.5)) { if (input.auto) { input.auto = false; } input.keys = false; tutorial.did('move'); }
   input.mx = clamp(x, 0, W - 1); input.my = clamp(y, 0, H - 1);
 }
+const SUBS = { jet: 'patrulha ao entardecer sobre os lagos de outono', fab: 'Força Aérea Brasileira: a Esquadrilha da Fumaça caça intrusos sobre os lagos' };
+function setMode(m, quiet) {
+  MODE = m === 'fab' ? 'fab' : 'jet';
+  try { localStorage.setItem(MODE_KEY, MODE); } catch (e) {}
+  jet.speed = PL().cruise; chaseCam = null; smoke.i = 0; smoke.last = null;
+  document.body.classList.toggle('fab', FAB());
+  document.querySelectorAll('#modes .md').forEach(b => b.classList.toggle('on', b.dataset.m === MODE));
+  const sub = document.querySelector('#title .sub'); if (sub) sub.textContent = SUBS[MODE];
+  const sn = document.getElementById('smokeName'); if (sn) sn.textContent = smokeName();
+  const sb = document.getElementById('smokeBtn'); if (sb) sb.textContent = 'FUMAÇA: ' + smokeName();
+  if (!quiet) Snd.ui('click');
+}
+document.querySelectorAll('#modes .md').forEach(b => {
+  const f = e => { e.preventDefault(); e.stopPropagation(); Snd.unlock(); if (state === 'title') setMode(b.dataset.m); };
+  b.addEventListener('click', f); b.addEventListener('touchstart', f, { passive: false }); b.addEventListener('mousedown', e => e.stopPropagation());
+});
+{ const sb = document.getElementById('smokeBtn'); if (sb) { const f = e => { e.preventDefault(); e.stopPropagation(); cycleSmoke(); }; sb.addEventListener('click', f); sb.addEventListener('touchstart', f, { passive: false }); } }
 function startPlay() {
   if (state !== 'title') return;
   state = 'play';
@@ -2646,7 +2902,7 @@ function startPlay() {
   cv.classList.add('play');
   if (isTouch) document.getElementById('touch').style.display = 'block';
   input.mx = W / 2; input.my = H / 2;
-  document.getElementById('tutBtn').style.display = 'none'; document.getElementById('sndTitle').style.display = 'none';
+  document.getElementById('tutBtn').style.display = 'none'; document.getElementById('sndTitle').style.display = 'none'; document.getElementById('modes').style.display = 'none';
   game.nextWave = tutorial.start() ? 1e9 : T + 8;
 }
 function toggleHelp() {
@@ -2690,6 +2946,8 @@ window.addEventListener('keydown', e => {
   else if (e.code === 'KeyR') { if (state === 'play') startRoll(); }
   else if (e.code === 'KeyQ') { if (!e.repeat) startFlip(); }
   else if (e.code === 'KeyC') { if (!e.repeat) dropFlare(); }
+  else if (e.code === 'KeyX') { if (!e.repeat) cycleSmoke(); }
+  else if (e.code === 'KeyB') { if (state === 'title') setMode(FAB() ? 'jet' : 'fab'); }
   else if (/^(Digit|Numpad)[123]$/.test(e.code)) { if (state === 'upgrade') pickUpgrade(+e.code.slice(-1) - 1); }
   else if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') { if (state === 'play') { jet.boost = true; } }
   else if (e.code === 'Escape') { if (tutorial.active) tutorial.finish(); if (state === 'help') toggleHelp(); }
@@ -2785,7 +3043,8 @@ function tick(dt) {
   stepHull(dt);
   stepParticles(dt);
   stepTrails(dt);
-  if (jet.boost && Math.random() < dt * 30) { for (const s of [-1, 1]) { const p = localToWorld([0.95 * s, 0, -12 - Math.random() * 4]); emit(p[0], p[1], p[2], jet.vel[0] * 0.6, jet.vel[1] * 0.6, jet.vel[2] * 0.6, 0.12, 1.1, 0.4, 6, 0); } }
+  stepSmoke(dt);
+  if (jet.boost && !FAB() && Math.random() < dt * 30) { for (const s of [-1, 1]) { const p = localToWorld([0.95 * s, 0, -12 - Math.random() * 4]); emit(p[0], p[1], p[2], jet.vel[0] * 0.6, jet.vel[1] * 0.6, jet.vel[2] * 0.6, 0.12, 1.1, 0.4, 6, 0); } }
   shiftWorld();
   }
   cloudOff[0] += dt * 5; cloudOff[1] += dt * 2;
@@ -2803,7 +3062,7 @@ Object.assign(DBG, {
   setView, fireMissile, startPlay, fireGun, spawnWave, restartGame, game, enemies, bullets, missiles, flares, up, damage: n => damagePlayer(n, jet.pos),
   flip: () => startFlip(), flare: () => dropFlare(), pickUpgrade: i => pickUpgrade(i), openUpgrades: () => openUpgrades(), gunTarget: () => gunTarget(),
   spawnBoss: () => spawnBoss(), getBoss: () => boss,
-  sndObj: () => Snd,
+  sndObj: () => Snd, setMode: m => setMode(m), getMode: () => MODE, smoke: () => ({ i: smoke.i, name: smokeName() }), cycleSmoke: () => cycleSmoke(),
   getSnd: () => ({ ctx: Snd.ctx ? Snd.ctx.state : null, on: Snd.on, sfx: Snd.vSfx, mus: Snd.vMus, bufs: Object.keys(Snd.buf).sort(), music: Snd.musName, deck: Snd.deck.map(d => ({ name: d.name, paused: d.el.paused, t: +d.el.currentTime.toFixed(2), tv: d.tv, err: d.el.error ? d.el.error.code : 0 })), played: { ...Snd.played }, voices: Snd.voices, loops: Object.keys(Snd.L).filter(k => Snd.L[k].src), duck: Snd.duck ? +Snd.duck.gain.value.toFixed(2) : null, musF: Snd.musF ? Math.round(Snd.musF.frequency.value) : null, panel: document.getElementById('sndPanel').classList.contains('show') }), damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
   enemyMissile(i = 0) { if (enemies[i]) fireEnemyMissile(enemies[i]); },
   spawnAt(ahead, side, up, facing) { const p = add(add(madd(jet.pos, jet.F, ahead), scl(jet.R, side)), [0, up, 0]); const e = { pos: p, F: facing === 'away' ? jet.F.slice() : scl(jet.F, -1), speed: 200, bank: 0, hp: 6, fireCd: 0.5, mslCd: 99, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] }; eBasis(e); enemies.push(e); if (!game.wave) game.wave = 1; return enemies.length; },
@@ -2846,6 +3105,7 @@ async function boot() {
     document.getElementById('go').textContent = isTouch ? 'TOQUE PARA VOAR' : 'CLIQUE PARA VOAR';
     document.getElementById('tutBtn').style.display = 'inline-block'; tutorial.syncBtn();
     document.getElementById('sndTitle').style.display = 'inline-block'; Snd.sync();
+    document.getElementById('modes').style.display = 'flex'; setMode(MODE, true);
     state = 'title';
     setView(1, true);
     DBG.ready = true;

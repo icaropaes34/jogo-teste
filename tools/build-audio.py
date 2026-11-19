@@ -67,6 +67,7 @@ save('eng_low', norm(loop(load('space_engine_low_000.ogg'), 0.5)), 80)
 save('eng_roar', norm(loop(load('space_engine_large_000.ogg'), 0.5)), 96)
 save('burner', norm(loop(load('thruster_fire_003.ogg'), 0.5)), 96)
 save('wind', norm(loop(load('wind-strong.mp3'), 1.0)), 64)
+save('prop', norm(loop(load('engine_circular_001.ogg'), 0.5)), 96)
 
 # ---- weapons ----
 crunch = load('explosion_crunch_000.ogg'); clank = load('impact_metal_heavy_002.ogg')
