@@ -3129,6 +3129,8 @@ function updatePips() {
    Main loop
    --------------------------------------------------------------------- */
 let lastT = performance.now(), slowT = 0, fastT = 0, emaDt = 16;
+const RES_MIN_H = 150, RES_MAX_DROP = 1;
+let resBack = 4, resUpT = -99;
 function shiftWorld() {
   // keep coordinates small; shift by 2 tiles (also a whole number of cloud tiles)
   const S = 2 * TILE;
@@ -3156,12 +3158,19 @@ function frame(now) {
 }
 function tick(dt) {
   T += dt; DBG.frames++;
-  // automatic resolution drop when frames are slow
+  // automatic resolution drop when frames are slow, and back up when they are smooth again.
+  // "Smooth" is 60 fps or close (a 60 Hz screen never goes under 16.7 ms, so the old 13 ms bar
+  // meant the picture never sharpened again and got coarser hitch after hitch, wave after wave).
+  // The drop is capped so the world never gets shorter than RES_MIN_H pixels.
   if (!PARAMS.get('fixedres')) {
     emaDt = lerp(emaDt, dt * 1000, 0.05);
-    if (emaDt > 30) { slowT += dt; fastT = 0; } else if (emaDt < 13) { fastT += dt; slowT = 0; } else { slowT = 0; fastT = 0; }
-    if (slowT > 1.5 && resDrop < 3 && Math.min(innerHeight, innerWidth) / (SCALE + 1) >= 120) { resDrop++; slowT = 0; emaDt = 16; resize(); }
-    if (fastT > 8 && resDrop > 0) { resDrop--; fastT = 0; resize(); }
+    if (emaDt > 30) { slowT += dt; fastT = 0; } else if (emaDt < 21) { fastT += dt; slowT = 0; } else { slowT = 0; fastT = 0; }
+    if (slowT > 1.5 && resDrop < RES_MAX_DROP && Math.min(innerHeight, innerWidth) / (SCALE + 1) >= RES_MIN_H) {
+      // dropped again right after sharpening: wait longer before the next try, so it does not flicker
+      if (T - resUpT < 8) resBack = Math.min(resBack * 2, 64);
+      resDrop++; slowT = 0; fastT = 0; emaDt = 16; resize();
+    }
+    if (fastT > resBack && resDrop > 0) { resDrop--; fastT = 0; resUpT = T; emaDt = 16; resize(); }
   }
   if (input.ldown && !jet.boost && performance.now() - input.ldownT > 220) jet.boost = true;
   if (state !== 'help' && state !== 'upgrade' && !portrait()) {
@@ -3199,7 +3208,7 @@ Object.assign(DBG, {
   getSnd: () => ({ ctx: Snd.ctx ? Snd.ctx.state : null, on: Snd.on, sfx: Snd.vSfx, mus: Snd.vMus, bufs: Object.keys(Snd.buf).sort(), music: Snd.musName, deck: Snd.deck.map(d => ({ name: d.name, paused: d.el.paused, t: +d.el.currentTime.toFixed(2), tv: d.tv, err: d.el.error ? d.el.error.code : 0 })), played: { ...Snd.played }, voices: Snd.voices, loops: Object.keys(Snd.L).filter(k => Snd.L[k].src), duck: Snd.duck ? +Snd.duck.gain.value.toFixed(2) : null, musF: Snd.musF ? Math.round(Snd.musF.frequency.value) : null, panel: document.getElementById('sndPanel').classList.contains('show') }), damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
   enemyMissile(i = 0) { if (enemies[i]) fireEnemyMissile(enemies[i]); },
   spawnAt(ahead, side, up, facing) { const p = add(add(madd(jet.pos, jet.F, ahead), scl(jet.R, side)), [0, up, 0]); const e = { pos: p, F: facing === 'away' ? jet.F.slice() : scl(jet.F, -1), speed: 200, bank: 0, hp: 6, fireCd: 0.5, mslCd: 99, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] }; eBasis(e); enemies.push(e); if (!game.wave) game.wave = 1; return enemies.length; },
-  getState() { return { state, view, viewW, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp(), boss: boss ? { hp: bossHp(), max: boss.maxHp, dying: !!boss.dying, parts: boss.parts.map(p => p.kind + ':' + Math.round(p.hp)).join(' ') } : null }; },
+  getState() { return { state, view, viewW, resDrop, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp(), boss: boss ? { hp: bossHp(), max: boss.maxHp, dying: !!boss.dying, parts: boss.parts.map(p => p.kind + ':' + Math.round(p.hp)).join(' ') } : null }; },
   steer(x, y) { noteMove(x * W, y * H); },
   boost(b) { jet.boost = b; }, roll: () => startRoll(),
   place(x, y, z, yaw, pitch) { jet.pos = [x, y, z]; jet.yaw = yaw; jet.pitch = pitch || 0; chaseCam = null; trails[0].length = trails[1].length = 0; },
