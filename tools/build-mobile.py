@@ -83,6 +83,19 @@ body.ck #tip{top:calc(40px + env(safe-area-inset-top))}
 #rotate .t1{font-family:"Press Start 2P",monospace;font-size:15px;color:var(--peach);line-height:1.6}
 #rotate .t2{font-size:12px;color:var(--dim);max-width:300px;line-height:1.5}
 @media (orientation:portrait){ body.mob #rotate{display:flex} }
+/* missions, power-ups and combo: top left, under the bar; tips move right while it shows */
+#hudL{top:calc(40px + env(safe-area-inset-top));bottom:auto;left:calc(10px + env(safe-area-inset-left));width:min(210px,32vw);gap:4px}
+body.ck #hudL{top:calc(40px + env(safe-area-inset-top));bottom:auto}
+#msn{font-size:9.5px;padding:4px 7px;line-height:1.35}
+#msn .h{font-size:7px;margin-bottom:3px}
+#buffs div{font-size:7px;padding:2px 5px}
+#buffs .cb{font-size:9px}
+#scoreBox{font-size:7px;padding:3px 6px}
+#scoreBox b{font-size:9px}
+#scoreBox span b{font-size:7px}
+body.msn #tip{left:auto;right:calc(10px + env(safe-area-inset-right));transform:none;max-width:min(440px,calc(100vw - 250px))}
+.recs table{font-size:10.5px}
+.recs td{padding:1px 5px}
 '''
 s=s.replace(old_touch_css,new_css)
 rep('@media (max-width:640px){ #strip .long{display:none} }','')

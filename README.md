@@ -18,6 +18,40 @@ Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em onda
 - **Chefão a cada 5 ondas (5, 10, 15...):** a **Fortaleza**, um bombardeiro de asa voadora com uns 90 m de envergadura, que circula em volta de você com alguns caças de escolta. Uma barra no topo da tela mostra a vida dele. Os **4 motores** são os pontos fracos (losangos laranja): cada míssil tira um bom pedaço, e a rajada também ajuda. As **4 torretas** (quadrados vermelhos) atiram rajadas e podem ser derrubadas com a rajada ou com um míssil. A Fortaleza também lança mísseis, então guarde flares. Com os 4 motores destruídos, ela cai e vale muitos pontos. A cada novo chefão, ela fica mais resistente.
 - Cada onda traz mais caças, e eles ficam mais resistentes. Os pontos de cada abate aumentam com a onda.
 
+## Missões
+
+Cada onda tem uma **missão** com objetivo. Um quadro no canto superior esquerdo mostra o nome, o objetivo e o andamento (no celular ele fica embaixo da barra do topo). Na primeira vez de cada tipo, uma dica explica o que fazer.
+
+- **Caça** (ondas 1, 6, 11...): abata todos os caças inimigos (no modo FAB, os intrusos).
+- **Escolta** (ondas 2, 7, 12...): um **cargueiro aliado** quadrimotor, com contorno **verde** e barra de vida, cruza a região em linha reta. Parte dos caças inimigos vai atrás dele em vez de você, e um segundo grupo chega por trás no meio do caminho. Mantenha o cargueiro vivo por 55 segundos até ele chegar ao destino. Se ele cair, a missão fracassa e você ainda precisa limpar a onda.
+- **Ataque ao solo** (ondas 3, 8, 13...): **radares** (em terra, com a antena girando) e **barcos de patrulha** (nos lagos) marcados com **losangos amarelos**. Aponte o nariz para baixo: o míssil trava neles e a rajada também acerta. Os barcos atiram para cima quando você chega perto. Alguns caças defendem a área.
+- **Defesa da base** (ondas 4, 9, 14...): a **nossa base** (pista, hangares e torre, marcada com um quadrado **azul**) é atacada por **bombardeiros** (marcados com **BOMB**) que chegam um atrás do outro. Cada bomba tira 20% da base; se ela chegar a zero, a missão fracassa. Intercepte e derrube todos antes.
+- **Chefão** (ondas 5, 10, 15...): a Fortaleza, como antes.
+
+Missão cumprida vale **300 pontos × a onda**. O resultado aparece também no cartão de melhoria.
+
+Para testar uma missão: `index.html?missao=escort` (ou `hunt`, `strike`, `defend`) força esse tipo em todas as ondas que não são de chefão.
+
+## Caixas de suprimentos (power-ups)
+
+Caixas caem de **paraquedas** no céu, de tempos em tempos (a cada 20 a 30 segundos) e às vezes quando um inimigo é abatido. Cada uma tem a cor e a letra do tipo no HUD, com a distância. Fora da tela, uma seta na borda aponta para ela. Para pegar, **voe através da caixa** (vale 50 pontos).
+
+| Letra | Caixa | Efeito |
+|---|---|---|
+| **R** (verde) | Conserto | casco +40 |
+| **M** (laranja) | Munição | os 4 mísseis e os flares prontos na hora, e recarga rápida por 15 s |
+| **E** (azul) | Escudo | 12 s sem levar dano (um anel azul em volta do avião) |
+| **A** (rosa) | Ala | um **caça aliado pilotado pelo computador** voa com você por 30 s |
+
+O **ala** é um avião igual ao seu (um jato, ou um Tucano no modo FAB), marcado **ALA** no HUD. Sem inimigos, ele voa em formação ao lado da sua asa direita. Com inimigos por perto, ele escolhe o mais próximo de você, persegue, atira rajadas e lança mísseis. Também ataca a Fortaleza (as torretas) e, nas missões de ataque ao solo, os alvos em terra com mísseis. Os abates dele contam para o seu placar. Quando o tempo acaba, ele sobe e volta para a base. Os tempos dos efeitos ativos aparecem no canto da tela.
+
+## Placar, combo e recordes
+
+- O placar (**PONTOS**) fica no canto superior esquerdo, ao lado do seu **RECORDE**. Quando você passa dele, aparece **NOVO RECORDE!**.
+- Abate de avião: 100 × a onda. Radar ou barco: 150 × a onda. Missão cumprida: 300 × a onda. Caixa: 50.
+- **Combo:** abates seguidos, com menos de 5 segundos entre um e outro, multiplicam os pontos: x2, x3, até **x5**. O contador e uma barrinha do tempo aparecem no canto.
+- **Recordes:** os 10 melhores placares ficam salvos neste navegador (`localStorage`, chave `patrol.recordes`), com onda, modo e data. Os 5 primeiros aparecem no cartão inicial e no cartão de fim de jogo, que avisa quando você bate o recorde ou entra na lista. Se você fechar a página no meio do voo, o placar até ali também é guardado.
+
 ## Modo Força Aérea Brasileira
 
 Na tela inicial dá para escolher entre dois modos (clique no cartão do modo, ou aperte **B**). A escolha fica salva.
@@ -32,7 +66,7 @@ Para abrir direto num modo: `index.html?modo=fab` ou `index.html?modo=jato`.
 
 ## Tutorial
 
-Na primeira vez, o jogo começa com um **tutorial guiado** de 8 passos: pilotar, turbo, tonneau, meia-volta, rajada com o círculo de mira (contra um alvo de treino), míssil, flares (contra um míssil de treino, que não causa dano) e troca de visão. As ondas de inimigos só começam quando o tutorial termina. Dá para pular a qualquer momento com **Esc** ou o botão **PULAR TUTORIAL**.
+Na primeira vez, o jogo começa com um **tutorial guiado** de 9 passos: pilotar, turbo, tonneau, meia-volta, rajada com o círculo de mira (contra um alvo de treino), míssil, flares (contra um míssil de treino, que não causa dano), pegar uma **caixa de suprimentos** (ela traz o caça aliado, para você ver como ele voa) e troca de visão. As ondas de inimigos só começam quando o tutorial termina. Dá para pular a qualquer momento com **Esc** ou o botão **PULAR TUTORIAL**.
 
 Para fazer o tutorial de novo, use o botão **TUTORIAL: LIGADO / DESLIGADO** na tela inicial (ou a tecla **T** nela).
 
@@ -156,4 +190,4 @@ O jogo renderiza numa resolução interna baixa (por volta de 340 pixels de altu
 
 ## Para testar
 
-Parâmetros de URL úteis: `?seed=123` (outro mundo), `?fixedres=1` (desliga a resolução automática), `?desktop=1` (fica na versão de computador num aparelho de toque).
+Parâmetros de URL úteis: `?seed=123` (outro mundo), `?fixedres=1` (desliga a resolução automática), `?desktop=1` (fica na versão de computador num aparelho de toque), `?missao=escort|strike|defend|hunt` (força um tipo de missão).
