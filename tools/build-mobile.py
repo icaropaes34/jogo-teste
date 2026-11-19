@@ -89,7 +89,8 @@ rep('@media (max-width:640px){ #strip .long{display:none} }','')
 
 # ---------- HTML: title card text for touch, strip, controls, rotate overlay
 how_old=s[s.index('      <div><b>Mover o mouse</b>'):s.index('      <div class="p">Não dá para bater no chão')]
-how_new='''      <div><b>Polegar esquerdo</b>joystick: arraste em qualquer lugar da metade esquerda da tela. Para cima sobe, para baixo desce, para os lados faz a curva. Solte e o jato volta a voar nivelado.</div>
+how_new='''      <div><b>FUMAÇA</b>no modo Força Aérea Brasileira, o botão na barra do topo troca a cor da fumaça do Tucano.</div>
+      <div><b>Polegar esquerdo</b>joystick: arraste em qualquer lugar da metade esquerda da tela. Para cima sobe, para baixo desce, para os lados faz a curva. Solte e o jato volta a voar nivelado.</div>
       <div><b>TIRO</b>rajada de 15 tiros. Leve o círculo de mira até o inimigo: quando ele fica verde, o botão acende e os tiros se curvam até o alvo.</div>
       <div><b>MÍSSIL</b>dispara um míssil (4 nas asas, o número mostra quantos estão prontos). Trava no inimigo à frente do nariz.</div>
       <div><b>GIRO</b>tonneau: durante o giro os tiros não te acertam. O botão pisca quando é hora de girar.</div>
@@ -109,6 +110,7 @@ strip_new='''<div id="strip">
   <span style="display:none"><span class="k" id="flareKey">C</span><b id="flares">6</b></span>
   <span id="pips"><span></span><span></span><span></span><span></span></span>
   <span id="score">CASCO <span id="hullbar"><i id="hull"></i></span> ABATES <b id="kills">0</b> ONDA <b id="wave">0</b></span>
+  <button id="smokeBtn" class="fabOnly">FUMAÇA: BANDEIRA</button>
   <button id="viewbtn">VISÃO</button>
   <button id="helpbtn" title="Como jogar">?</button>
   <button id="sndbtn" title="Som, música e volume">SOM</button>

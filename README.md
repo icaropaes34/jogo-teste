@@ -18,6 +18,18 @@ Caças inimigos (escuros, com pontas laranja e contorno vermelho) chegam em onda
 - **Chefão a cada 5 ondas (5, 10, 15...):** a **Fortaleza**, um bombardeiro de asa voadora com uns 90 m de envergadura, que circula em volta de você com alguns caças de escolta. Uma barra no topo da tela mostra a vida dele. Os **4 motores** são os pontos fracos (losangos laranja): cada míssil tira um bom pedaço, e a rajada também ajuda. As **4 torretas** (quadrados vermelhos) atiram rajadas e podem ser derrubadas com a rajada ou com um míssil. A Fortaleza também lança mísseis, então guarde flares. Com os 4 motores destruídos, ela cai e vale muitos pontos. A cada novo chefão, ela fica mais resistente.
 - Cada onda traz mais caças, e eles ficam mais resistentes. Os pontos de cada abate aumentam com a onda.
 
+## Modo Força Aérea Brasileira
+
+Na tela inicial dá para escolher entre dois modos (clique no cartão do modo, ou aperte **B**). A escolha fica salva.
+
+- **Caça a jato:** o modo original, descrito acima.
+- **Força Aérea Brasileira:** você pilota um **Tucano** da **Esquadrilha da Fumaça**, o turboélice de treinamento da FAB, em pixel art. A pintura segue a do Super Tucano da Fumaça: azul brilhante com raios amarelos contornados de branco nas asas e na cauda, cocar da FAB (estrela verde e amarela com disco branco e centro azul) nas asas e na fuselagem, e a bandeirola verde e amarela no leme. A hélice gira na frente, inclusive vista da cabine.
+  - **Avião a hélice:** mais lento que o jato (cerca de 450 km/h em cruzeiro e 620 km/h com potência máxima), porém mais ágil nas curvas. O som é de turboélice, com o zumbido das pás.
+  - **Objetivo: perseguir e abater.** Aviões **intrusos** voam à sua frente tentando fugir. Eles costuram, dão uma curva brusca quando você cola na cauda deles e soltam **flares** contra os seus mísseis (às vezes despistam). Eles são mais lentos que você na potência máxima, então segure o turbo para alcançar e use a rajada (as metralhadoras ficam nas asas). A partir da onda 2 chegam **caças de escolta** que atiram e lançam mísseis em você. A cada 5 ondas, a Fortaleza aparece como no outro modo.
+  - **Fumaça colorida:** o Tucano solta fumaça pela cauda, como nas apresentações da Esquadrilha. A tecla **X** (no celular, o botão **FUMAÇA** na barra do topo) troca entre **bandeira** (verde, amarela e azul se alternando), verde, amarela, azul, branca e desligada.
+
+Para abrir direto num modo: `index.html?modo=fab` ou `index.html?modo=jato`.
+
 ## Tutorial
 
 Na primeira vez, o jogo começa com um **tutorial guiado** de 8 passos: pilotar, turbo, tonneau, meia-volta, rajada com o círculo de mira (contra um alvo de treino), míssil, flares (contra um míssil de treino, que não causa dano) e troca de visão. As ondas de inimigos só começam quando o tutorial termina. Dá para pular a qualquer momento com **Esc** ou o botão **PULAR TUTORIAL**.
@@ -61,6 +73,8 @@ Precisa de um navegador com WebGL2 (qualquer Chrome, Edge, Firefox ou Safari rec
 | Trocar a visão | **Espaço** | botão **VISÃO** na barra do topo |
 | Som liga / desliga | **M** | botão **SOM** na barra do topo |
 | Volume dos efeitos e da música | botão **SOM** no rodapé (ou **SOM E MUSICA** no cartão inicial) | botão **SOM** na barra do topo |
+| Trocar a fumaça (modo FAB) | **X** | botão **FUMAÇA** na barra do topo |
+| Trocar o modo (tela inicial) | **B** ou clique no modo | toque no modo |
 | Ajuda "Como jogar" | **H** ou o botão **?** | botão **?** |
 
 Os botões do mouse funcionam juntos: dá para segurar o turbo e disparar ao mesmo tempo.
@@ -125,7 +139,7 @@ Todos os arquivos estão em `audio/`, sob licença **CC0 1.0** (domínio públic
 
 | Arquivos | Origem | Autor | Licença |
 |---|---|---|---|
-| `eng_low`, `eng_roar`, `burner`, `missile`, `flare`, `gun`, `boom_s`, `boom_l`, `hit` | [Sci-Fi Sounds](https://kenney.nl/assets/sci-fi-sounds) | Kenney | CC0 |
+| `eng_low`, `eng_roar`, `burner`, `prop`, `missile`, `flare`, `gun`, `boom_s`, `boom_l`, `hit` | [Sci-Fi Sounds](https://kenney.nl/assets/sci-fi-sounds) | Kenney | CC0 |
 | `tink`, partes de `gun`, `hit`, `flare`, `missile` | [Impact Sounds](https://kenney.nl/assets/impact-sounds) | Kenney | CC0 |
 | `lock`, `mslwarn`, `alert` | [Digital Audio](https://kenney.nl/assets/digital-audio) | Kenney | CC0 |
 | `click`, `confirm` | [Interface Sounds](https://kenney.nl/assets/interface-sounds) | Kenney | CC0 |
