@@ -134,6 +134,7 @@ body.mob #sndPanel input[type=range]::-webkit-slider-thumb{width:20px;height:30p
   <div class="card">
     <h1>PATROL</h1>
     <div class="sub">patrulha ao entardecer sobre os lagos de outono</div>
+    <div class="ver" style="font-size:10px;opacity:.5;margin-top:2px">versão 10 · imagem nítida</div>
     <div class="bar"><i id="barfill"></i></div>
     <div id="status">mapeando a região dos lagos…</div>
     <div id="modes"><button class="md" data-m="jet" title="Modo caça a jato (B troca o modo)"><b>CAÇA A JATO</b><span>defenda os lagos dos caças inimigos</span></button><button class="md" data-m="fab" title="Modo Força Aérea Brasileira (B troca o modo)"><b><i>FORÇA</i> <u>AÉREA</u> BRASILEIRA</b><span>Tucano da Fumaça: persiga e abata os intrusos</span></button></div>
@@ -3026,11 +3027,11 @@ function frame(now) {
 }
 function tick(dt) {
   T += dt; DBG.frames++;
-  // automatic resolution drop when frames are slow, and back up when they are smooth again.
-  // "Smooth" is 60 fps or close (a 60 Hz screen never goes under 16.7 ms, so the old 13 ms bar
-  // meant the picture never sharpened again and got coarser hitch after hitch, wave after wave).
-  // The drop is capped so the world never gets shorter than RES_MIN_H pixels.
-  if (!PARAMS.get('fixedres')) {
+  // Automatic resolution drop when frames are slow is OFF: in busy waves it made the picture
+  // coarse and hard to read, and players prefer a sharp picture over a few more frames.
+  // ?autores=1 turns it back on (it then returns to sharp when frames are smooth again,
+  // and never makes the world shorter than RES_MIN_H pixels).
+  if (PARAMS.get('autores') && !PARAMS.get('fixedres')) {
     emaDt = lerp(emaDt, dt * 1000, 0.05);
     if (emaDt > 30) { slowT += dt; fastT = 0; } else if (emaDt < 21) { fastT += dt; slowT = 0; } else { slowT = 0; fastT = 0; }
     if (slowT > 1.5 && resDrop < RES_MAX_DROP && innerHeight / (SCALE + 1) >= RES_MIN_H) {
