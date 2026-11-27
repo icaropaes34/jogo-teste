@@ -163,6 +163,10 @@ body.ck #hudL{top:52px}
 #pause .pb button b{font-weight:400;color:var(--gold)}
 #pause .pb button:hover,#pause .pb button:focus{border-color:var(--gold);outline:none}
 #pause .pb button.main{border-color:var(--gold);color:var(--gold)}
+/* game controller: no touch buttons, a gold frame marks the menu choice */
+body.pad #ctl,body.pad #touch{display:none!important}
+#upgOpts .opt.padfocus,#pause .pb button.padfocus{border-color:var(--gold);outline:3px solid var(--gold);outline-offset:2px;transform:translateY(-2px)}
+#modes .md.padfocus{outline:3px solid var(--gold);outline-offset:2px}
 #pause .ft{font-size:11px;color:var(--dim);line-height:1.5}
 #pausebtn{font:inherit;font-size:11px;color:var(--ink);background:#2a1f3d;border:2px solid var(--line);padding:2px 8px;cursor:pointer}
 #upgMis.bad{color:#ff9a7a}
@@ -182,7 +186,7 @@ body.ck #hudL{top:52px}
   <div class="card">
     <h1>PATROL</h1>
     <div class="sub">patrulha ao entardecer sobre os lagos de outono</div>
-    <div class="ver" style="font-size:10px;opacity:.5;margin-top:2px">versão 12 · missões da FAB e pausa</div>
+    <div class="ver" style="font-size:10px;opacity:.5;margin-top:2px">versão 13 · jogue com controle (GameSir X5 Lite)</div>
     <div class="bar"><i id="barfill"></i></div>
     <div id="status">mapeando a região dos lagos…</div>
     <div id="modes"><button class="md" data-m="jet" title="Modo caça a jato (B troca o modo)"><b>CAÇA A JATO</b><span>defenda os lagos dos caças inimigos</span></button><button class="md" data-m="fab" title="Modo Força Aérea Brasileira (B troca o modo)"><b><i>FORÇA</i> <u>AÉREA</u> BRASILEIRA</b><span>Tucano da Fumaça: persiga e abata os intrusos</span></button></div>
@@ -196,6 +200,14 @@ body.ck #hudL{top:52px}
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0;color:#ffd84a">Missões do caça a jato:</b> cada onda tem um objetivo, mostrado no canto da tela. <b style="min-width:0">Caça</b>: abata todos os inimigos. <b style="min-width:0">Escolta</b>: proteja o <b style="min-width:0;color:#7be38a">cargueiro aliado</b> (marcado em verde) até ele chegar ao destino. <b style="min-width:0">Ataque ao solo</b>: destrua os <b style="min-width:0;color:#ffd84a">radares e barcos</b> (losangos amarelos) com mísseis ou rajadas; os barcos atiram para cima. <b style="min-width:0">Defesa da base</b>: derrube os bombardeiros antes que eles ataquem a <b style="min-width:0;color:#64d2ff">nossa base</b> (marcada em azul). Missão cumprida vale pontos extras.</div>
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0;color:#ffb85a">Caixas de suprimentos:</b> caem de paraquedas no céu (quadrados coloridos com uma letra). Voe através delas para pegar: <b style="min-width:0;color:#78f078">R</b> conserta o casco, <b style="min-width:0;color:#ffbe46">M</b> munição (mísseis e flares cheios e recarga rápida), <b style="min-width:0;color:#64d2ff">E</b> escudo (12 s sem dano) e <b style="min-width:0;color:#ff78e6">A</b> um <b style="min-width:0">caça aliado</b>, pilotado pelo computador, que voa ao seu lado e ataca os inimigos por 30 s.</div>
       <div class="p" style="margin:0 0 8px;color:var(--ink)"><b style="min-width:0;color:#fff1a8">Placar e recordes:</b> cada abate vale pontos, que crescem com a onda. Abates seguidos (menos de 5 s entre um e outro) fazem <b style="min-width:0">COMBO</b> e multiplicam os pontos até x5. Os melhores placares ficam salvos neste navegador e aparecem no cartão inicial.</div>
+      <div class="p" style="margin:0 0 4px;color:var(--ink)"><b style="min-width:0;color:#9fd6ff">Controle (GameSir X5 Lite, Xbox, PlayStation):</b> no celular, encaixe o GameSir na entrada USB-C; no computador, ligue o controle por cabo ou Bluetooth. Depois <b style="min-width:0">aperte qualquer botão</b> para o jogo reconhecer o controle. Os botões de toque somem sozinhos enquanto ele estiver conectado.</div>
+      <div class="pad"><b>Analógico esquerdo</b>pilota (ou o direcional): para cima sobe, para baixo desce, para os lados faz a curva. Solte e o avião volta a voar nivelado.</div>
+      <div class="pad"><b>A ou RT</b>rajada de tiros (segure para continuar atirando)</div>
+      <div class="pad"><b>RB</b>míssil &nbsp; <b style="min-width:0">LB</b>&nbsp;flares &nbsp; <b style="min-width:0">LT</b>&nbsp;turbo (segure)</div>
+      <div class="pad"><b>B</b>tonneau (giro) &nbsp; <b style="min-width:0">X</b>&nbsp;meia-volta &nbsp; <b style="min-width:0">Y</b>&nbsp;troca a visão</div>
+      <div class="pad"><b>START</b>pausa &nbsp; <b style="min-width:0">SELECT</b>&nbsp;esta ajuda (no tutorial, pula o tutorial)</div>
+      <div class="pad"><b>L3 / R3</b>apertar o analógico esquerdo troca a fumaça (modo FAB); o direito liga e desliga o som</div>
+      <div class="pad" style="margin-bottom:8px"><b>Nos menus</b>direcional ou analógico escolhe, A confirma, B volta. Na tela inicial, esquerda e direita trocam o modo, Y liga ou desliga o tutorial e A começa o voo.</div>
       <div><b>Mover o mouse</b>pilota. Na visão de cima o jato segue o cursor. Na perseguição e na cabine, a distância do cursor até o centro define a curva e a subida ou descida.</div>
       <div><b>W A S D / setas</b>pilota pelo teclado: W sobe, S desce, A e D fazem a curva. Mexer o mouse volta para o controle pelo mouse.</div>
       <div><b>Clique / R</b>tonneau (giro completo): desvia dos tiros</div>
@@ -1335,6 +1347,12 @@ function stepFlight(dt) {
     turn = Math.sign(nx) * Math.pow(Math.abs(nx), 1.2);
     pitchT = -ny * 0.95;
   }
+  if (input.pad && input.pad.used && !input.auto && !(input.stick && input.stick.on)) {
+    // game controller: left stick x turns, up climbs; centred, the jet levels out
+    const px = input.pad.x, py = input.pad.y;
+    turn = Math.sign(px) * Math.pow(Math.abs(px), 1.25);
+    pitchT = -py * (vw === 0 ? 0.4 : 0.85);
+  }
   // terrain avoidance: look ahead and pull up on our own
   const hx = Math.sin(jet.yaw), hz = -Math.cos(jet.yaw);
   let need = -9; jet.pullUp = false;
@@ -1736,7 +1754,7 @@ function fireEnemyMissile(e) {
   Snd.launch(p, true);
   if (!game.flareTip) {
     game.flareTip = true;
-    if (!tutorial.active) { tipEl.innerHTML = isTouch ? 'Míssil inimigo! Toque em <b>FLARE</b> para despistar' : 'Míssil inimigo! Aperte <b>C</b> para soltar flares e despistar'; tipEl.style.display = 'block'; setTimeout(() => { if (!tutorial.active) tipEl.style.display = 'none'; }, 4500); }
+    if (!tutorial.active) { tipEl.innerHTML = padOn() ? 'Míssil inimigo! Aperte <b>LB</b> para soltar flares e despistar' : isTouch ? 'Míssil inimigo! Toque em <b>FLARE</b> para despistar' : 'Míssil inimigo! Aperte <b>C</b> para soltar flares e despistar'; tipEl.style.display = 'block'; setTimeout(() => { if (!tutorial.active) tipEl.style.display = 'none'; }, 4500); }
   }
 }
 /* ---------------------------------------------------------------------
@@ -1987,7 +2005,7 @@ function damagePlayer(n, p) {
     for (let i = 0; i < 8; i++) emit(p[0], p[1], p[2], jet.vel[0] * 0.8 + rnd(30), jet.vel[1] * 0.8 + rnd(30), jet.vel[2] * 0.8 + rnd(30), 0.4, 2.2, 0.6, 7, 1.5, 0);
     return;
   }
-  game.hp = Math.max(0, game.hp - n); game.lastHit = T; game.hurt = 1;
+  game.hp = Math.max(0, game.hp - n); game.lastHit = T; game.hurt = 1; padRumble(Math.min(1, 0.35 + n / 40), 160);
   shake = Math.max(shake, 0.35);
   for (let i = 0; i < 5; i++) emit(p[0], p[1], p[2], jet.vel[0] * 0.8 + rnd(25), jet.vel[1] * 0.8 + rnd(25), jet.vel[2] * 0.8 + rnd(25), 0.3, 1.4, 0.6, 3, 1.5, 9);
   Snd.hit();
@@ -2651,7 +2669,7 @@ function updateMissionBox(force) {
     if (m.type === 'hunt' || m.type === 'chase') { o = FAB() ? 'Persiga e abata os intrusos' : 'Abata os caças inimigos'; st = `restam ${foes}`; }
     else if (m.type === 'show') {
       o = 'Passe por dentro das argolas, em ordem';
-      if (m.state === 'active') { st = `argola ${m.ringI + 1} de ${m.total} · ${Math.ceil(Math.max(0, m.limit - (T - m.t0)))} s · fumaça ${smokeOn() ? 'ligada: x2' : `desligada (${isTouch ? 'botão FUMAÇA' : 'X'} liga)`}`; bar = m.ringI / m.total; }
+      if (m.state === 'active') { st = `argola ${m.ringI + 1} de ${m.total} · ${Math.ceil(Math.max(0, m.limit - (T - m.t0)))} s · fumaça ${smokeOn() ? 'ligada: x2' : `desligada (${padOn() ? 'L3' : isTouch ? 'botão FUMAÇA' : 'X'} liga)`}`; bar = m.ringI / m.total; }
     } else if (m.type === 'intercept') {
       const sm = enemies.filter(e => e.alive && e.role === 'smuggler' && !e.surr);
       const near = sm.length && strip ? Math.min(...sm.map(e => Math.hypot(e.pos[0] - strip.pos[0], e.pos[2] - strip.pos[2]))) : 0;
@@ -3489,7 +3507,7 @@ function drawCombat(ck) {
   if (game.mslWarn) {
     const on = (T * 5 | 0) % 2 === 0;
     rect(Math.round(W / 2) - 39, y - 4, 79, 13, on ? cM : cD);
-    text(isTouch ? 'MISSIL!  FLARE!' : 'MISSIL!  FLARE: C', Math.round(W / 2), y, on ? C.white : cM, true);
+    text(isTouch || padOn() ? 'MISSIL!  FLARE!' : 'MISSIL!  FLARE: C', Math.round(W / 2), y, on ? C.white : cM, true);
   } else if (game.incoming && !game.mslWarn && (T * 8 | 0) % 2 === 0) {
     rect(Math.round(W / 2) - 34, y - 4, 69, 13, cR);
     text('TIROS!  GIRE!', Math.round(W / 2), y, C.white, true);
@@ -3771,15 +3789,15 @@ const tipEl = document.getElementById('tip');
 const TUT_KEY = 'patrol.tutorial2';
 const tutorial = {
   steps: [
-    { k: 'move', h: 'PILOTAR', t: 'Mova o <b>mouse</b> para pilotar, ou use <b>W A S D</b>: W sobe, S desce, A e D fazem a curva.', tt: '<b>Arraste o dedo</b> na tela para pilotar.' },
-    { k: 'boost', h: 'TURBO', t: '<b>Segure o botão esquerdo</b> do mouse (ou <b>Shift</b>) para o turbo. Solte para voltar ao normal.', tt: 'Segure <b>TURBO</b> para o pós-combustor.' },
-    { k: 'roll', h: 'TONNEAU', t: '<b>Clique rápido</b> (ou <b>R</b>) para um tonneau. Durante o giro os tiros inimigos não te acertam: use quando aparecer <b>GIRE!</b>', tt: 'Toque em <b>GIRO</b> para um tonneau. Durante o giro os tiros não te acertam.' },
-    { k: 'flip', h: 'MEIA-VOLTA', t: 'Aperte <b>Q</b> para dar meia-volta: o jato vira 180° de uma vez, para o lado do inimigo mais próximo.', tt: 'Toque em <b>VOLTA</b> para dar meia-volta (180°).' },
-    { k: 'kill', h: 'RAJADA E MIRA', t: 'Um <b>alvo de treino</b> apareceu (contorno vermelho; a seta na borda mostra onde ele está). Leve o <b>círculo de mira</b> até ele e, quando ficar <b>verde</b>, aperte <b>E</b> para a rajada.', tt: 'Um <b>alvo de treino</b> apareceu. Leve o <b>círculo de mira</b> até ele e, quando ficar verde, toque em <b>TIRO</b>.', enter: () => tutorial.spawnTarget() },
-    { k: 'fire', h: 'MÍSSIL', t: 'Aperte <b>F</b> (ou clique direito) para um míssil. Com um inimigo à frente do nariz, ele trava no alvo. São 4, e recarregam sozinhos.', tt: 'Toque em <b>MISSIL</b> para lançar um míssil. Com um inimigo à frente, ele trava no alvo.' },
-    { k: 'flare', h: 'FLARES', t: 'Míssil inimigo chegando (o <b>losango vermelho</b>)! Aperte <b>C</b> para soltar flares: eles despistam o míssil. Os flares recarregam a cada onda.', tt: 'Míssil inimigo chegando! Toque em <b>FLARE</b> para despistá-lo.', enter: () => tutorial.trainMissile() },
-    { k: 'crate', h: 'SUPRIMENTOS', t: 'Uma <b>caixa de suprimentos</b> cai de paraquedas à sua frente (o quadrado rosa com <b>A</b>). <b>Voe através dela</b> para pegar: esta traz um <b>caça aliado</b> que voa e luta ao seu lado por 30 s. Outras caixas consertam o casco (<b>R</b>), enchem a munição (<b>M</b>) ou dão um escudo (<b>E</b>).', tt: 'Uma <b>caixa de suprimentos</b> cai de paraquedas à sua frente (o quadrado rosa com <b>A</b>). <b>Voe através dela</b> para pegar: esta traz um <b>caça aliado</b> que luta ao seu lado por 30 s. Outras consertam o casco (<b>R</b>), enchem a munição (<b>M</b>) ou dão escudo (<b>E</b>).', enter: () => { for (const c of crates) if (c.train) c.alive = false; spawnCrate('wing', null, true); } },
-    { k: 'view', h: 'VISÃO', t: 'Aperte <b>Espaço</b> para trocar a visão: de cima, perseguição e cabine (com painel e HUD).', tt: 'Toque em <b>VISÃO</b> para trocar a visão.' },
+    { k: 'move', h: 'PILOTAR', t: 'Mova o <b>mouse</b> para pilotar, ou use <b>W A S D</b>: W sobe, S desce, A e D fazem a curva.', tp: 'Incline o <b>analógico esquerdo</b> para pilotar: para cima sobe, para baixo desce, para os lados faz a curva.', tt: '<b>Arraste o dedo</b> na tela para pilotar.' },
+    { k: 'boost', h: 'TURBO', t: '<b>Segure o botão esquerdo</b> do mouse (ou <b>Shift</b>) para o turbo. Solte para voltar ao normal.', tp: 'Segure <b>LT</b> (gatilho esquerdo) para o turbo. Solte para voltar ao normal.', tt: 'Segure <b>TURBO</b> para o pós-combustor.' },
+    { k: 'roll', h: 'TONNEAU', t: '<b>Clique rápido</b> (ou <b>R</b>) para um tonneau. Durante o giro os tiros inimigos não te acertam: use quando aparecer <b>GIRE!</b>', tp: 'Aperte <b>B</b> para um tonneau. Durante o giro os tiros inimigos não te acertam: use quando aparecer <b>GIRE!</b>', tt: 'Toque em <b>GIRO</b> para um tonneau. Durante o giro os tiros não te acertam.' },
+    { k: 'flip', h: 'MEIA-VOLTA', t: 'Aperte <b>Q</b> para dar meia-volta: o jato vira 180° de uma vez, para o lado do inimigo mais próximo.', tp: 'Aperte <b>X</b> para dar meia-volta: o avião vira 180° de uma vez, para o lado do inimigo mais próximo.', tt: 'Toque em <b>VOLTA</b> para dar meia-volta (180°).' },
+    { k: 'kill', h: 'RAJADA E MIRA', t: 'Um <b>alvo de treino</b> apareceu (contorno vermelho; a seta na borda mostra onde ele está). Leve o <b>círculo de mira</b> até ele e, quando ficar <b>verde</b>, aperte <b>E</b> para a rajada.', tp: 'Um <b>alvo de treino</b> apareceu (a seta na borda mostra onde). Leve o <b>círculo de mira</b> até ele e, quando ficar <b>verde</b>, aperte <b>A</b> ou <b>RT</b> para a rajada.', tt: 'Um <b>alvo de treino</b> apareceu. Leve o <b>círculo de mira</b> até ele e, quando ficar verde, toque em <b>TIRO</b>.', enter: () => tutorial.spawnTarget() },
+    { k: 'fire', h: 'MÍSSIL', t: 'Aperte <b>F</b> (ou clique direito) para um míssil. Com um inimigo à frente do nariz, ele trava no alvo. São 4, e recarregam sozinhos.', tp: 'Aperte <b>RB</b> para um míssil. Com um inimigo à frente do nariz, ele trava no alvo. São 4, e recarregam sozinhos.', tt: 'Toque em <b>MISSIL</b> para lançar um míssil. Com um inimigo à frente, ele trava no alvo.' },
+    { k: 'flare', h: 'FLARES', t: 'Míssil inimigo chegando (o <b>losango vermelho</b>)! Aperte <b>C</b> para soltar flares: eles despistam o míssil. Os flares recarregam a cada onda.', tp: 'Míssil inimigo chegando (o <b>losango vermelho</b>)! Aperte <b>LB</b> para soltar flares: eles despistam o míssil.', tt: 'Míssil inimigo chegando! Toque em <b>FLARE</b> para despistá-lo.', enter: () => tutorial.trainMissile() },
+    { k: 'crate', h: 'SUPRIMENTOS', t: 'Uma <b>caixa de suprimentos</b> cai de paraquedas à sua frente (o quadrado rosa com <b>A</b>). <b>Voe através dela</b> para pegar: esta traz um <b>caça aliado</b> que voa e luta ao seu lado por 30 s. Outras caixas consertam o casco (<b>R</b>), enchem a munição (<b>M</b>) ou dão um escudo (<b>E</b>).', tp: 'Uma <b>caixa de suprimentos</b> cai de paraquedas à sua frente (o quadrado rosa com <b>A</b>). <b>Voe através dela</b> para pegar: esta traz um <b>caça aliado</b> que luta ao seu lado por 30 s. Outras consertam o casco (<b>R</b>), enchem a munição (<b>M</b>) ou dão escudo (<b>E</b>).', tt: 'Uma <b>caixa de suprimentos</b> cai de paraquedas à sua frente (o quadrado rosa com <b>A</b>). <b>Voe através dela</b> para pegar: esta traz um <b>caça aliado</b> que luta ao seu lado por 30 s. Outras consertam o casco (<b>R</b>), enchem a munição (<b>M</b>) ou dão escudo (<b>E</b>).', enter: () => { for (const c of crates) if (c.train) c.alive = false; spawnCrate('wing', null, true); } },
+    { k: 'view', h: 'VISÃO', t: 'Aperte <b>Espaço</b> para trocar a visão: de cima, perseguição e cabine (com painel e HUD).', tp: 'Aperte <b>Y</b> para trocar a visão: de cima, perseguição e cabine.', tt: 'Toque em <b>VISÃO</b> para trocar a visão.' },
   ],
   i: 0, active: false, doneAll: false, got: null, shownT: 0, okT: 0, nextMsl: 0,
   enabled() { try { return localStorage.getItem(TUT_KEY) !== 'done' && localStorage.getItem(TUT_KEY) !== 'off'; } catch (e) { return true; } },
@@ -3795,7 +3813,7 @@ const tutorial = {
     const s = this.steps[this.i], n = this.steps.length;
     const pg = this.steps.map((_, j) => `<i class="${j < this.i || (j === this.i && ok) ? 'on' : ''}"></i>`).join('');
     tipEl.className = ok ? 'ok' : '';
-    tipEl.innerHTML = `<div class="hd">TUTORIAL ${this.i + 1}/${n} · ${s.h}<span class="pg">${pg}</span></div><div class="tx">${ok ? 'Isso! ' : ''}${isTouch ? s.tt : s.t}</div><button class="skip">${isTouch ? 'PULAR TUTORIAL' : 'PULAR TUTORIAL (Esc)'}</button>`;
+    tipEl.innerHTML = `<div class="hd">TUTORIAL ${this.i + 1}/${n} · ${s.h}<span class="pg">${pg}</span></div><div class="tx">${ok ? 'Isso! ' : ''}${padOn() ? s.tp : isTouch ? s.tt : s.t}</div><button class="skip">${padOn() ? 'PULAR TUTORIAL (SELECT)' : isTouch ? 'PULAR TUTORIAL' : 'PULAR TUTORIAL (Esc)'}</button>`;
     tipEl.style.display = 'block';
     const sk = tipEl.querySelector('.skip'), f = e => { e.preventDefault(); e.stopPropagation(); this.finish(); };
     sk.addEventListener('click', f); sk.addEventListener('touchstart', f, { passive: false }); sk.addEventListener('mousedown', e => e.stopPropagation());
@@ -3814,7 +3832,7 @@ const tutorial = {
     if (this.got && !this.okT && T - this.shownT > 1.5) { this.okT = T; this.show(true); }
     if (this.okT && T - this.okT > 0.9) {
       this.i++;
-      if (this.i >= this.steps.length) this.finish(isTouch ? 'Pronto! Cada onda tem uma <b>missão</b> (veja o quadro no canto): caça, escolta, ataque ao solo ou defesa da base. Abates seguidos fazem <b>combo</b>. Entre as ondas você escolhe uma <b>melhoria</b> (toque numa opção) e a cada 5 ondas vem um <b>chefão</b>. Boa caçada!' : 'Pronto! Cada onda tem uma <b>missão</b> (veja o quadro no canto): caça, escolta, ataque ao solo ou defesa da base. Abates seguidos fazem <b>combo</b>. Entre as ondas você escolhe uma <b>melhoria</b> (teclas <b>1</b>, <b>2</b> ou <b>3</b>) e a cada 5 ondas vem um <b>chefão</b>. Boa caçada!');
+      if (this.i >= this.steps.length) this.finish(padOn() ? 'Pronto! Cada onda tem uma <b>missão</b> (veja o quadro no canto). Abates seguidos fazem <b>combo</b>. Entre as ondas você escolhe uma <b>melhoria</b> (direcional escolhe, <b>A</b> confirma) e a cada 5 ondas vem um <b>chefão</b>. <b>START</b> pausa. Boa caçada!' : isTouch ? 'Pronto! Cada onda tem uma <b>missão</b> (veja o quadro no canto): caça, escolta, ataque ao solo ou defesa da base. Abates seguidos fazem <b>combo</b>. Entre as ondas você escolhe uma <b>melhoria</b> (toque numa opção) e a cada 5 ondas vem um <b>chefão</b>. Boa caçada!' : 'Pronto! Cada onda tem uma <b>missão</b> (veja o quadro no canto): caça, escolta, ataque ao solo ou defesa da base. Abates seguidos fazem <b>combo</b>. Entre as ondas você escolhe uma <b>melhoria</b> (teclas <b>1</b>, <b>2</b> ou <b>3</b>) e a cada 5 ondas vem um <b>chefão</b>. Boa caçada!');
       else this.enterStep();
     }
   },
@@ -3853,7 +3871,7 @@ const isTouch = matchMedia('(pointer: coarse)').matches || PARAMS.get('touch') =
 const titleEl = document.getElementById('title'), stripEl = document.getElementById('strip'), howEl = document.getElementById('how');
 function toLocal(e) { const r = cv.getBoundingClientRect(); return [(e.clientX - r.left) / SCALE, (e.clientY - r.top) / SCALE]; }
 function noteMove(x, y) {
-  if (state === 'play' && (Math.abs(x - input.mx) + Math.abs(y - input.my) > 0.5)) { if (input.auto) { input.auto = false; } input.keys = false; tutorial.did('move'); }
+  if (state === 'play' && (Math.abs(x - input.mx) + Math.abs(y - input.my) > 0.5)) { if (input.auto) { input.auto = false; } input.keys = false; if (input.pad) input.pad.used = false; tutorial.did('move'); }
   input.mx = clamp(x, 0, W - 1); input.my = clamp(y, 0, H - 1);
 }
 const SUBS = { jet: 'patrulha ao entardecer sobre os lagos de outono', fab: 'Força Aérea Brasileira: a Esquadrilha da Fumaça caça intrusos sobre os lagos' };
@@ -3915,7 +3933,7 @@ window.addEventListener('keydown', e => {
   if (KEY_STEER[e.code]) {
     e.preventDefault();
     if (state === 'title') { startPlay(); }
-    if (state === 'play') { held.add(e.code); input.keys = true; input.auto = false; tutorial.did('move'); }
+    if (state === 'play') { held.add(e.code); input.keys = true; input.auto = false; if (input.pad) input.pad.used = false; tutorial.did('move'); }
     return;
   }
   if (e.code === 'Space') { e.preventDefault(); if (state === 'title') { startPlay(); return; } if (state === 'over') { restartGame(); return; } if (state === 'play' && !e.repeat) setView((view + 1) % 3); }
@@ -3953,6 +3971,104 @@ if (isTouch) document.getElementById('sndHint').textContent = 'toque fora para f
 document.getElementById('helpbtn').addEventListener('click', e => { e.stopPropagation(); toggleHelp(); });
 { const b = document.getElementById('tutBtn'), f = e => { e.preventDefault(); e.stopPropagation(); tutorial.setEnabled(!tutorial.enabled()); Snd.ui('click'); };
   b.addEventListener('click', f); b.addEventListener('touchstart', f, { passive: false }); }
+/* ---------------------------------------------------------------------
+   Game controller: Gamepad API with the "standard" layout, which is how
+   phones and browsers show the GameSir X5 Lite (USB-C), Xbox and
+   PlayStation pads. Browsers only reveal a pad after a button press.
+   --------------------------------------------------------------------- */
+const PAD = { on: false, idx: -1, name: '', prev: [], dir: '', sel: 0, last: '', orig: null };
+input.pad = { used: false, x: 0, y: 0 };
+const PB = { A: 0, B: 1, X: 2, Y: 3, LB: 4, RB: 5, LT: 6, RT: 7, SEL: 8, START: 9, L3: 10, R3: 11, UP: 12, DOWN: 13, LEFT: 14, RIGHT: 15 };
+function padOn() { return PAD.on; }
+function padGet() {
+  let list = [];
+  try { list = navigator.getGamepads ? Array.from(navigator.getGamepads()) : []; } catch (e) {}
+  const ok = list.filter(g => g && g.connected !== false && g.buttons && g.buttons.length);
+  return ok.find(g => g.index === PAD.idx) || ok.find(g => g.mapping === 'standard') || ok[0] || null;
+}
+function padRumble(k, ms) {
+  if (!PAD.on) return;
+  try { const g = padGet(), v = g && g.vibrationActuator; if (v && v.playEffect) v.playEffect('dual-rumble', { duration: ms, strongMagnitude: k, weakMagnitude: Math.min(1, k * 0.8) }).catch(() => {}); } catch (e) {}
+}
+// texts that name a mouse click or a tap read "A" instead while the pad is on
+function padTexts() {
+  const ids = { go: 'APERTE A PARA VOAR', ovGo: 'APERTE A PARA VOAR DE NOVO', upgHint: 'direcional escolhe, A confirma', pauseFt: 'Trocar de modo começa um voo novo. Voltar à tela inicial encerra este voo; o placar fica nos recordes.<br>Direcional escolhe, A confirma, START ou B continua' };
+  if (!PAD.orig) { PAD.orig = {}; for (const id in ids) { const el = document.getElementById(id); if (el) PAD.orig[id] = el.innerHTML; } }
+  for (const id in ids) { const el = document.getElementById(id); if (!el) continue; if (PAD.on) { if (el.innerHTML !== ids[id]) PAD.orig[id] = el.innerHTML; el.innerHTML = ids[id]; } else if (PAD.orig[id] != null && el.innerHTML === ids[id]) el.innerHTML = PAD.orig[id]; }
+  if (tutorial.active) tutorial.show(!!tutorial.okT);
+}
+function padSet(on, g) {
+  if (on === PAD.on) return;
+  PAD.on = on; PAD.idx = on ? g.index : -1; PAD.name = on ? String(g.id || '') : ''; PAD.prev = on ? g.buttons.map(b => b.pressed || b.value > 0.4) : [];
+  document.body.classList.toggle('pad', on);
+  if (!on) { input.pad.used = false; input.pad.x = input.pad.y = 0; jet.boost = false; document.querySelectorAll('.padfocus').forEach(el => el.classList.remove('padfocus')); }
+  padTexts();
+  toast(on ? 'Controle conectado' + (/gamesir/i.test(PAD.name) ? ': GameSir' : '') : 'Controle desconectado', 2000);
+  if (!on && state === 'play') pauseGame();
+}
+window.addEventListener('gamepadconnected', e => { if (!PAD.on) padSet(true, e.gamepad); });
+window.addEventListener('gamepaddisconnected', e => { if (PAD.on && e.gamepad.index === PAD.idx) { const g = padGet(); if (g && g.index !== PAD.idx) { PAD.on = false; padSet(true, g); } else padSet(false); } });
+function padFocus(list, i) { list.forEach((el, j) => el.classList.toggle('padfocus', j === i)); }
+function padPoll() {
+  const g = padGet();
+  if (!g) { if (PAD.on) padSet(false); return; }
+  const now = g.buttons.map(b => b.pressed || b.value > 0.4);
+  if (!PAD.on) { if (now.some(Boolean) || g.axes.some(a => Math.abs(a) > 0.5)) padSet(true, g); else return; }
+  const prev = PAD.prev, hit = b => now[b] && !prev[b], down = b => !!now[b];
+  // left stick with a round dead zone; the d-pad works as a stick too
+  let ax = g.axes[0] || 0, ay = g.axes[1] || 0; const L = Math.hypot(ax, ay), DZ = 0.16;
+  if (L < DZ) { ax = 0; ay = 0; } else { const k = Math.min(1, (L - DZ) / (1 - DZ)) / L; ax *= k; ay *= k; }
+  const dx = (down(PB.RIGHT) ? 1 : 0) - (down(PB.LEFT) ? 1 : 0), dy = (down(PB.DOWN) ? 1 : 0) - (down(PB.UP) ? 1 : 0);
+  if (dx || dy) { ax = dx; ay = dy; }
+  ax = clamp(ax, -1, 1); ay = clamp(ay, -1, 1);
+  // one menu step per push of the stick or d-pad
+  const dir = Math.abs(ax) > 0.6 && Math.abs(ax) >= Math.abs(ay) ? (ax > 0 ? 'r' : 'l') : Math.abs(ay) > 0.6 ? (ay > 0 ? 'd' : 'u') : '';
+  const step = dir !== PAD.dir ? dir : ''; PAD.dir = dir;
+  if (state !== PAD.last) { PAD.sel = 0; PAD.last = state; }
+  const ok = hit(PB.A) || hit(PB.START);
+  if (ok || hit(PB.B) || step) { try { Snd.unlock(); } catch (e) {} }
+  if (state === 'title') {
+    padFocus(document.querySelectorAll('#modes .md'), MODE === 'fab' ? 1 : 0);
+    if (step === 'l' || step === 'r') setMode(FAB() ? 'jet' : 'fab');
+    if (hit(PB.Y)) { tutorial.setEnabled(!tutorial.enabled()); Snd.ui('click'); }
+    if (ok) { padFocus(document.querySelectorAll('#modes .md'), -1); startPlay(); }
+  } else if (state === 'help') {
+    if (hit(PB.A) || hit(PB.B) || hit(PB.SEL) || hit(PB.START)) toggleHelp();
+  } else if (state === 'upgrade') {
+    const opts = document.querySelectorAll('#upgOpts .opt'), n = opts.length;
+    if (n) {
+      if (step === 'r' || step === 'd') { PAD.sel = (PAD.sel + 1) % n; Snd.ui('click'); }
+      if (step === 'l' || step === 'u') { PAD.sel = (PAD.sel + n - 1) % n; Snd.ui('click'); }
+      PAD.sel = Math.min(PAD.sel, n - 1); padFocus(opts, PAD.sel);
+      if (hit(PB.A)) pickUpgrade(PAD.sel);
+    }
+  } else if (state === 'pause') {
+    const bs = document.querySelectorAll('#pause .pb button'), acts = [resumeGame, switchModePlay, toTitle];
+    if (step === 'd' || step === 'r') { PAD.sel = (PAD.sel + 1) % bs.length; Snd.ui('click'); }
+    if (step === 'u' || step === 'l') { PAD.sel = (PAD.sel + bs.length - 1) % bs.length; Snd.ui('click'); }
+    padFocus(bs, PAD.sel);
+    if (hit(PB.A)) acts[PAD.sel]();
+    else if (hit(PB.START) || hit(PB.B)) resumeGame();
+  } else if (state === 'over') {
+    if (ok) restartGame();
+  } else if (state === 'play') {
+    input.pad.x = ax; input.pad.y = ay;
+    if (ax || ay) { input.pad.used = true; input.auto = false; input.keys = false; if (Math.hypot(ax, ay) > 0.3) tutorial.did('move'); }
+    if (down(PB.A) || down(PB.RT)) fireGun();
+    if (hit(PB.RB)) fireMissile();
+    if (hit(PB.LB)) dropFlare();
+    if (hit(PB.B)) startRoll();
+    if (hit(PB.X)) startFlip();
+    if (hit(PB.Y)) setView((view + 1) % 3);
+    if (hit(PB.LT)) jet.boost = true;
+    if (!now[PB.LT] && prev[PB.LT]) { if (jet.boost) tutorial.did('boost'); jet.boost = false; }
+    if (hit(PB.L3)) cycleSmoke();
+    if (hit(PB.R3)) Snd.toggle();
+    if (hit(PB.SEL)) { if (tutorial.active) tutorial.finish(); else toggleHelp(); }
+    if (hit(PB.START)) pauseGame();
+  }
+  PAD.prev = now;
+}
 // touch: drag to steer, buttons for the rest
 cv.addEventListener('touchstart', e => { e.preventDefault(); if (state === 'title') { startPlay(); return; } if (state === 'help') { toggleHelp(); return; } const t = e.changedTouches[0]; const [x, y] = toLocal(t); input.touchSteer = true; noteMove(x, y); }, { passive: false });
 cv.addEventListener('touchmove', e => { e.preventDefault(); const t = e.changedTouches[0]; const [x, y] = toLocal(t); noteMove(x, y); }, { passive: false });
@@ -4024,6 +4140,7 @@ function tick(dt) {
     }
     if (fastT > resBack && resDrop > 0) { resDrop--; fastT = 0; resUpT = T; emaDt = 16; resize(); }
   }
+  padPoll();
   if (input.ldown && !jet.boost && performance.now() - input.ldownT > 220) jet.boost = true;
   if (state !== 'help' && state !== 'upgrade' && state !== 'pause') {
   stepFlight(dt);
@@ -4067,6 +4184,7 @@ Object.assign(DBG, {
   getSnd: () => ({ ctx: Snd.ctx ? Snd.ctx.state : null, on: Snd.on, sfx: Snd.vSfx, mus: Snd.vMus, bufs: Object.keys(Snd.buf).sort(), music: Snd.musName, deck: Snd.deck.map(d => ({ name: d.name, paused: d.el.paused, t: +d.el.currentTime.toFixed(2), tv: d.tv, err: d.el.error ? d.el.error.code : 0 })), played: { ...Snd.played }, voices: Snd.voices, loops: Object.keys(Snd.L).filter(k => Snd.L[k].src), duck: Snd.duck ? +Snd.duck.gain.value.toFixed(2) : null, musF: Snd.musF ? Math.round(Snd.musF.frequency.value) : null, panel: document.getElementById('sndPanel').classList.contains('show') }), damagePart: (i, n) => boss && damagePart(boss.parts[i], n),
   enemyMissile(i = 0) { if (enemies[i]) fireEnemyMissile(enemies[i]); },
   spawnAt(ahead, side, up, facing) { const p = add(add(madd(jet.pos, jet.F, ahead), scl(jet.R, side)), [0, up, 0]); const e = { pos: p, F: facing === 'away' ? jet.F.slice() : scl(jet.F, -1), speed: 200, bank: 0, hp: 6, fireCd: 0.5, mslCd: 99, aimT: 0, burst: 0, burstT: 0, alive: true, hit: 0, R: [1, 0, 0], U: [0, 1, 0] }; eBasis(e); enemies.push(e); if (!game.wave) game.wave = 1; return enemies.length; },
+  padState: () => ({ on: PAD.on, name: PAD.name, sel: PAD.sel, used: input.pad.used, x: input.pad.x, y: input.pad.y, boost: jet.boost }),
   getState() { return { state, view, viewW, resDrop, pos: jet.pos, yaw: jet.yaw, pitch: jet.pitch, speed: jet.speed, agl: jet.agl, missiles: missiles.length, parts: pCount, W, H, SCALE, armed: jet.slots.filter(s => s.armed).length, enemies: enemies.length, bullets: bullets.length, hp: game.hp, kills: game.kills, wave: game.wave, down: game.down, flares: jet.flares, flipping: jet.flipT >= 0, mslWarn: game.mslWarn, hostile: missiles.filter(m => m.hostile).length, decoyed: missiles.filter(m => m.decoy).length, up: { ...up }, maxHp: maxHp(), boss: boss ? { hp: bossHp(), max: boss.maxHp, dying: !!boss.dying, parts: boss.parts.map(p => p.kind + ':' + Math.round(p.hp)).join(' ') } : null,
     score: game.score, combo: game.combo, bestCombo: game.bestCombo, missionsOk: game.missionsOk, mission: mission ? { type: mission.type, state: mission.state, total: mission.total } : null, crates: crates.length, wing: wing ? { leaving: !!wing.leaveT, tgt: !!wing.tgt, dist: Math.round(Math.hypot(...sub(wing.pos, jet.pos))) } : null,
     shield: T < game.shieldT, ammo: T < game.ammoT, grounds: grounds.filter(g => g.alive).length, cargo: cargo ? Math.round(cargo.hp) : null, baseHp: base ? base.hp : null, T }; },
@@ -4105,7 +4223,7 @@ async function boot() {
     titleEl.classList.remove('loading');
     howEl.style.display = 'block';
     document.getElementById('go').style.display = 'block';
-    document.getElementById('go').textContent = isTouch ? 'TOQUE PARA VOAR' : 'CLIQUE PARA VOAR';
+    document.getElementById('go').textContent = isTouch ? 'TOQUE PARA VOAR' : 'CLIQUE PARA VOAR'; padTexts();
     document.getElementById('tutBtn').style.display = 'inline-block'; tutorial.syncBtn();
     document.getElementById('sndTitle').style.display = 'inline-block'; Snd.sync();
     document.getElementById('modes').style.display = 'flex'; setMode(MODE, true);
