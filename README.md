@@ -175,6 +175,31 @@ Celulares e tablets abrem sozinhos o **`mobile.html`**, uma versão separada fei
 
 O `mobile.html` é gerado a partir do `index.html` pelo script `tools/build-mobile.py`. Depois de mudar o `index.html`, rode `python3 tools/build-mobile.py` para atualizar a versão de celular.
 
+## Jogar com controle (GameSir X5 Lite e outros)
+
+O jogo aceita controles pela Gamepad API do navegador, no celular e no computador. O **GameSir X5 Lite** encaixa na entrada USB-C do celular e aparece como um controle padrão (layout Xbox); controles de Xbox e PlayStation também funcionam.
+
+1. Encaixe o controle (ou ligue por cabo/Bluetooth no computador) e abra o jogo.
+2. **Aperte qualquer botão**: o navegador só mostra o controle ao jogo depois de um botão apertado. Aparece o aviso "Controle conectado" e os botões de toque somem.
+3. Se o controle desconectar no meio do voo, o jogo pausa e os botões de toque voltam.
+
+| Ação | Controle |
+|---|---|
+| Pilotar | analógico esquerdo (ou direcional) |
+| Rajada (segure para continuar) | **A** ou **RT** |
+| Míssil | **RB** |
+| Flares | **LB** |
+| Turbo (segure) | **LT** |
+| Tonneau (giro) | **B** |
+| Meia-volta | **X** |
+| Trocar a visão | **Y** |
+| Pausa | **START** |
+| Ajuda / pular o tutorial | **SELECT** |
+| Trocar a fumaça (modo FAB) / som liga e desliga | **L3** / **R3** (apertar os analógicos) |
+| Menus | direcional ou analógico escolhe, **A** confirma, **B** volta; na tela inicial, esquerda e direita trocam o modo e **Y** liga ou desliga o tutorial |
+
+O controle vibra quando o avião leva um tiro (se o navegador permitir). O tutorial mostra os botões do controle quando ele está conectado.
+
 ## Sons e música
 
 O jogo começa com o som ligado (ele toca a partir do primeiro clique ou toque, como os navegadores exigem). O botão **SOM** abre um painel com liga/desliga e o volume separado dos **efeitos** e da **música**; a escolha fica salva no navegador. **M** liga e desliga.
